@@ -17,12 +17,13 @@ LIBS=-lsmapilnx
 
 ### Platform specifics
 DEL      = rm
-CC       = /compat/linux/usr/bin/g++
+CXX      = /compat/linux/usr/bin/g++
+CC       = /compat/linux/usr/bin/gcc
 OBJ      = .o
 EXE      = 
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg145$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ)
 
 ### After compiling, the executable must be branded in order to work
 ### under FreeBSD emulation.
@@ -34,4 +35,3 @@ branded: cfroute$(EXE)
 
 ### include the build rules that are common for all unix systems
 include common.mak
-

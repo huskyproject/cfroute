@@ -1,5 +1,5 @@
 ### Make file for CFRoute for Linux
-### Compiler: gcc (2.7 or 2.8)
+### Compiler: gcc (2.7, 2.8 or 2.9x)
 ### Requires gmake or another make that can cope with VPATH !!!
 
 ### Directory options
@@ -16,12 +16,13 @@ LIBS=-lsmapi
 
 ### Platform specifics
 DEL      = rm
-CC       = g++
+CXX      = g++
+CC       = gcc
 OBJ      = .o
 EXE      = 
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg145$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg146$(OBJ)
 
 
 ### include the build rules that are common for all unix systems

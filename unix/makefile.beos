@@ -16,12 +16,13 @@ LIBS=-lsmapi
 
 ### Platform specifics
 DEL      = rm
+CXX      = g++
 CC       = g++
 OBJ      = .o
 EXE      = 
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg145$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ)
 
 
 ### include the build rules that are common for all unix systems
