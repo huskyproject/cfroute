@@ -11,6 +11,8 @@ each feature.
 
 Current Beta (not yet released)
 -------------------------------
+    - Fixed a crash when trying to route intransit mail without VIA
+      kludge (this can only occur if other systems are misconfigured). [ED]
     - New keyword "RECODE". Simply do not use it. It is a TEMPORARY
       WORKAROUND for people in the Russian language area that do not yet
       support CHRS kludges according to FTSC. It takes as argument a

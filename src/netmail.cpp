@@ -635,7 +635,8 @@ void ProcessLine (char *line,S_Visu *storage,C_StringList *SL_Via, C_StringList 
 				{
 					storage->ProcessedHere=1;
 					if (!RecordViaLines)
-						SL_Via->DestroyList ();
+						if (SL_Via != NULL)
+							SL_Via->DestroyList ();
 				}
 				else
 					/* If there was a previous Via line with one of
