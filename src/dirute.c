@@ -21,6 +21,9 @@
 #include <string.h>
 #include <assert.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 static int patmat(char *raw, char *pat)
 {
         int i;
@@ -155,7 +158,7 @@ static void copy_info(struct ffblk *pffblk, struct dirent *de,
                 pffblk->ff_attrib |= FA_HIDDEN;
         }
 
-        ltm = localtime(&(psb->st_atime));
+        ltm = localtime(&(psb->st_mtime));
         pffblk->ff_ftime = ((ltm->tm_sec >> 1) & 31) |
                            ((ltm->tm_min & 63) << 5) |
                            ((ltm->tm_hour & 31) << 11);
