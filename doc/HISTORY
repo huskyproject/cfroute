@@ -19,7 +19,7 @@ CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
       you can specify "Immediate" as a routing flag in the ROUTE statement
       in the config file. Attention: Some mailers (e.g. BTXE) don't support
       the IUT flavour. So don't use the Immediate flag nor a "Immediate"
-      ruting statement if you have such a mailer. [TE]
+      routing statement if you have such a mailer. [TE]
     - New: Support for JAM Message base (NETJAM keyword). This requires
       SMAPI 1.6.4b or newer! [TE, with help of the JAM part of smapi, written
       by Fedor Lizunkov's and Pavel Gulchouck]
