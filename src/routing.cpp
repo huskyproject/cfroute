@@ -257,7 +257,7 @@ int CViaHandler::SetEncryption (int EncryptSpec)
 int CViaHandler::SetAttribType (int NewAttrib)
 {
 	if (NewAttrib!=TT_NORMAL && NewAttrib!=TT_HOLD && NewAttrib!=TT_CRASH &&
-		NewAttrib!=TT_DIR)
+            NewAttrib!=TT_DIR && NewAttrib!=TT_IMMEDIATE)
 		return EVH_INVALID;
 	else
 	{

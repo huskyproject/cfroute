@@ -1111,7 +1111,7 @@ int DetermineRouteToSystem (S_Visu *header,int SendType,
 			*AttribPack=TT_DIR;
                 else
                 if (S_Immediate(header->attrib2)==1)
-                        *AttribPack=TT_IMMEDIATE
+                        *AttribPack=TT_IMMEDIATE;
 		switch (*AttribPack)
 		{
 			case TT_NORMAL:

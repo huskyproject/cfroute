@@ -12,10 +12,11 @@ each feature.
 Current Beta (not yet released)
 -------------------------------
 
-    - Mail with Immediate flag is now packed as IUT instead of OUT.
-      Attention: Some mailers (e.g. BTXE) don't support the IUT flavour
-      in the outbound. So don't use the Immediate flag if you have such
-      a mailer.
+    - Mail with Immediate flag is now packed as IUT instead of OUT, and
+      you can specify "Immediate" as a routing flag in the ROUTE statement
+      in the config file. Attention: Some mailers (e.g. BTXE) don't support
+      the IUT flavour. So don't use the Immediate flag nor a "Immediate"
+      ruting statement if you have such a mailer.
     - New: Support for JAM Message base (NETJAM keyword). This requires
       SMAPI 1.6.4b or newer!
     - Removed all fread/fwrite calls that read directly into structures.
@@ -24,7 +25,7 @@ Current Beta (not yet released)
       on any Unix machine, RISC or Intel. [TE]
     - Another bugfix for the handling of EXCEPT statements [TE].
     - Fixed some crashes on bad syntax in the configuration file. [TE]
-    - Fix: Month field was set one too high (0 = January, but CFRoute 
+    - Fix: Month field was set one too high (0 = January, but CFRoute
       wrote 1 for January, and so forth) [TE]
     - Fixed a crash when trying to route intransit mail without VIA
       kludge (this can only occur if other systems are misconfigured). [ED]
@@ -35,14 +36,14 @@ Current Beta (not yet released)
       incoming messages from the transport to the local charset, and all
       outgoing charset from the local to the transport charset. [ED]
     - Fix: Fixed permissions of newly created directories on Unix. [ED]
-    - Fix: Message hour, minute and second information in Squish folders 
+    - Fix: Message hour, minute and second information in Squish folders
       contained nonsensible values (message *read* only, so non-fatal). [ED]
     - Fix: The "EXCEPT" statement did not work as stated in the doc,
       (where it says that it applies to all node numbers following the
       EXCEPT keyword, and you have to specify another EXCEPT to undo the
-      first one), but it did only apply to the nodenumer immediately 
+      first one), but it did only apply to the nodenumer immediately
       following the "EXCEPT". ATTENTION! THIS MAY BREAK EXISTING
-      CONFIGURATION FILES! CAREFULLY CHECK YOUR USAGE OF THE EXCEPT 
+      CONFIGURATION FILES! CAREFULLY CHECK YOUR USAGE OF THE EXCEPT
       KEYWORD!!! [TE]
     - Fix: The "EXCEPT" statement did not work for "FROM" routes (EXCEPT
       clauses were always considered as applying to the "TO" mask). [TE]

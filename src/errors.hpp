@@ -40,7 +40,7 @@
 #define TT_DIR              42
 #define TT_NORMAL           44
 #define TT_MYZONES          45
-#define TT_MYNETS			46
+#define TT_MYNETS           46
 #define TT_MYPOINTS         47
 #define TT_PARAMETER        48
 #define TT_DIRECT           49
@@ -108,6 +108,7 @@
 #define TT_QQQALL          111
 #define	TT_RECODEFILENAME  112
 #define TT_NETJAM          113
+#define TT_IMMEDIATE       114
 
 // Main() errors
 #define ENOMAIN             95 // Main address not specified

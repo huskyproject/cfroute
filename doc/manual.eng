@@ -445,10 +445,11 @@ may use several excepts, for example
     Addresses  found  after a FROM affect  to  the  sender  of  the
 message. EXCEPT may be used here as well. We will see some examples
 about this.
-    flavour is the priority of the message, and may be  NORMAL, DIR
-(for DIRECT),  CRASH or  HOLD. I  assume that  you know  what these
-mean for  mailers I so  will  not explain  futher. If there  is  no
-flavour, NORMAL is assumed.
+    Favour is the priority of the  message, and may be NORMAL, DIR
+(for DIRECT), CRASH, HOLD or IMMEDIATE.  I  assume  that  you  know
+what these mean for mailers I so will not explain futher.  If there
+is  no  flavour,  NORMAL is assumed.  Note that some mailers do not
+support the IMMEDIATE flavour (e.g. Binkley).
     Day of the week refers to the day the messages are  packed, not
 when they were written. This is useful if you have a  connection to
 someone only once or twice  a week, so those  days it is  faster to

@@ -201,6 +201,7 @@ CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT
                             {"ENC",TT_ENCRYPTED,NULL,NULL,0,PT_ENC},
                             {"NONENC",TT_NONENCRYPTED,NULL,NULL,0,PT_ENC},
                             {"CRASH",TT_CRASH,NULL,NULL,0,PT_FLAVOUR},
+                            {"IMMEDIATE",TT_IMMEDIATE,NULL,NULL,0,PT_FLAVOUR},
                             {"HOLD",TT_HOLD,NULL,NULL,0,PT_FLAVOUR},
                             {"DIR",TT_DIR,NULL,NULL,0,PT_FLAVOUR},
                             {"NORMAL",TT_NORMAL,NULL,NULL,0,PT_FLAVOUR},
