@@ -78,7 +78,8 @@ The following instructions describe how to compile CFRoute on a typical Unix
 system. They should work for Linux and FreeBSD. Note that CFRoute presently
 does not work properly on Non-Intel architectures. Also note that instead if
 following these instructions, you could also use the Husky build process
-which is described in the instructions found in the Huskybse package. CFRoute contains a top-level Makefile to be used for the Husky build process.
+which is described in the instructions found in the Huskybse package. CFRoute
+contains a top-level Makefile to be used for the Husky build process.
 
 Commands that should be typed in verbatim are indented.
 
