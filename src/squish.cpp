@@ -223,7 +223,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 		headerPKT.OrigNode=OurAKA.Node;
 		headerPKT.DestNode=via.Node;
 		headerPKT.Year=dt.year;
-		headerPKT.Month=dt.month;
+		headerPKT.Month=dt.month - 1;
 		headerPKT.Day=dt.day;
 		headerPKT.Hour=dt.hours;
 		headerPKT.Minute=dt.minutes;

@@ -11,6 +11,9 @@ each feature.
 
 Current Beta (not yet released)
 -------------------------------
+
+    - Fix: Month field was set one too high (0 = January, but CFRoute 
+      wrote 1 for January, and so forth) [TE]
     - Fixed a crash when trying to route intransit mail without VIA
       kludge (this can only occur if other systems are misconfigured). [ED]
     - New keyword "RECODE". Simply do not use it. It is a TEMPORARY

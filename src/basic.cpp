@@ -15,6 +15,11 @@
 #include <io.h>
 #endif
 
+#ifdef EMX
+#define S_IRWXU 0
+#define S_IRWXG 0
+#endif
+
 #ifndef OS_2
 typedef unsigned char UCHAR;
 typedef unsigned long ULONG;
