@@ -474,7 +474,10 @@ int CRouteHandler::Process (char *Address)
 			return WARNING;
 		}
 		WA.Reverse=OnExcept;
-		OnExcept=0;
+
+     // TE 990826: The following line was not in accordance with the docs
+     //		OnExcept=0;
+
 		if (AssumePoints)
 		{
 			if (!strchr (Address,'.'))

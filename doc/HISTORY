@@ -11,8 +11,15 @@ each feature.
 
 Current Beta (not yet released)
 -------------------------------
+    - Fix: The "EXCEPT" statement did not work as stated in the doc,
+      (where it says that it applies to all node numbers following the
+      EXCEPT keyword, and you have to specify another EXCEPT to undo the
+      first one), but it did only apply to the nodenumer immediately 
+      following the "EXCEPT". ATTENTION! THIS MAY BREAK EXISTING
+      CONFIGURATION FILES! CAREFULLY CHECK YOUR USAGE OF THE EXCEPT 
+      KEYWORD!!! [TE]
     - Fix: The "EXCEPT" statement did not work for "FROM" routes (EXCEPT
-      clauses were always considered as applying to the "TO" mask).
+      clauses were always considered as applying to the "TO" mask). [TE]
     - Fix: Routing dependent on the day of the week did not work on Sundays
       (i.E. "U" was not recognised as specifying Sunday in the route
       statement). [TE]
@@ -241,7 +248,7 @@ Current Beta (not yet released)
       Then simply use the macros anywhere. Macros can contain both commands
       and parameters, even other macros. They can be used for the most
       simplest things, such as
-  E  ( @ 3®[√&ÇaÅE¿ß	az⁄2j≠:∑ODEFINE
+      DEFINE NORTH_AMERICA 1:* ENDDEFINE
       DEFINE REST_WORLD 2:* 3:* 4:* 5:* 6:* ENDDEFINE
       DEFINE GEORGE_PEACE 1:270/101 ENDDEFINE
       DEFINE MANUEL_FUENTES 2:348/201 ENDDEFINE
