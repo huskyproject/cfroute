@@ -4,62 +4,24 @@ CFRoute 0.95a Source Code Distribution
 Status
 ------
 
+CFRoute has been written by Carlos Fernandez Sanz, cfr@nova.es. The most
+recent version of CFRoute is being maintained by Tobias Ernst, 
+tobi@bland.fido.de, 2:2476/418. If you decide to work on the CFRoute 
+source code, you are encouraged (though not enforced) to cooperate with Tobias. 
+
 CFRoute is not Public Domain. CFRoute is copyrighted software. The Copyright
-is held by Carlos Fernandez Sanchez, Madrid, Spain.
-
-CFRoute has been written by Carlos Fernandez Sanchez. Carlos Fernandez
-Sanchez has granted rights on CFRoute to Hauke Hagenhoff, 2:2453/470. By 
-permission of Hauke Hagenhoff, CFRoute is being maintained by Tobias Ernst,
-tobi@bland.fido.de, 2:2476/418.
-
-Rules for Using the Source Code
--------------------------------
-
-Until the topic is finally settled with Hauke Hagenhoff, the following rules
-apply to using this source code.
-
-- You may use the source code to build binaries of CFRoute for your personal
-  usage. This includes private and educational use as well as commercial use.
-
-- You may make modifications on the source code as long as
-  a) You do not remove or alter the credit and copyright statements that 
-     mention Carlos Fernandez Sanchez from the source code.
-  b) You submit all changes that you have made, as soon as they are
-     finished, back to the maintainer of the source code. You will receive
-     credits for the change in form of an entry mentioning your name in
-     the documentation.
-
-- You are not allowed to redistribute the source code or binaries created
-  from the source code without explicit permission from either Hauke
-  Hagenhoff, Carlos Fernandez Sanchez or Tobias Ernst. Redistribution means
-  public redistribution (file request, ftp, etc.) as well as private 
-  redistribution (giving the code away to friends etc.). (Explicit
-  permission is not too hard to gain, so just write a netmail and ask
-  for it).
-
-- The restrictions mentioned above perish if neither Tobias Ernst, nor Hauke
-  Hagenhoff, nor Carlos Fernandez Sanchez, nor any person that can prove to
-  have received rights on CFRoute from Carlos Fernandez Sanchez, can be
-  contacted for more than 6 months. In this case, the software will go
-  Open Source.
-
-- THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS `AS IS'' AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS 
-  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
-  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+is held by Carlos Fernandez Sanz, Madrid, Spain. For details on the
+conditions, refer to the license file which is named LICENSE. If you did not
+receive this file along with the source code, please contact the author or
+maintainer mentioned below.
 
 
 Hints on Compiling the Source Code
 ----------------------------------
 
-a) Compilers to use
+I) Requriements
+
+a) Compilers
 
 I use the following compilers to build CFRoute, which means that these
 compilers are supported and should always work:
@@ -70,12 +32,11 @@ compilers are supported and should always work:
 - DOS:     Borland C++ 3.1
 - Win32:   Borland C++ 4.0
 
-In the various subdirectories, you can find pre-made makefiles for these
-compilers. Note that the makefiles for the GNU compilers require GNU make
-(gmake) to work correctly. On Linux boxes, GNU make should be available
-under the name "gmake" (instead of "make"). For OS/2 and DOS, you can f'req
-GNUMAKE.ZIP at 2:2476/418. It is also available at most common OS/2 ftp
-sites.
+Note that cfroute is written in C++, so you will need C++ compilers. In
+particular, on Linux, you need to install the C++ package (some
+distributions have it installed by default, others don't). If gcc should 
+complain that it can't find files like "cc1plus", it is likely that the
+package is not installed.
 
 The code also contains defines for some other compilers, namedly Visual Age
 C++ and Watcom C. These compilers have been used by Carlos. However, I
@@ -83,18 +44,83 @@ cannot support these compilers, which means that the defines are somewhat
 out of date and you will have to do some manual work to get CFRoute work
 with other compilers.
 
-b) External Libraries
+b) Utilities
+
+The makefiles for Unix and for OS/2 (EMX) require GNU make (or another make
+that can handle VPATH) to work correctly. On Linux boxes, GNU make should be
+available under the name "gmake" (instead of "make"). For OS/2 and DOS, you 
+can f'req GNUMAKE.ZIP at 2:2476/418. It is also available at most common
+OS/2 ftp sites.
+
+c) External Libraries
 
 If you do not define SQUISHCFS, CFRoute will compile without need for any
-external libraries other than the standard C and C++ libraries. If you do
-define SQUISHCFS while compiling, CFRoute will require to be linked against
-the SMAPI library, a modified version of the Squish Message API. The latest
-version of the SMAPI can always be obtained from
+external libraries other than the standard C and C++ libraries, but it will
+not be able to access Squish style message areas.
+
+If you do define SQUISHCFS while compiling, CFRoute will require to be
+linked against the SMAPI library, a modified version of the Squish Message
+API. The latest version of the SMAPI can always be obtained from
 ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz
 
-c) Defines
+d) Defines
 
 You should either define UNIX or OS2 or WIN or MSDOS. You can define
 SQUISHCFS if you want the feature to scan Squish style areas to be enabled.
 
+II) Step by step instructions
+
+The following instructions describe how to compile CFRoute on a typical Unix
+system. They should work for Linux and FreeBSD. Note that CFRoute presently
+does not work properly on Non-Intel architectures.
+
+Commands that should be typed in verbatim are intented.
+
+1. Obtain the source code of cfroute (you probably did it already ;-) which
+   is contained in "cfr-???s.zip", where ??? is replaced by the most
+   recent version number, or in "cfroute-latest.tar.gz"
+
+2. Unpack cfroute. Depending on which file you have downloaded, type either
+     cd ~
+     unzip cfr-095a.zip
+   or
+     cd ~
+     tar xzf cfroute-latest.tar.gz
+   This will create a subdirectory named "~/cfroute"
+
+The steps 3 to 5 can be omitted if you already have the SMAPI installed as a
+system-wide shared object file (i.e. libsmapilnx.so is in the
+LD_LIBRARY_PATH).
+
+3. Obtain the source code of the SMAPI, which is contained in files like
+   smapiss.zip or smapi?? zip, where ?? should be 15 or greater. Current
+   versions of the smapi can be obtained from
+   ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz
+
+4. Unzip the SMAPI by entering, depending on which form of the smapi you
+   have downloaded, either
+     mkdir ~/smapi
+     cd ~/smapi
+     unzip smapi??.zip
+   or
+     cd ~
+     tar xzf smapi-latest.tar.gz
+
+5. Build the smapi
+     cd ~/smapi
+     make -f makefile.lnx libsmapilnx.a
+   This will create a file named "libsmapilnx.a".
+   (If you know what I mean, you can type "make -f makefile.lnx", which will
+   create a .so file, which you can place in the library path, but this is
+   not requried, if you don't do it, cfroute will find the .a file and link
+   it statically).
+
+
+6. Build cfroute:
+      cd ~/cfroute/unix
+      gmake -f makefile.linux
+   This should create an executable named "cfroute" in ~/cfroute/unix.
+   This executable is all that you need for running cfroute. Place it in
+   your path or wherever you seem fit.
+     
 [EOF]
