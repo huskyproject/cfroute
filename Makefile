@@ -31,8 +31,8 @@ CDEFS=-D$(OSTYPE) $(ADDCDEFS) -DSQUISHCFS -Isrc
 
 all: cfroute$(EXE) fc2cfr$(EXE)
 
-cfroute$(EXE): cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ)
-	$(CXX) $(LFLAGS) $(EXENAMEFLAG)cfroute$(EXE) cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) $(LIBS)
+cfroute$(EXE): cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) inbounds$(OBJ)
+	$(CXX) $(LFLAGS) $(EXENAMEFLAG)cfroute$(EXE) cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) inbounds$(OBJ) $(LIBS)
 
 fc2cfr$(EXE): fc2cfr$(OBJ)
 	$(CXX) $(LFLAGS) $(EXENAMEFLAG)fc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS)
