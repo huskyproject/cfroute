@@ -629,6 +629,9 @@ the keyword LOGPATH.
     CFRoute also has  the ability of  detecting and logging loops.
 If a message  has been at our  system, left, and is now  back, CFR
 will log all the via lines starting from the last local one.
+    You can set the  NOLOOPROUTE  keyword in  the config file,  in
+which case  cfroute will  NOT  pack any mailt hat is detected as a
+loop mail.
 
 8. A working config file
 ------------------------

@@ -213,7 +213,7 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 		fclose (out);
 		return ECONV_SHORTIN;
 	}
-	
+
 	if (DoRecode) {
 		recodeToTransportCharset (headerin.FromUserName, 36);
 		recodeToTransportCharset (headerin.ToUserName, 36);
@@ -576,7 +576,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 	} else
 		storage->MsgNumber = 0;
 	storage->formattype = formatMSG;
-		
+
 	// Get as much info as possible from the header
 	if (FHandler.OpenFile (path)!=SUCCESS)
 		return ENH_OPENFAIL;
@@ -1285,6 +1285,13 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
 		for (count=0;count<x->SL_Via.GetStringCount();count++)
 			Log.WriteOnLog ("%s\n",x->SL_Via.GetString (count));
 	}
+        if (extra->DetectedLoop && NoLoopRoute)
+        {
+                Log.WriteOnLog("Mail is looping - we do not route it.\n");
+                Log.WriteOnLog("\n");
+                printf ("Mail loop detected.\n");
+                return (RET_SUCCESS);
+        }
 	if (!x->GotSystem)
 	{
 #ifdef DEBUG

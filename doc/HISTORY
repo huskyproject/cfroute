@@ -12,7 +12,9 @@ each feature.
 
 CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
 ----------------------------------------------------------
-
+    - Migrated from current: If the new keyword "NOLOOPROUTE" is set in the
+      config file, we will not pack a mail if we have detected a possible
+      mail loop. [TE]
     - Mail with Immediate flag is now packed as IUT instead of OUT, and
       you can specify "Immediate" as a routing flag in the ROUTE statement
       in the config file. Attention: Some mailers (e.g. BTXE) don't support

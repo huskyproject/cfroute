@@ -461,6 +461,13 @@ int InitComNoDomainDir (S_FQAddress Main)
 	return SUCCESS;
 }
 
+int InitComNoLoopRoute (S_FQAddress Main)
+{
+	NoLoopRoute=1;
+	return SUCCESS;
+}
+
+
 int InitComIgnoreUnknownAttribs (S_FQAddress Main)
 {
     IgnoreUnknownAttribs=1;

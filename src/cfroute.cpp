@@ -14,7 +14,7 @@ char *IDENTPos="a";
 char IDENTString[80];
 
 typedef unsigned char byte;
-byte RequestInfo=0,NoDomainDir=0,ReadFEConfig=0,UseSquish=0;
+byte RequestInfo=0,NoDomainDir=0,ReadFEConfig=0,UseSquish=0,NoLoopRoute=0;
 char FEConfDir[80];
 
 unsigned short CONTROLBYTES = 8192;

@@ -6,7 +6,7 @@ SRCDIR=..\src
 SMAPIDIR=..\..\smapi
 
 ### Compiler flags
-CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -DMSDOS -O2 -w -ml
+CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -DMSDOS -O2 -w -ml $(RELEASE)
 
 ### Linker flags
 LFLAGS = -L$(SMAPIDIR) -ml
