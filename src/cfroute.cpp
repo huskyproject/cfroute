@@ -435,31 +435,66 @@ void ProcessNetmail (char *NetmailDir)
 	printf ("Processing netmail directory %s\n",NetmailDir);
 	strcpy (complete,NetmailDir);
 	strcat (complete,"*.MSG");
-	strcpy (LastFName,NetmailDir);
+	
+        strcpy (LastFName,NetmailDir);
 	strcat (LastFName,"LASTRUN.CFR");
+        lrdate=0;
+        memset (&dt,0,sizeof (dt));
+        memset (&dt,0,sizeof (dt));
+
 	if (IgnoreLastUsed==0)
-		LastUsed=fopen (LastFName,"rb");
-	else
-		LastUsed=NULL;
-	if (LastUsed!=NULL)
-	{
-                dt.read(LastUsed);
-		printf ("Found lastrun.cfr (%s %u, %u - %02u:%02u:%02u)\n",
+        {
+
+            int control;
+            
+#ifdef OS_2
+            control=DosFindFirst ((PCSZ) LastFName,&hdir,
+                                  FILE_NORMAL | FILE_READONLY,
+                                  &findmsg,sizeof (findmsg),&ulFileCount,
+                                  FIL_STANDARD);
+#else
+            control=findfirst (LastFName,&findmsg,FA_ARCH);
+#endif
+            
+            if (!control)
+            {
+#ifdef OS_2
+		memcpy (&dosfiletime,&findmsg.ftimeLastWrite,
+                        sizeof (struct _FTIME));
+		memcpy (&dosfiledate,&findmsg.fdateLastWrite,
+                        sizeof (struct _FDATE));
+#else
+		dosfiletime.number=findmsg.ff_ftime;
+		dosfiledate.number=findmsg.ff_fdate;
+#endif
+
+                dt.day  = dosfiledate.std.day;
+                dt.month = dosfiledate.std.mon;
+                dt.year = dosfiledate.std.year + 1980;
+                dt.hours = dosfiletime.stt.hour;
+                dt.minutes = dosfiletime.stt.min;
+                dt.seconds = dosfiletime.stt.sec;
+
+		printf ("Found %s (%s %u, %u - %02u:%02u:%02u)\n",
+                        LastFName,
 					Months[dt.month-1],dt.day,dt.year,
 					dt.hours,dt.minutes,dt.seconds);
-		fclose (LastUsed);
                 lrdate=GetJulianDate (dt.day,dt.month,dt.year);
+            }
+#ifdef OS_2
+            DosFindClose (hdir);
+#else
+            findclose(&findmsg);
+#endif
 	}
-	else
-	{
-                lrdate=0;
-		memset (&dt,0,sizeof (dt));
-		memset (&dt,0,sizeof (dt));
-	}
+
 	/* Init the random generator with a more or less unpredictable
 	   number. */
 	dtnow.getCurrentTime();
         srand (dtnow.hours*dtnow.minutes*dtnow.seconds);
+
+        touchFile(LastFName);
+
 
 #ifdef OS_2
         control=DosFindFirst ((PCSZ) complete,&hdir,
@@ -546,6 +581,8 @@ void ProcessNetmail (char *NetmailDir)
 	 }
 #ifdef OS_2
 	 DosFindClose (hdir);
+#else
+         findclose(&findmsg);
 #endif
 #ifdef DEBUG
 	printf ("Calling Sort\n");
@@ -571,14 +608,6 @@ void ProcessNetmail (char *NetmailDir)
 #endif
 	printf ("Total %u .MSGs in netmail directory, %u processed, %u delayed, %u packed.\n",
 		counttotal,NetNames.GetStringCount (),countdelayed,countproc);
-	strcpy (LastFName,NetmailDir);
-	strcat (LastFName,"LASTRUN.CFR");
-	LastUsed=fopen (LastFName,"wb");
-	if (LastUsed!=NULL)
-	{
-                dtnow.write(LastUsed);
-		fclose (LastUsed);
-	}
 }
 
 #if !defined(OS2) && !defined(UNIX)
