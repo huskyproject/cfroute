@@ -734,7 +734,7 @@ STATHEADER;
 typedef struct
 {
     FEAddress adr;
-    unsigned long import, export;
+    unsigned long import_i, export_i;
     struct fe_date lastimport, lastexport;
     unsigned long dupes;
     unsigned long importbytes, exprotbytes;
@@ -745,7 +745,7 @@ typedef struct
 {
     unsigned short conference;         /* conference # of area */
     unsigned long tagcrc;              /* CRC32 of area tag    */
-    unsigned long import, export;
+    unsigned long import_i, export_i;
     struct fe_date lastimport, lastexport;
     unsigned long dupes;
 }
