@@ -2,6 +2,9 @@
 #if defined(OS2) && !defined(OS_2)
 #define OS_2
 #endif
+#if defined(__EMX__) && !defined(EMX)
+#define EMX
+#endif
 #if (defined(WINNT) || defined(__WINNT__) || defined(__NT__) || defined(NT)) \
     &&(!defined(WIN))
 #define WIN
