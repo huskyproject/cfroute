@@ -42,9 +42,9 @@ compilers are supported and should always work:
 
 Note that cfroute is written in C++, so you will need C++ compilers. In
 particular, on Linux, you need to install the C++ package (some
-distributions have it installed by default, others don't). If gcc should 
-complain that it can't find files like "cc1plus", it is likely that the
-package is not installed.
+distributions have it installed by default, others don't). If gcc should
+complain that it can't find files like "cc1plus" or "iostream", it is likely
+that the package is not (properly) installed.
 
 The code also contains defines for some other compilers, namedly Visual Age
 C++ and Watcom C. These compilers have been used by Carlos. However, I
@@ -72,6 +72,8 @@ against the SMAPI library. CFRoute 1.0a requires smapi 1.6.4; for Jam support
 you'd best use smapi 1.6.4b or higher. Smapi can be obtained at the Homepage
 of the Husky project: http://husky.physcip.uni-stuttgart.de.
 
+The Husky makefile also builds a tool named "fc2cfr", which requires
+fidoconfig 0.10-stable.
 
 d) Defines
 
@@ -86,20 +88,22 @@ system. They should work for most Unix systems, Intel or Non-Intel.
 Commands that should be typed in verbatim are indented.
 
 1. Obtain the source code of cfroute (you probably did it already ;-) which
-   is contained in "cfr-???s.zip", where ??? is replaced by the most
-   recent version number, or in "cfroute-latest.tar.gz"
+   is contained in "cfroute-???-src.tar.gz", where ??? is replaced by the
+   most recent version number, or in "cfroute-latest.tar.gz".
 
 2. Unpack cfroute. Depending on which file you have downloaded, type either
      cd ~
-     unzip cfr-095a.zip
+     tar xzf cfroute-10a-src.tar.gz
    or
      cd ~
      tar xzf cfroute-latest.tar.gz
    This will create a subdirectory named "~/cfroute"
 
-The steps 3 to 5 can be omitted if you already have the SMAPI installed as a
-system-wide shared object file (i.e. libsmapilnx.so is in the
-LD_LIBRARY_PATH).
+The steps 3 to 5 can be omitted if you already have a *static* version of
+the SMAPI installed (i.e. libsmapiunix.a is in /usr/local/lib or
+a simliar directory). Cfroute also supports linkage against a shared library
+version of the SMAPI, but you will need to use the Husky build process for
+that, so we don't cover it here.
 
 3. Obtain the source code of the SMAPI. You should use SMAPI 1.6.4b or newer
    versions. SMAPI 1.6.4b can be obtained as smapi-1.6.4b-src.tar.gz from
