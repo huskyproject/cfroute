@@ -1,4 +1,3 @@
-#pragma pack(1)
 #if defined(OS_2)
         char *IDENTProgramName="CFR-OS/2";
 #elif defined(WIN)

@@ -20,7 +20,7 @@ CLog::CLog (void)
 
 int CLog::OpenLog (void)
 {
-        //DATETIME dt;
+        //DateTime dt;
 	char buffer[256];
 	if (inited)
 		return ELH_ALREADYOPEN;
@@ -29,7 +29,7 @@ int CLog::OpenLog (void)
 		return ELH_CANTOPEN;
 	inited=1;
 /*
-        DosGetDateTime (&dt);
+        dt.getCurrentTime();
         sprintf (buffer,
                  "%s started at %s %02d,%04d (%s) %02u:%02u:%02u\n",
                  IDENTString,Months[dt.month-1],dt.day,dt.year,

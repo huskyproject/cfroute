@@ -12,6 +12,10 @@ each feature.
 Current Beta (not yet released)
 -------------------------------
 
+    - Removed all fread/fwrite calls that read directly into structures.
+      Cfroute now works without structure packing, independently of
+      endianness or other architecture details. You can now use cfroute
+      on any Unix machine, RISC or Intel. [TE]
     - Another bugfix for the handling of EXCEPT statements [TE].
     - Fixed some crashes on bad syntax in the configuration file. [TE]
     - Fix: Month field was set one too high (0 = January, but CFRoute 

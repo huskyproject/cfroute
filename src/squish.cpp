@@ -54,9 +54,9 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 	storage->time.minute=SqHeader.date_written.time.mm;
 	storage->time.second=SqHeader.date_written.time.ss;
 
-	storage->attrib.number=SqHeader.attr;
-	storage->attrib2.number=0;
-        storage->attrib2.bits.Direct = storage->attrib.bits.Unused;
+	storage->attrib=SqHeader.attr;
+	storage->attrib2=0;
+        Set_Direct(storage->attrib2, S_Unused(storage->attrib));
 	storage->Origin.Zone=SqHeader.orig.zone;
 	storage->Origin.Net=SqHeader.orig.net;
 	storage->Origin.Node=SqHeader.orig.node;
@@ -143,7 +143,7 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 
 	storage->MessageSize=MsgGetTextLen (MsgH);
 	// Handle hostgated messages
-	if (storage->attrib2.bits.Hub==1)
+	if (S_Hub(storage->attrib2))
 	{
 		if (AddressHandler.OurNet (storage->Destination.Zone,storage->Destination.Net)==EAD_FOREIGN)
 		{
@@ -152,7 +152,7 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 		}
 	}
 	// Handle zonegated messages
-	if (storage->attrib2.bits.Zonegate==1)
+	if (S_Zonegate(storage->attrib2)==1)
 	{
 		if (AddressHandler.OurZone (storage->Destination.Zone)==EAD_FOREIGN)
 		{ // To a foreign zone...
@@ -186,7 +186,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 	HMSG in;
 	S_Packed headerout;
 	S_PKT headerPKT;
-	DATETIME dt;
+	DateTime dt;
 	char *buffer,completepath[256],*Kludges;
 	char NoPathSubject[80],lasttwo[2];
 	long ToCopy,CurrentPos;
@@ -219,7 +219,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 		}
 		// The file doesn't exist yet - we have to create it and add
 		// a header
-		DosGetDateTime (&dt);
+		dt.getCurrentTime();
 		headerPKT.OrigNode=OurAKA.Node;
 		headerPKT.DestNode=via.Node;
 		headerPKT.Year=dt.year;
@@ -251,7 +251,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 			headerPKT.dif.t2plus.OrigPoint=OurAKA.Point;
 			headerPKT.dif.t2plus.DestPoint=via.Point;
 		}
-                fwrite (&headerPKT,1,sizeof (S_PKT),out);
+                headerPKT.write(out);
 	}
 	MsgReadMsg (in,&headerin,0L,0L,NULL,MsgGetCtrlLen (in),ControlText);
 	
@@ -275,10 +275,10 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 	headerout.OrigNet=headerin.orig.net;
 	headerout.DestNode=headerin.dest.node;
 	headerout.DestNet=headerin.dest.net;
-	headerout.Attrib.number=headerin.attr;
+	headerout.Attrib=headerin.attr;
 	// Note that the InTransit and local flags are stripped (!!)
-	headerout.Attrib.bits.InTransit=0;
-	headerout.Attrib.bits.Local=0;
+	Set_InTransit(headerout.Attrib,0);
+	Set_Local(headerout.Attrib,0);
 	headerout.Cost=0;
 	memcpy (&headerout.DateTime,&headerin.__ftsc_date,20);
         fwrite (&headerout,1,sizeof (S_Packed),out);
@@ -388,15 +388,15 @@ int AnalyzeSquishNet (HAREA BaseH,unsigned long MsgNumber)
 		return (SUCCESS);
 	}
 	// Process file-attaches and file-requests
-	if (extra.attrib.bits.FileAttached)
+	if (S_FileAttached(extra.attrib))
 	{
 		if (SubjectToFile(extra.Subject,x.savepathattach,x.extattach,
-                                  extra.attrib2.bits.Truncate,
-                                  extra.attrib2.bits.KillFileSent)!=SUCCESS)
+                                  S_Truncate(extra.attrib2),
+                                  S_KillFileSent(extra.attrib2))!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to update"
                                         " fileattach queue.\n");
 	}
-	if (extra.attrib.bits.FileRequest)
+	if (S_FileRequest(extra.attrib))
 	{
 		strcpy (x.extattach,"REQ");
 		if (SubjectToFile (extra.Subject,x.savepathattach,
@@ -404,8 +404,8 @@ int AnalyzeSquishNet (HAREA BaseH,unsigned long MsgNumber)
 			Log.WriteOnLog ("Warning: Failed to "
                                         "update filerequest queue.\n");
 	}
-        if (extra.attrib.bits.KillSent ||
-            (extra.attrib.bits.InTransit && KillInTransit))
+        if (S_KillSent(extra.attrib) ||
+            (S_InTransit(extra.attrib) && KillInTransit))
 	{
 		MsgKillMsg (BaseH,MsgNumber);
 		killed=1;

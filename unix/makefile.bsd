@@ -1,5 +1,5 @@
 ### Make file for CFRoute for FreeBSD
-### Compiler: gcc 2.8 (from the gcc28 ports package)
+### Compiler: gcc 2.8 (from the egcs ports package)
 ### Requires gmake or another make that can cope with VPATH !!!
 
 ### Directory options
@@ -15,14 +15,13 @@ LIBS=-lsmapibsd
 
 ### Platform specifics
 DEL      = rm
-CC       = g++28
+CC       = g++
 OBJ      = .o
 EXE      = 
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg145$(OBJ)
 
 
 ### include the build rules that are common for all unix systems
 include common.mak
-

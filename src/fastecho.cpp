@@ -60,7 +60,8 @@ int FastEchoConfig (void)
 	readin=fopen (configpath,"rb");
 	if (readin==NULL)
 		return ECH_OPENFAILED;
-	fread (&FEConfig,1,sizeof (FEConfig),readin);
+	read_fe_config(&FEConfig,readin);
+        printf ("DEBUG %lu\n", (unsigned long)FEConfig.offset);
 	if (!OutboundDirSetup)
 	{
 		strcpy (OutboundDirectory,FEConfig.OutBound);
@@ -81,13 +82,13 @@ int FastEchoConfig (void)
 	offset=0;
 	while (offset<FEConfig.offset)
 	{
-		fread (&EH,sizeof (ExtensionHeader),1,readin);
+		read_fe_extension_header(&EH,readin);
 		switch (EH.type)
 		{
 			case EH_AKAS:
 				for (count=0;count<FEConfig.AkaCnt;count++)
 				{
-					fread (&OurAKAs,1,sizeof (SysAddress),readin);
+					read_fe_sysaddress(&OurAKAs,readin);
 					if (OurAKAs.main.zone)
 					{
 						AddrNat.Zone=OurAKAs.main.zone;
@@ -116,17 +117,20 @@ int FastEchoConfig (void)
 			default:
 				fseek (readin,EH.offset,SEEK_CUR);
 		}
-		offset=offset+EH.offset+sizeof (EH);
+		offset=offset+EH.offset+FE_EXTHEADER_SIZE;
 	}
 	if (FEConfig.offset!=offset)
 	{
+                printf ("Debug: %lu %lu\n",
+                        (unsigned long)FEConfig.offset,
+                        (unsigned long)offset);
 		printf ("Configuration probably processed incorrectly, terminating (errorlevel 3)\n");
 		exit (3);
 	}
 	count=0;
 	while (count<FEConfig.NodeCnt)
 	{
-		fread (&NewNode,1,sizeof (Node),readin);
+                read_fe_node(&NewNode, readin);
 		count++;
 		sprintf (WildAddr.Zone,"%hu",NewNode.addr.zone);
 		sprintf (WildAddr.Net,"%hu",NewNode.addr.net);
@@ -140,7 +144,7 @@ int FastEchoConfig (void)
 			printf ("From FE: Password for %s:%s/%s.%s: %s\n",
 			WildAddr.Zone,WildAddr.Net,WildAddr.Node,WildAddr.Point,
 			NewNode.password);
-        fseek (readin,FEConfig.NodeRecSize-sizeof (Node),SEEK_CUR);
+        fseek (readin,FEConfig.NodeRecSize-FE_NODE_SIZE,SEEK_CUR);
 	}
 	fclose (readin);
 	return 0;

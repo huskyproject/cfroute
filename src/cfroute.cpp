@@ -93,6 +93,18 @@ ULONG APIENTRY  exHandler (PEXCEPTIONREPORTRECORD,
 #endif
 #endif
 
+const int NV_Routed=0;
+const int NV_Direct=1;
+const int NV_Noroute=2;
+const int NV_NoPack=3;
+
+char Months[12][4]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
+					"Sep","Oct","Nov","Dec"};
+
+char Days[7][4]={"Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
+
+
+
 int ProcessMacro (int MacroType,int (*CommandProcessor) (char *,S_FQAddress))
 {
 	int count;
@@ -386,7 +398,7 @@ void ProcessNetmail (char *NetmailDir)
 #endif
 	char complete[512],LastFName[512];
 	C_SpecialStringList NetNames;
-	DATETIME dtnow;
+	DateTime dtnow;
 	union
 	{
 		struct
@@ -412,7 +424,7 @@ void ProcessNetmail (char *NetmailDir)
 	long lrdate,lrtime,filedate,filetime;
 	/* struct date d,dnow;
 	struct time t,tnow; */
-		DATETIME dt;
+        DateTime dt;
 	FILE *LastUsed;
 	printf ("Processing netmail directory %s\n",NetmailDir);
 	strcpy (complete,NetmailDir);
@@ -425,7 +437,7 @@ void ProcessNetmail (char *NetmailDir)
 		LastUsed=NULL;
 	if (LastUsed!=NULL)
 	{
-                fread (&dt,sizeof (DATETIME),1,LastUsed);
+                dt.read(LastUsed);
 		printf ("Found lastrun.cfr (%s %u, %u - %02u:%02u:%02u)\n",
 					Months[dt.month-1],dt.day,dt.year,
 					dt.hours,dt.minutes,dt.seconds);
@@ -440,7 +452,7 @@ void ProcessNetmail (char *NetmailDir)
 	}
 	/* Init the random generator with a more or less unpredictable
 	   number. */
-	DosGetDateTime (&dtnow);
+	dtnow.getCurrentTime();
         srand (dtnow.hours*dtnow.minutes*dtnow.seconds);
 
 #ifdef OS_2
@@ -558,7 +570,7 @@ void ProcessNetmail (char *NetmailDir)
 	LastUsed=fopen (LastFName,"wb");
 	if (LastUsed!=NULL)
 	{
-                fwrite (&dtnow,sizeof (DATETIME),1,LastUsed);
+                dtnow.write(LastUsed);
 		fclose (LastUsed);
 	}
 }

@@ -11,12 +11,14 @@
 #endif
 #endif
 
+#include "structs.hpp"
+
 long GetJulianDate(int Day, int Month, int Year)
 {
         if (Year < 300)
         {
-                DATETIME d;
-                DosGetDateTime (&d);
+                DateTime d;
+                d.getCurrentTime();
 
                 Year += 1900;
 
@@ -40,8 +42,8 @@ long GetJulianDate(int Day, int Month, int Year)
 
 long GetToday (void)
 {
-		DATETIME d;
-        DosGetDateTime (&d);
+        DateTime d;
+        d.getCurrentTime();
         return GetJulianDate (d.day,d.month,d.year);
 }
 

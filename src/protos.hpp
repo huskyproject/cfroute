@@ -29,15 +29,15 @@ typedef unsigned short word;
 #define PT_OTHER    	11
 #define PT_END     		200
 
-const int NV_Routed=0;
-const int NV_Direct=1;
-const int NV_Noroute=2;
-const int NV_NoPack=3;
+extern const int NV_Routed;
+extern const int NV_Direct;
+extern const int NV_Noroute;
+extern const int NV_NoPack;
 
-char Months[12][4]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
-					"Sep","Oct","Nov","Dec"};
+extern char Months[12][4];
+extern char Days[7][4];
 
-char Days[7][4]={"Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
+
 
 // Some structures
 struct S_FQAddress
@@ -119,4 +119,6 @@ int ProcParProductInfo (char *Token,struct S_FQAddress Main);
 int ProcParFEConfig (char *Token,struct S_FQAddress Main);
 int ProcParFastechoPack (char *Token,struct S_FQAddress Main);
 
+// misc. other functions
+extern long lengthoffile(FILE *f);
 

@@ -1,4 +1,13 @@
-/* This file has been taken from HPT tosser.
+/* This file supports character set recoding for netmail.
+ *
+ * Character set recoding in the tosser/packer is usually a BAD idea, because
+ * FSP 1013 charset kludges should be used instead. However, in some countries,
+ * notably Russia, there is a common transport charset (and not several ones
+ * like e.g. in Germany), so recoding can be applied there.
+ *
+ * The default recoding table supplied in this source code is CP866 (transport)
+ * <-> KOI8-R (local), but the user can also load his own recoding table.
+ * This file has been taken from HPT tosser.
  * Modifications: header fcommon.h removed as unnecessary, type of getctab() 
  * function changed from VOID to INT and now returns the result of processing 
  * recoding-table file: SUCCESS, WARNING or ERROR. Becouse of adding new 
@@ -6,19 +15,21 @@
  * of file has been renamed to "cpp". Recoding functions have got additional
  * parameter "max" - maximum number of bytes to process. Hope, it's clear? :)
  *
- * P.S. Now header recode.h has also been removed as unnecessary. I'd personally
- * prefere separate compilation, but the maintainer's always right! :)
- * Therefore types VOID, INT, CHAR and UCHAR (as in original version) have
+ * P.S. Now header recode.h has also been removed as unnecessary. I'd
+ * personally prefere separate compilation, but the maintainer's always right!
+ * :) Therefore types VOID, INT, CHAR and UCHAR (as in original version) have
  * been changed to usual void int, char and unsigned char.
  *
  * Eduard Dulich, 2:464/98@FidoNet.
+ *
+ * (Note by the maintainer: I'd also prefer separate compilation, but the
+ * code was in the current state when I started to maintain it, and I have
+ * been too lazy to change it ...)
  */
-
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 
 int	DoRecode = 0;	// 0 - don't recode, 1 - do the recoding
 
@@ -62,92 +73,98 @@ char outtab[] = {
 
 void recodeToInternalCharset(char *string, size_t max)
 {
-int c;
-size_t bytes_processed;
-
-    if (string != NULL) {
-
-	for(bytes_processed = 0; *string != '\000' && bytes_processed < max; string++)
-	    {
-	    c=((int)*string)&0xFF;
-        *string = intab[c];
+    int c;
+    size_t bytes_processed;
+    
+    if (string != NULL)
+    {
+        for(bytes_processed = 0;
+            *string != '\000' && bytes_processed < max;
+            string++)
+        {
+            c=((int)*string)&0xFF;
+            *string = intab[c];
         }
-
     }
-
 }
 
 void recodeToTransportCharset(char *string, size_t max)
 {
-int c;
-size_t bytes_processed;
-
-    if (string != NULL) {
-
-	for(bytes_processed = 0; *string != '\000' && bytes_processed < max; string++)
-	    {
+    int c;
+    size_t bytes_processed;
+    
+    if (string != NULL)
+    {
+	for(bytes_processed = 0;
+            *string != '\000' && bytes_processed < max;
+            string++)
+        {
 	    c=((int)*string)&0xFF;
-        *string = outtab[c];
+            *string = outtab[c];
         }
-
     }
-
 }
 
 
 int ctoi(char *s)
 {
-	char *foo;
-	int res = strtoul(s, &foo, 0);
-	if (*foo)	/* parse error */
-		return 0;
-	return res;
+    char *foo;
+    int res = strtoul(s, &foo, 0);
+    if (*foo)	/* parse error */
+        return 0;
+    return res;
 }
 
 int getctab (char *dest, char *charMapFileName)
 {
-FILE *fp;
-char buf[512],*p,*q;
-int in,on,count;
-int line;
-bool have_warnings = false;
-
-	if ((fp=fopen(charMapFileName,"r")) == NULL)
-	 {
-		fprintf(stderr,"getctab: cannot open mapchan file \"%s\"\n", charMapFileName);
-		return FATAL;
-	 }
-
-	count=0;	 
-	line = 0;
-	while (fgets((char*)buf,sizeof(buf),fp))
-	{
-		line++;
-		p=strtok(buf," \t\n#");
-		q=strtok(NULL," \t\n#");
-
-		if (p && q)
-		{
-			in = ctoi(p);
-			if (in > 255) {
-				fprintf(stderr, "getctab: %s: line %d: char val too big\n", charMapFileName, line);
-				have_warnings = true;
-				break;
-			}
-
-			on=ctoi(q);
-			if (in && on) 
-			 if (count++ < 256) dest[in]=on; 
-			 else 
-			  { 
-			  fprintf(stderr,"getctab: char map table \"%s\" is big\n",charMapFileName); 
-			  have_warnings = true;
-			  break;
-			  }
-		}
-	}
-	fclose(fp);
-	
-	DoRecode = 1;
-	return have_warnings ? WARNING : SUCCESS;
+    FILE *fp;
+    char buf[512],*p,*q;
+    int in,on,count;
+    int line;
+    bool have_warnings = false;
+    
+    if ((fp=fopen(charMapFileName,"r")) == NULL)
+    {
+        fprintf(stderr,"getctab: cannot open mapchan file \"%s\"\n",
+                charMapFileName);
+        return FATAL;
+    }
+    
+    count=0;	 
+    line = 0;
+    
+    while (fgets((char*)buf,sizeof(buf),fp))
+    {
+        line++;
+        p=strtok(buf," \t\n#");
+        q=strtok(NULL," \t\n#");
+        
+        if (p && q)
+        {
+            in = ctoi(p);
+            if (in > 255) {
+                fprintf(stderr, "getctab: %s: line %d: char val too big\n",
+                        charMapFileName, line);
+                have_warnings = true;
+                break;
+            }
+            
+            on=ctoi(q);
+            if (in && on)
+            {
+                if (count++ < 256) dest[in]=on; 
+                else 
+                { 
+                    fprintf(stderr,"getctab: char map table \"%s\" is big\n",
+                            charMapFileName); 
+                    have_warnings = true;
+                    break;
+                }
+            }
+        }
+    }
+    fclose(fp);
+    
+    DoRecode = 1;
+    return have_warnings ? WARNING : SUCCESS;
 }

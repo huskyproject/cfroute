@@ -20,29 +20,17 @@
 #define S_IRWXG 0
 #endif
 
+#include "structs.hpp"
+
 #ifndef OS_2
-typedef unsigned char UCHAR;
 typedef unsigned long ULONG;
 typedef short SHORT;
 typedef unsigned short USHORT;
 
 
-typedef struct DATETIME
-{
-  UCHAR	 hours;
-  UCHAR	 minutes;
-  UCHAR	 seconds;
-  UCHAR	 hundredths;
-  UCHAR	 day;
-  UCHAR	 month;
-  USHORT year;
-  SHORT	 timezone;
-  UCHAR	 weekday;
-} DATETIME;
-
 #ifdef UNIX
 #include <time.h>
-void DosGetDateTime (DATETIME *dt)
+void DateTime::getCurrentTime (void)
 {
         time_t t;
         struct tm *ltm;
@@ -50,29 +38,42 @@ void DosGetDateTime (DATETIME *dt)
         time(&t);
         ltm = localtime(&t);
 
-        dt->hours   = ltm->tm_hour;
-        dt->minutes = ltm->tm_min;
-        dt->seconds = ltm->tm_sec;
-        dt->day     = ltm->tm_mday;
-        dt->month   = ltm->tm_mon + 1;
-        dt->year    = ltm->tm_year + 1900;
+        hours   = ltm->tm_hour;
+        minutes = ltm->tm_min;
+        seconds = ltm->tm_sec;
+        day     = ltm->tm_mday;
+        month   = ltm->tm_mon + 1;
+        year    = ltm->tm_year + 1900;
 }
 #else
-void DosGetDateTime (DATETIME *dt)
+void DateTime::getCurrentTime (void)
 {
         struct date d;
 	struct time t;
 	
         getdate (&d);
 	gettime (&t);
-	dt->hours=t.ti_hour;
-	dt->minutes=t.ti_min;
-	dt->seconds=t.ti_sec;
-	dt->day=d.da_day;
-	dt->month=d.da_mon;
-	dt->year=d.da_year;
+	hours=t.ti_hour;
+	minutes=t.ti_min;
+	seconds=t.ti_sec;
+	day=d.da_day;
+	month=d.da_mon;
+	year=d.da_year;
 }
 #endif
+#else
+                                // OS/2 routine
+void DateTime::getCurrentTime(void)
+{
+    DATETIME dt;
+    DosGetDateTime(&dt);
+    hours=dt.hours;
+    minutes=dt.minutes;
+    seconds=dt.seconds;
+    day=dt.day;
+    month=dt.month;
+    year=dt.year;
+}
 #endif
 
 int cistrcmp (char *c1,char *c2)

@@ -18,7 +18,7 @@ OBJ      = .obj
 EXE      = .exe
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg145$(OBJ)
 
 ### Build rules
 .SUFFIXES:
@@ -38,6 +38,15 @@ cfroute$(OBJ):  $(SRCDIR)\cfroute.cpp $(SRCDIR)\akas.cpp $(SRCDIR)\basic.cpp \
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
 
 dirute$(OBJ): $(SRCDIR)\dirute.c
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+
+fecfg145$(OBJ): $(SRCDIR)\fecfg145.c
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+
+buffer$(OBJ): $(SRCDIR)\buffer.cpp
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+
+structs$(OBJ): $(SRCDIR)\structs.cpp
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
 
 cfroute$(EXE): $(cfrobjs)

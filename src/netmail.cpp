@@ -8,72 +8,12 @@
 #include <utime.h>
 #endif
 #endif
-#include <stdlib.h> // <malloc.h>
-#include "buffer.cpp"
+#include <stdlib.h>             // <malloc.h>
+#include "buffer.hpp"
 // #include "datetime.cpp"
 #include "dirute.h"
 
-typedef struct
-{
-	unsigned Private: 1; //
-	unsigned Crash: 1;   //
-	unsigned Recd: 1; //
-	unsigned Sent: 1; //
-	unsigned FileAttached: 1;
-	unsigned InTransit: 1;
-	unsigned Orphan: 1;
-	unsigned KillSent: 1; //
-	unsigned Local: 1;
-	unsigned Hold: 1;   //
-	unsigned Unused: 1; // should be direct !?
-	unsigned FileRequest: 1; //
-	unsigned ReturnReceiptRequest: 1;
-	unsigned IsReturnReceipt: 1;
-	unsigned AuditRequest: 1;
-	unsigned FileUpdateReq: 1;
-} S_Attrib;
-
-typedef struct
-{
-	char FromUserName[36];
-	char ToUserName[36];
-	char Subject[72];
-	char DateTime[20];
-	unsigned short TimesRead;
-	unsigned short DestNode;
-	unsigned short OrigNode;
-	unsigned short Cost;
-	unsigned short OrigNet;
-	unsigned short DestNet;
-	char Fill[8];
-	unsigned short ReplyTo;
-	union
-	{
-                S_Attrib bits;
-		unsigned short number;
-	} Attribute;
-	// short Attribute;
-	unsigned short NextReply;
-} S_MSG;
-
-typedef struct
-{
-	unsigned ArchiveSent: 1;
-	unsigned KillFileSent: 1;
-	unsigned Direct: 1;
-	unsigned Zonegate: 1;
-	unsigned Hub: 1;
-	unsigned Immediate: 1;
-	unsigned XMA: 1;
-	unsigned Lock: 1;
-	unsigned Truncate: 1;
-	unsigned HiRes: 1;
-	unsigned CoverLetter: 1;
-	unsigned Signature: 1;
-	unsigned LetterHead: 1;
-	unsigned Fax: 1;
-	unsigned ForcePickup: 1;
-} S_Attrib2;
+#include "structs.hpp"
 
 typedef	enum {formatMSG, formatSQUISH} format;
 
@@ -93,16 +33,8 @@ typedef struct
 	} time;
 	long ElapsedDays;
 	byte DateParsed;
-	union
-	{
-                S_Attrib bits;
-		unsigned short number;
-	} attrib;
-	union
-	{
-                S_Attrib2 bits;
-		unsigned short number;
-	} attrib2;
+	unsigned short attrib;
+	unsigned short attrib2;
 	S_FQAddress Origin,Destination;
 	S_FQAddress TransitAddr,*WishAddresses;
 	short WishAddrCount;
@@ -115,77 +47,30 @@ typedef struct
 	format formattype;
 } S_Visu;
 
-typedef struct
-{
-	unsigned short Signature;
-	unsigned short OrigNode;
-	unsigned short DestNode;
-	unsigned short OrigNet;
-	unsigned short DestNet;
-	union
-	{
-                S_Attrib bits;
-		unsigned short number;
-	} Attrib;
-	unsigned short Cost;
-	char DateTime[20];
-} S_Packed;
-
-typedef struct
-{
-	unsigned short OrigNode;
-	unsigned short DestNode;
-	unsigned short Year;
-	unsigned short Month;
-	unsigned short Day;
-	unsigned short Hour;
-	unsigned short Minute;
-	unsigned short Second;
-	unsigned short Baud;
-	unsigned short Signature;
-	unsigned short OrigNet;
-	unsigned short DestNet;
-	char ProdCode,SerialNo;
-	char Password[8];
-	unsigned short OrigZone;
-	unsigned short DestZone;
-	union
-	{
-		char Fill[20];
-		struct
-		{
-			char Fill[2];
-			unsigned short CapabilitySwapped;
-			char PrdCodH;
-			char PVMinor;
-			unsigned short Capability;
-			unsigned short OrigZone;
-			unsigned short DestZone;
-			unsigned short OrigPoint;
-			unsigned short DestPoint;
-			char ProdData[4];
-		} t2plus;
-	} dif;
-	char EndOfPKT[2];
-} S_PKT;
 
 int FlagAsSent (char *path)
 {
-	FILE *msg;
-	S_MSG header;
-	msg=fopen (path,"r+b");
-	if (msg==NULL)
-		return EFAS_OPENFAILED;
-        fread (&header,1,sizeof (S_MSG),msg);
-	fseek (msg,0,SEEK_SET);
-	header.Attribute.bits.Sent=1;
-        if (fwrite (&header,1,sizeof (S_MSG),msg)!=sizeof (S_MSG))
-	{
-		fclose (msg);
-		return EFAS_CANTWRITE;
-	}
-	fclose (msg);
-	return SUCCESS;
+    FILE *msg;
+    S_MSG header;
+
+    msg=fopen (path,"r+b");
+    if (msg==NULL)
+        return EFAS_OPENFAILED;
+    if (!header.read(msg)) {
+        fclose(msg);
+        return EFAS_OPENFAILED;
+    }
+    if (fseek (msg,0,SEEK_SET)) {
+        fclose(msg);
+        return EFAS_OPENFAILED;
+    }
+    Set_Sent(header.Attribute,1);
+    if (!header.write(msg)) {
+        fclose (msg);
+        return EFAS_CANTWRITE;
+    }
+    fclose (msg);
+    return SUCCESS;
 }
 
 int SubjectToFile (char *Subject,char *savepath,char *extattach,int Truncate,int Delete)
@@ -239,9 +124,9 @@ void StripPath (char *source, char *storage)
 
 int SignNet (FILE *onet,S_FQAddress addressinnet)
 {
-	DATETIME dt;
+	DateTime dt;
 	char point[10];
-	DosGetDateTime (&dt);
+	dt.getCurrentTime();
 	char ViaLine[120];
 	S_FQAddress OurAddress;
 	AddressHandler.AKAMatch (addressinnet,&OurAddress);
@@ -266,7 +151,7 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 	S_MSG headerin;
 	S_Packed headerout;
 	S_PKT headerPKT;
-	DATETIME dt;
+	DateTime dt;
 	char *buffer,completepath[256];
 	char NoPathSubject[80],lasttwo[2];
 	long ToCopy;
@@ -288,7 +173,7 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 		}
 		// The file doesn't exist yet - we have to create it and add
 		// a header
-		DosGetDateTime (&dt);
+		dt.getCurrentTime();
 		headerPKT.OrigNode=OurAKA.Node;
 		headerPKT.DestNode=via.Node;
 		headerPKT.Year=dt.year;
@@ -320,9 +205,9 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 			headerPKT.dif.t2plus.OrigPoint=OurAKA.Point;
 			headerPKT.dif.t2plus.DestPoint=via.Point;
 		}
-                fwrite (&headerPKT,1,sizeof (S_PKT),out);
+                headerPKT.write(out);
 	}
-        if (fread (&headerin,1,sizeof (S_MSG),in)<sizeof (S_MSG))
+        if (!headerin.read(in))
 	{
 		fclose (in);
 		fclose (out);
@@ -349,21 +234,21 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 	headerout.OrigNet=headerin.OrigNet;
 	headerout.DestNode=headerin.DestNode;
 	headerout.DestNet=headerin.DestNet;
-	headerout.Attrib.number=headerin.Attribute.number;
+	headerout.Attrib=headerin.Attribute;
 	// Note that the InTransit and local flags are stripped (!!)
-	headerout.Attrib.bits.InTransit=0;
-	headerout.Attrib.bits.Local=0;
+	Set_InTransit(headerout.Attrib,0);
+	Set_Local(headerout.Attrib,0);
 	headerout.Cost=0;
 	memcpy (&headerout.DateTime,&headerin.DateTime,20);
-        fwrite (&headerout,1,sizeof (S_Packed),out);
+        headerout.write(out);
 	fwrite (&headerin.ToUserName,1,strlen (headerin.ToUserName)+1,out);
 	fwrite (&headerin.FromUserName,1,strlen (headerin.FromUserName)+1,out);
-	if (headerin.Attribute.bits.FileAttached==1)
-		StripPath (headerin.Subject,NoPathSubject);
+	if (S_FileAttached(headerin.Attribute))
+            StripPath (headerin.Subject,NoPathSubject);
 	else
-		strcpy (NoPathSubject,headerin.Subject);
+            strcpy (NoPathSubject,headerin.Subject);
 	fwrite (NoPathSubject,1,strlen (NoPathSubject)+1,out);
-        ToCopy=lengthoffile(in)-sizeof (S_MSG);
+        ToCopy=lengthoffile(in)-headerin.get_filesize(); // sizeof (S_MSG);
 	BufferSize=(ToCopy>32767)?32767:(size_t) ToCopy;
 	while (((buffer=(char *) malloc (BufferSize)) == NULL) && (BufferSize>1024))
 		BufferSize = (BufferSize / 10) * 9;
@@ -374,7 +259,7 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 		return NOMEMORY;
 	}
 	/* Note that in the body copy loop we copy up to, but not including,
-	   the first zero. If there is something beyond that zero, if won't
+	   the first zero. If there is something beyond that zero, it won't
 	   be copied, because that would result in a damaged .PKT. */
 	if (ToCopy>0)
 	{
@@ -577,81 +462,81 @@ void ProcessLine (char *line,S_Visu *storage,C_StringList *SL_Via, C_StringList 
 				GetAndStripToken (first,Parsing);
 				switch (GetTokenType (Parsing))
 				{
-					case TT_PVT:
-						storage->attrib.bits.Private=1;
-						break;
-					case TT_HLD:
-						storage->attrib.bits.Hold=1;
-						break;
-					case TT_CRA:
-						storage->attrib.bits.Crash=1;
-						break;
-					case TT_KS:
-						storage->attrib.bits.KillSent=1;
-						break;
-					case TT_SNT:
-						storage->attrib.bits.Sent=1;
-						break;
-					case TT_RCV:
-						storage->attrib.bits.Recd=1;
-						break;
-					case TT_AS:
-						storage->attrib2.bits.ArchiveSent=1;
-						break;
-					case TT_DIR:
-						storage->attrib2.bits.Direct=1;
-						break;
-					case TT_ZON:
-						storage->attrib2.bits.Zonegate=1;
-						break;
-					case TT_HUB:
-						storage->attrib2.bits.Hub=1;
-						break;
-					case TT_FIL:
-						storage->attrib.bits.FileAttached=1;
-						break;
-					case TT_FRQ:
-						storage->attrib.bits.FileRequest=1;
-						break;
-					case TT_IMM:
-						storage->attrib2.bits.Immediate=1;
-						break;
-					case TT_XMA:
-						storage->attrib2.bits.XMA=1;
-						break;
-					case TT_KFS:
-						storage->attrib2.bits.KillFileSent=1;
-						break;
-					case TT_TFS:
-						storage->attrib2.bits.Truncate=1;
-						break;
-					case TT_LOK:
-						storage->attrib2.bits.Lock=1;
-						break;
-					case TT_RRQ:
-						storage->attrib.bits.ReturnReceiptRequest=1;
-						break;
-					case TT_CFM:
-						storage->attrib.bits.IsReturnReceipt=1;
-						break;
-					case TT_HIR:
-						storage->attrib2.bits.HiRes=1;
-						break;
-					case TT_COV:
-						storage->attrib2.bits.CoverLetter=1;
-						break;
-					case TT_SIG:
-						storage->attrib2.bits.Signature=1;
-						break;
-					case TT_LET:
-						storage->attrib2.bits.LetterHead=1;
-						break;
-					case TT_FAX:
-						storage->attrib2.bits.Fax=1;
-						break;
-					case TT_FPU:
-						storage->attrib2.bits.ForcePickup=1;
-						break;
+                                case TT_PVT:
+                                    Set_Private(storage->attrib,1);
+                                    break;
+                                case TT_HLD:
+                                    Set_Hold(storage->attrib,1);
+                                    break;
+                                case TT_CRA:
+                                    Set_Crash(storage->attrib,1);
+                                    break;
+                                case TT_KS:
+                                    Set_KillSent(storage->attrib,1);
+                                    break;
+                                case TT_SNT:
+                                    Set_Sent(storage->attrib,1);
+                                    break;
+                                case TT_RCV:
+                                    Set_Recd(storage->attrib,1);
+                                    break;
+                                case TT_AS:
+                                    Set_ArchiveSent(storage->attrib2,1);
+                                    break;
+                                case TT_DIR:
+                                    Set_Direct(storage->attrib2,1);
+                                    break;
+                                case TT_ZON:
+                                    Set_Zonegate(storage->attrib2,1);
+                                    break;
+                                case TT_HUB:
+                                    Set_Hub(storage->attrib2,1);
+                                    break;
+                                case TT_FIL:
+                                    Set_FileAttached(storage->attrib,1);
+                                    break;
+                                case TT_FRQ:
+                                    Set_FileRequest(storage->attrib,1);
+                                    break;
+                                case TT_IMM:
+                                    Set_Immediate(storage->attrib2,1);
+                                    break;
+                                case TT_XMA:
+                                    Set_XMA(storage->attrib2,1);
+                                    break;
+                                case TT_KFS:
+                                    Set_KillFileSent(storage->attrib2,1);
+                                    break;
+                                case TT_TFS:
+                                    Set_Truncate(storage->attrib2,1);
+                                    break;
+                                case TT_LOK:
+                                    Set_Lock(storage->attrib2,1);
+                                    break;
+                                case TT_RRQ:
+                                   Set_ReturnReceiptRequest(storage->attrib,1);
+                                   break;
+                                case TT_CFM:
+                                    Set_IsReturnReceipt(storage->attrib,1);
+                                    break;
+                                case TT_HIR:
+                                    Set_HiRes(storage->attrib2,1);
+                                    break;
+                                case TT_COV:
+                                    Set_CoverLetter(storage->attrib2,1);
+                                    break;
+                                case TT_SIG:
+                                    Set_Signature(storage->attrib2,1);
+                                    break;
+                                case TT_LET:
+                                    Set_LetterHead(storage->attrib2,1);
+                                    break;
+                                case TT_FAX:
+                                    Set_Fax(storage->attrib2,1);
+                                    break;
+                                case TT_FPU:
+                                    Set_ForcePickup(storage->attrib2,1);
+                                    break;
 				}
 			}
 		}
@@ -662,7 +547,7 @@ void ProcessLine (char *line,S_Visu *storage,C_StringList *SL_Via, C_StringList 
 // handle easily.
 int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringList *SL_Path)
 {
-        DATETIME dtnow;
+        DateTime dtnow;
         S_MSG header;
 	struct S_FQAddress FQA;
 	C_FileRead FHandler;
@@ -695,7 +580,8 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 	// Get as much info as possible from the header
 	if (FHandler.OpenFile (path)!=SUCCESS)
 		return ENH_OPENFAIL;
-        storage->MessageSize=FHandler.FileSize()-sizeof (S_MSG);
+        storage->MessageSize=FHandler.FileSize()-header.get_filesize();
+                                                             // sizeof (S_MSG);
 	buffer=malloc (BUFFER_SIZE); // Buffer to get lines
 	if (buffer==NULL)
 	{
@@ -703,7 +589,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 		return NOMEMORY;
 	}
 	// Read header
-        if (FHandler.ReadBytes (&header,sizeof (S_MSG))<sizeof (S_MSG))
+        if (!header.read(FHandler))
 	{
 		FHandler.CloseFile ();
 		free (buffer);
@@ -756,16 +642,16 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 
                         /* sliding window adaption of year number */
 
-                        DosGetDateTime(&dtnow);
+                        dtnow.getCurrentTime();
                         while (storage->date.year + 50 <= dtnow.year)
                                 storage->date.year += 100;
                         while (storage->date.year - 50 > dtnow.year)
                                 storage->date.year -= 100;
 		}
 	}
-	storage->attrib.number=header.Attribute.number;
-	storage->attrib2.number=0;
-        storage->attrib2.bits.Direct = storage->attrib.bits.Unused;
+	storage->attrib=header.Attribute;
+	storage->attrib2=0;
+        Set_Direct(storage->attrib2, S_Unused(storage->attrib));
 	storage->Origin.Net=header.OrigNet;
 	storage->Origin.Node=header.OrigNode;
 	storage->Destination.Net=header.DestNet;
@@ -787,7 +673,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 		storage->Destination.Zone=FQA.Zone;
 	memcpy (&storage->TransitAddr,&storage->Destination,sizeof (struct S_FQAddress));
 	// Handle hostgated messages
-	if (storage->attrib2.bits.Hub==1)
+	if (S_Hub(storage->attrib2)==1)
 	{
 		if (AddressHandler.OurNet (storage->Destination.Zone,storage->Destination.Net)==EAD_FOREIGN)
 		{
@@ -796,7 +682,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 		}
 	}
 	// Handle zonegated messages
-	if (storage->attrib2.bits.Zonegate==1)
+	if (S_Zonegate(storage->attrib2)==1)
 	{
 		if (AddressHandler.OurZone (storage->Destination.Zone)==EAD_FOREIGN)
 		{ // To a foreign zone...
@@ -824,7 +710,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 
 int ShowNet (char *path)
 {
-        S_MSG *header;
+        S_MSG header;
         S_Visu extra;
 	FILE *fnet;
 	void *buffer;
@@ -841,22 +727,22 @@ int ShowNet (char *path)
 	}
 	fread (buffer,2048,1,fnet);
 	((char *)buffer)[2047]=0;
-	header=(S_MSG *) buffer;
-	printf ("            From: %s\n",header->FromUserName);
-	printf ("              To: %s\n",header->ToUserName);
-	printf ("         Subject: %s\n",header->Subject);
-	printf ("        DateTime: %s\n",header->DateTime);
-	printf ("      Times read: %u\n",header->TimesRead);
-	printf ("Destination node: %u\n",header->DestNode);
-	printf ("     Origin node: %u\n",header->OrigNode);
-	printf ("            Cost: %u\n",header->Cost);
-	printf ("      Origin net: %u\n",header->OrigNet);
-	printf (" Destination net: %u\n",header->DestNet);
-	printf ("        Reply-to: %u\n",header->ReplyTo);
-	printf ("      Attributes: %u\n",header->Attribute.number);
-	printf ("       NextReply: %u\n",header->NextReply);
+        header.Import((const unsigned char *)buffer);
+	printf ("            From: %s\n",header.FromUserName);
+	printf ("              To: %s\n",header.ToUserName);
+	printf ("         Subject: %s\n",header.Subject);
+	printf ("        DateTime: %s\n",header.DateTime);
+	printf ("      Times read: %u\n",header.TimesRead);
+	printf ("Destination node: %u\n",header.DestNode);
+	printf ("     Origin node: %u\n",header.OrigNode);
+	printf ("            Cost: %u\n",header.Cost);
+	printf ("      Origin net: %u\n",header.OrigNet);
+	printf (" Destination net: %u\n",header.DestNet);
+	printf ("        Reply-to: %u\n",header.ReplyTo);
+	printf ("      Attributes: %u\n",header.Attribute);
+	printf ("       NextReply: %u\n",header.NextReply);
 	printf ("    Rest of text: \n");
-	first=(char *) (&header->NextReply)+sizeof (header->NextReply);
+	first=((char *) buffer) + header.get_filesize();
 	while ((point=strchr (first,'\r'))!=NULL && count<8)
 	{
 		if (first+75<point)
@@ -886,22 +772,22 @@ int ShowNet (char *path)
 	}
 	printf ("\nAttributes: ");
 	printf ("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
-		extra.attrib.bits.Private?"Pvt":"   ",
-		extra.attrib.bits.Crash?"Cra":"   ",
-		extra.attrib.bits.Recd?"Rev":"   ",
-		extra.attrib.bits.Sent?"Snt":"   ",
-		extra.attrib.bits.FileAttached?"Att":"   ",
-		extra.attrib.bits.InTransit?"Trs":"   ",
-		extra.attrib.bits.Orphan?"Orp":"   ",
-		extra.attrib.bits.KillSent?"K/S":"   ",
-		extra.attrib.bits.Local?"Loc":"   ",
-		extra.attrib.bits.Hold?"Hld":"   ",
-		extra.attrib.bits.Unused?"Dir":"   ",
-		extra.attrib.bits.FileRequest?"Frq":"   ",
-		extra.attrib.bits.ReturnReceiptRequest?"RRQ":"   ",
-		extra.attrib.bits.IsReturnReceipt?"ReR":"   ",
-		extra.attrib.bits.AuditRequest?"Aud":"   ",
-		extra.attrib.bits.FileUpdateReq?"UpR":"   ");
+		S_Private(extra.attrib)?"Pvt":"   ",
+		S_Crash(extra.attrib)?"Cra":"   ",
+		S_Recd(extra.attrib)?"Rev":"   ",
+		S_Sent(extra.attrib)?"Snt":"   ",
+		S_FileAttached(extra.attrib)?"Att":"   ",
+		S_InTransit(extra.attrib)?"Trs":"   ",
+		S_Orphan(extra.attrib)?"Orp":"   ",
+		S_KillSent(extra.attrib)?"K/S":"   ",
+		S_Local(extra.attrib)?"Loc":"   ",
+		S_Hold(extra.attrib)?"Hld":"   ",
+		S_Unused(extra.attrib)?"Dir":"   ",
+		S_FileRequest(extra.attrib)?"Frq":"   ",
+		S_ReturnReceiptRequest(extra.attrib)?"RRQ":"   ",
+		S_IsReturnReceipt(extra.attrib)?"ReR":"   ",
+		S_AuditRequest(extra.attrib)?"Aud":"   ",
+		S_FileUpdateReq(extra.attrib)?"UpR":"   ");
 	getch ();
 	return (SUCCESS);
 }
@@ -1052,38 +938,39 @@ void BufferHeader (S_Visu *header, C_StringList *SL_Header)
 	strcat (buffer,"\n");
 	SL_Header->AddString (buffer);
 	sprintf (buffer,"Attr: %s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
-		header->attrib.bits.Private?"Pvt ":"", // Doesn't mind for routing
-		header->attrib.bits.Crash?"Cra ":"", // Direct
-		header->attrib.bits.Recd?"Rev ":"", // D.M.F.R.
-		header->attrib.bits.Sent?"Snt ":"", // Sent - do not touch
-		header->attrib.bits.FileAttached?"Att ":"",//D.M.F.R.
-		header->attrib.bits.InTransit?"Trs ":"", //D.M.F.R.
-		header->attrib.bits.Orphan?"Orp ":"", //D.M.F.R.
-		header->attrib.bits.KillSent?"K/S ":"",//D.M.F.R.
-		header->attrib.bits.Local?"Loc ":"", //D.M.F.R.
-		header->attrib.bits.Hold?"Hld ":"", // Direct
-		header->attrib.bits.Unused?"Dir ":"", // D.M.F.R.
-		header->attrib.bits.FileRequest?"Frq ":"", // Direct
-		header->attrib.bits.ReturnReceiptRequest?"RRQ ":"", // D.M.F.R.
-		header->attrib.bits.IsReturnReceipt?"ReR ":"", // D.M.F.R.
-		header->attrib.bits.AuditRequest?"Aud ":"", // D.M.F.R.
-		header->attrib.bits.FileUpdateReq?"UpR ":"", // Direct
-		header->attrib2.bits.ArchiveSent?"A/S ":"",
-		header->attrib2.bits.KillFileSent?"KFS ":"",
-		(header->attrib2.bits.Direct
-                 && (!(header->attrib.bits.Unused))) ? "Dir ":"",
-		header->attrib2.bits.Zonegate?"Zon ":"",
-		header->attrib2.bits.Hub?"Hub ":"",
-		header->attrib2.bits.Immediate?"Imm ":"",
-		header->attrib2.bits.XMA?"XMA ":"",
-		header->attrib2.bits.Lock?"Lok ":"",
-		header->attrib2.bits.Truncate?"Tru ":"",
-		header->attrib2.bits.HiRes?"HiR ":"",
-		header->attrib2.bits.CoverLetter?"CvL ":"",
-		header->attrib2.bits.Signature?"Sig ":"",
-		header->attrib2.bits.LetterHead?"LeH ":"",
-		header->attrib2.bits.Fax?"Fax ":"",
-		header->attrib2.bits.ForcePickup?"FPU ":"");
+		S_Private(header->attrib)?"Pvt ":"", // Doesn't mind for routing
+		S_Crash(header->attrib)?"Cra ":"", // Direct
+		S_Recd(header->attrib)?"Rev ":"", // D.M.F.R.
+		S_Sent(header->attrib)?"Snt ":"", // Sent - do not touch
+		S_FileAttached(header->attrib)?"Att ":"",//D.M.F.R.
+		S_InTransit(header->attrib)?"Trs ":"", //D.M.F.R.
+		S_Orphan(header->attrib)?"Orp ":"", //D.M.F.R.
+		S_KillSent(header->attrib)?"K/S ":"",//D.M.F.R.
+		S_Local(header->attrib)?"Loc ":"", //D.M.F.R.
+		S_Hold(header->attrib)?"Hld ":"", // Direct
+		S_Unused(header->attrib)?"Dir ":"", // D.M.F.R.
+		S_FileRequest(header->attrib)?"Frq ":"", // Direct
+		S_ReturnReceiptRequest(header->attrib)?"RRQ ":"", // D.M.F.R.
+		S_IsReturnReceipt(header->attrib)?"ReR ":"", // D.M.F.R.
+		S_AuditRequest(header->attrib)?"Aud ":"", // D.M.F.R.
+		S_FileUpdateReq(header->attrib)?"UpR ":"", // Direct
+
+		S_ArchiveSent(header->attrib2)?"A/S ":"",
+		S_KillFileSent(header->attrib2)?"KFS ":"",
+		(S_Direct(header->attrib2)
+                 && (!(S_Unused(header->attrib)))) ? "Dir ":"",
+		S_Zonegate(header->attrib2)?"Zon ":"",
+		S_Hub(header->attrib2)?"Hub ":"",
+		S_Immediate(header->attrib2)?"Imm ":"",
+		S_XMA(header->attrib2)?"XMA ":"",
+		S_Lock(header->attrib2)?"Lok ":"",
+		S_Truncate(header->attrib2)?"Tru ":"",
+		S_HiRes(header->attrib2)?"HiR ":"",
+		S_CoverLetter(header->attrib2)?"CvL ":"",
+		S_Signature(header->attrib2)?"Sig ":"",
+		S_LetterHead(header->attrib2)?"LeH ":"",
+		S_Fax(header->attrib2)?"Fax ":"",
+		S_ForcePickup(header->attrib2)?"FPU ":"");
 	SL_Header->AddString (buffer);
 }
 
@@ -1101,18 +988,21 @@ int GetSendType (S_Visu *header,C_StringList *SL_Routeto)
 		// Determine the kind of routing
 		// Conditions that will force the message NOT to be processed
 	{
-		if (header->attrib.bits.Crash==1 || header->attrib.bits.Hold==1 ||
-			header->attrib.bits.FileRequest==1 || header->attrib.bits.FileUpdateReq==1 ||
-			header->attrib2.bits.Direct==1 || header->attrib2.bits.Immediate==1 ||
-			header->attrib2.bits.ForcePickup==1)
+		if (S_Crash(header->attrib) ||
+                    S_Hold(header->attrib) ||
+                    S_FileRequest(header->attrib) ||
+                    S_FileUpdateReq(header->attrib) ||
+		    S_Direct(header->attrib2)==1 ||
+                    S_Immediate(header->attrib2)==1 ||
+                    S_ForcePickup(header->attrib2)==1)
 		{
 			SendType=ST_DIRECT;
-			if (header->Destination.Point!=0 && (RouteBossDirect==1 && (header->attrib.bits.Crash==1 ||
-			header->attrib2.bits.Immediate==1 || header->attrib2.bits.Direct==1 &&
-			(header->attrib.bits.FileRequest==0 && header->attrib.bits.FileUpdateReq==0))))
+			if (header->Destination.Point!=0 && (RouteBossDirect==1 && (S_Crash(header->attrib) ||
+			S_Immediate(header->attrib2)==1 || S_Direct(header->attrib2)==1 &&
+			(S_FileRequest(header->attrib)==0 && S_FileUpdateReq(header->attrib)==0))))
 				SendType=ST_BOSS;
-			if (header->Destination.Point!=0 && (RouteBossHold==1 && (header->attrib.bits.Hold==1 ||
-			header->attrib2.bits.ForcePickup==1)))
+			if (header->Destination.Point!=0 && (RouteBossHold==1 && (S_Hold(header->attrib) ||
+			S_ForcePickup(header->attrib2)==1)))
 				SendType=ST_BOSS;
                         if (SendType == ST_BOSS)
                         {
@@ -1131,18 +1021,22 @@ int GetSendType (S_Visu *header,C_StringList *SL_Routeto)
 
 		}
 		// Handle hostgated messages
-		if (header->attrib2.bits.Hub==1)
+		if (S_Hub(header->attrib2)==1)
 		{
-			if (AddressHandler.OurNet (header->Destination.Zone,header->Destination.Net)==EAD_FOREIGN)
+			if (AddressHandler.OurNet (header->Destination.Zone,
+                                                   header->Destination.Net)==
+                            EAD_FOREIGN)
 			{
 				sprintf (buffer,"(Hostgated to %u:%u/%u.%u)\n",
-					header->TransitAddr.Zone,header->TransitAddr.Net,
-					header->TransitAddr.Node,header->TransitAddr.Point);
-					SL_Routeto->AddString (buffer);
+					 header->TransitAddr.Zone,
+                                         header->TransitAddr.Net,
+                                         header->TransitAddr.Node,
+                                         header->TransitAddr.Point);
+                                         SL_Routeto->AddString (buffer);
 			}
 		}
 		// Handle zonegated messages
-		if (header->attrib2.bits.Zonegate==1)
+		if (S_Zonegate(header->attrib2)==1)
 		{
 			if (AddressHandler.OurZone (header->Destination.Zone)==EAD_FOREIGN)
 			{ // To a foreign zone...
@@ -1170,7 +1064,7 @@ int DetermineRouteToSystem (S_Visu *header,int SendType,
 			break;
 		case ST_ROUTE:
 			if (RouteHandler.FindPackSystem (header->TransitAddr,
-				header->Origin,header->attrib.bits.FileAttached,
+				header->Origin,S_FileAttached(header->attrib),
 				header->Encrypted,ShouldGo,AttribPack))
 			{
 				sprintf (buffer," Via: %u:%u/%u.%u as ",
@@ -1204,16 +1098,16 @@ int DetermineRouteToSystem (S_Visu *header,int SendType,
 	// on the route-to sentences
 	if (GotSystem==1)
 	{
-		if (header->attrib.bits.Hold==1 && header->attrib.bits.Crash==1)
+		if (S_Hold(header->attrib) && S_Crash(header->attrib))
 			*AttribPack=TT_DIR;
 		else
-		if (header->attrib.bits.Hold==1)
+		if (S_Hold(header->attrib))
 			*AttribPack=TT_HOLD;
 		else
-		if (header->attrib.bits.Crash==1)
+		if (S_Crash(header->attrib))
 			*AttribPack=TT_CRASH;
 		else
-		if (header->attrib2.bits.Direct==1)
+		if (S_Direct(header->attrib2)==1)
 			*AttribPack=TT_DIR;
 		switch (*AttribPack)
 		{
@@ -1319,29 +1213,30 @@ void CreatePathLines (C_StringList *source,C_StringList *target)
 int PostAnalysis (S_Visu *extra,struct S_Control *x)
 {
 	int count;
-        DATETIME dt;
+        DateTime dt;
 	if (RouteHandler.NoPack (extra->Destination,
-                                 extra->Origin,extra->attrib.bits.FileAttached,
+                                 extra->Origin,S_FileAttached(extra->attrib),
                                  extra->Encrypted))
 		return RET_SUCCESS;
 	// If the message has any of the following flags, it is skipped
 	// without further check.
-        if (extra->attrib.bits.Sent==1 ||
+        if (S_Sent(extra->attrib)==1 ||
             (
-                    (extra->attrib2.bits.XMA==1 ||
-                     extra->attrib2.bits.Lock==1 ||
-                     extra->attrib2.bits.HiRes==1 ||
-                     extra->attrib2.bits.HiRes==1 ||
-                     extra->attrib2.bits.CoverLetter==1 ||
-                     extra->attrib2.bits.CoverLetter==1 ||
-                     extra->attrib2.bits.Signature==1 ||
-                     extra->attrib2.bits.LetterHead==1 ||
-                     extra->attrib2.bits.Fax==1)
+                    (S_XMA(extra->attrib2)==1 ||
+                     S_Lock(extra->attrib2)==1 ||
+                     S_HiRes(extra->attrib2)==1 ||
+                     S_HiRes(extra->attrib2)==1 ||
+                     S_CoverLetter(extra->attrib2)==1 ||
+                     S_CoverLetter(extra->attrib2)==1 ||
+                     S_Signature(extra->attrib2)==1 ||
+                     S_LetterHead(extra->attrib2)==1 ||
+                     S_Fax(extra->attrib2)==1)
                     &&!IgnoreUnknownAttribs)
                 )
 	{
 #ifdef DEBUG
-		printf ("Skipped because of attributes.\n");
+		printf ("Skipped because of attributes (%u %u %d).\n",
+                        extra->attrib, extra->attrib2, IgnoreUnknownAttribs);
 #endif
 		return RET_SUCCESS;
 	}
@@ -1403,7 +1298,7 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
         FindPKTPath (x->ShouldGo, x->savepathattach);
 
 	Log.WriteOnLog ("File: %s%s\n",x->savepath,x->ext);
-        DosGetDateTime (&dt);
+        dt.getCurrentTime();
         Log.WriteOnLog ("Packed mail at %s %02d,%04d (%s) %02u:%02u:%02u\n",
                  Months[dt.month-1],dt.day,dt.year,
                  Days[GetDOW()],dt.hours,dt.minutes,dt.seconds);
@@ -1477,15 +1372,15 @@ int AnalyzeNet (char *path)
         }
 
 	// Process file-attaches and file-requests
-	if (extra.attrib.bits.FileAttached)
+	if (S_FileAttached(extra.attrib))
 	{
 		if (SubjectToFile(extra.Subject,x.savepathattach,x.extattach,
-                                  extra.attrib2.bits.Truncate,
-                                  extra.attrib2.bits.KillFileSent)!=SUCCESS)
+                                  S_Truncate(extra.attrib2),
+                                  S_KillFileSent(extra.attrib2))!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to update "
                                         "fileattach queue.\n");
 	}
-        if (extra.attrib.bits.FileRequest)
+        if (S_FileRequest(extra.attrib))
 	{
 		strcpy (x.extattach,"REQ");
 		if (SubjectToFile (extra.Subject,x.savepathattach,
@@ -1493,8 +1388,8 @@ int AnalyzeNet (char *path)
 			Log.WriteOnLog ("Warning: Failed to update"
                                         " filerequest queue.\n");
 	}
-	if (extra.attrib.bits.KillSent ||
-            (extra.attrib.bits.InTransit && KillInTransit))
+	if (S_KillSent(extra.attrib) ||
+            (S_InTransit(extra.attrib) && KillInTransit))
 	{
 		if (remove (path))
 			Log.WriteOnLog ("Warning: Unable to delete %s.\n",
@@ -1511,6 +1406,3 @@ int AnalyzeNet (char *path)
                 ReleaseSem (x.savepath);
 	return (ENH_PROCESSED);
 }
-
-
-

@@ -1,19 +1,20 @@
-CFRoute 0.95a Source Code Distribution
-======================================
+CFRoute 1.0a Source Code Distribution
+=====================================
 
 Status
 ------
 
 CFRoute has been written by Carlos Fernandez Sanz, cfr@nova.es. The most
-recent version of CFRoute is being maintained by Tobias Ernst, 
-tobi@bland.fido.de, 2:2476/418. If you decide to work on the CFRoute 
-source code, you are encouraged (though not enforced) to cooperate with Tobias. 
+recent version of CFRoute is being maintained by Tobias Ernst,
+tobi@bland.fido.de, 2:2476/418. If you decide to work on the CFRoute source
+code, you are encouraged (though not enforced) to cooperate with Tobias.
 
-CFRoute is not Public Domain. CFRoute is copyrighted software. The Copyright
-is held by Carlos Fernandez Sanz, Madrid, Spain. For details on the
-conditions, refer to the license file which is named LICENSE. If you did not
-receive this file along with the source code, please contact the author or
-maintainer mentioned below.
+CFRoute is Free Software and Open Source, but it is not Public
+Domain. CFRoute is copyrighted software. The Copyright is held by Carlos
+Fernandez Sanz, Madrid, Spain. For details on the conditions, refer to the
+license file which is named LICENSE. If you did not receive this file along
+with the source code, please contact the author or maintainer mentioned
+below.
 
 
 Hints on Compiling the Source Code
@@ -26,9 +27,9 @@ a) Compilers
 I use the following compilers to build CFRoute, which means that these
 compilers are supported and should always work:
 
-- Linux:   gcc 2.7.2
-- FreeBSD: gcc 2.8.1
-- OS/2:    emx 0.9d (gcc 2.8.1)
+- Linux:   egcs 2.91.66 (from Redhat 5.2)
+- FreeBSD: gcc 2.95.2 (from ports)
+- OS/2:    gcc 2.8.1 (emx 0.9d)
 - DOS:     Borland C++ 3.1
 - Win32:   Borland C++ 4.0
 
@@ -47,34 +48,39 @@ with other compilers.
 b) Utilities
 
 The makefiles for Unix and for OS/2 (EMX) require GNU make (or another make
-that can handle VPATH) to work correctly. On Linux boxes, GNU make should be
-available under the name "gmake" (instead of "make"). For OS/2 and DOS, you 
-can f'req GNUMAKE.ZIP at 2:2476/418. It is also available at most common
-OS/2 ftp sites.
+that can handle VPATH) to work correctly. On Linux boxes, GNU make is usually
+the default; on FreeBSD, GNU make is in the ports collection and, if
+installed, should be available under the name "gmake" (instead of
+"make"). For OS/2 and DOS, you can f'req GNUMAKE.ZIP at 2:2476/418. It is
+also available at most common OS/2 ftp sites.
 
 c) External Libraries
 
 If you do not define SQUISHCFS, CFRoute will compile without need for any
 external libraries other than the standard C and C++ libraries, but it will
-not be able to access Squish style message areas.
+not be able to access Squish or Jam style message areas.
 
-If you do define SQUISHCFS while compiling, CFRoute will require to be
-linked against the SMAPI library, a modified version of the Squish Message
-API. The latest version of the SMAPI can always be obtained from
-ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz
+If you do define SQUISHCFS while compiling, CFRoute will require to be linked
+against the SMAPI library. CFRoute 1.0a requires smapi 1.6.4; for Jam support
+you'd best use smapi 1.6.4a. Smapi can be obtained at the Homepage of the
+Husky project: http://husky.physcip.uni-stuttgart.de.
+
 
 d) Defines
 
 You should either define UNIX or OS2 or WIN or MSDOS. You can define
-SQUISHCFS if you want the feature to scan Squish style areas to be enabled.
+SQUISHCFS if you want the feature to scan Squish and Jam style areas to be
+enabled.
 
 II) Step by step instructions
 
 The following instructions describe how to compile CFRoute on a typical Unix
 system. They should work for Linux and FreeBSD. Note that CFRoute presently
-does not work properly on Non-Intel architectures.
+does not work properly on Non-Intel architectures. Also note that instead if
+following these instructions, you could also use the Husky build process
+which is described in the instructions found in the Huskybse package. CFRoute contains a top-level Makefile to be used for the Husky build process.
 
-Commands that should be typed in verbatim are intented.
+Commands that should be typed in verbatim are indented.
 
 1. Obtain the source code of cfroute (you probably did it already ;-) which
    is contained in "cfr-???s.zip", where ??? is replaced by the most
@@ -92,18 +98,13 @@ The steps 3 to 5 can be omitted if you already have the SMAPI installed as a
 system-wide shared object file (i.e. libsmapilnx.so is in the
 LD_LIBRARY_PATH).
 
-3. Obtain the source code of the SMAPI. You should use SMAPI 1.5.6 or newer
-   versions. SMAPI 1.5.6 can be obtained as smapi-1.5.6.tar.gz from
-   http://www.tichy.de/husky/download.html, or by requesting SMAPI156.ZIP
-   from 2:2476/418. You can also use the -current snapshots available at
-   ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz.
+3. Obtain the source code of the SMAPI. You should use SMAPI 1.6.4a or newer
+   versions. SMAPI 1.6.4a can be obtained as smapi-1.6.4a-src.tar.gz from
+   http://husky.phscip.uni-stuttgart.de, or by requesting SMAPI
+   from 2:2476/418.
 
-4. Unzip the SMAPI by entering, depending on which form of the smapi you
-   have downloaded, either
-     mkdir ~/smapi
-     cd ~/smapi
-     unzip smapi156.zip
-   or
+4. Unzip the SMAPI by entering:
+
      cd ~
      tar xzf smapi-1.5.6.tar.gz
 
