@@ -1,119 +1,119 @@
-2002-07-31 Wednesday 12:44  gerrit
+2002-07-31 Wednesday 03:44  gerrit
 
 	* .cvs2cl (1.1): Added ChangeLog autogeneration.
 
-2002-07-31 Wednesday 12:43  gerrit
+2002-07-31 Wednesday 03:43  gerrit
 
 	* src/netmail.cpp (1.22): Added includes for FreeBSD + cosmetic
 	changes.
 
-2002-03-05 Tuesday 13:53  joerg.jaspert
+2002-03-05 Tuesday 04:53  joerg.jaspert
 
 	* debian/: changelog (1.2), control (1.2), huskymak.cfg (1.2): New
 	Debian Package built
 
-2001-09-18 Tuesday 11:40  tobi
+2001-09-18 Tuesday 02:40  tobi
 
 	* src/fc2cfr.c (1.7): merged fix from stable
 
-2001-07-09 Monday 22:11  joerg.jaspert
+2001-07-09 Monday 13:11  joerg.jaspert
 
 	* debian/: README.Debian (1.1), changelog (1.1), control (1.1),
 	copyright (1.1), dirs (1.1), docs (1.1), huskymak.cfg (1.1),
 	manpages (1.1), rules (1.1): And now: A Debian Package from
 	Cfroute.
 
-2001-07-09 Monday 22:11  joerg.jaspert
+2001-07-09 Monday 13:11  joerg.jaspert
 
 	* man/: README (1.1), cfroute.1 (1.1), fc2cfr.1 (1.1): You know,
 	every Binary in Debian should have a manpage.  There was only one
 	Husky-Package with manpages.  Now they are more. Why do you dont
 	write manpages ? :)
 
-2001-07-09 Monday 00:14  joerg.jaspert
+2001-07-08 Sunday 15:14  joerg.jaspert
 
 	* Makefile (1.8): Urrgs, its called inbounds not inbound
 
-2001-07-09 Monday 00:13  joerg.jaspert
+2001-07-08 Sunday 15:13  joerg.jaspert
 
 	* Makefile (1.7): Change for debian/huskymak.cfg.  And clean forget
 	to remove inbound.o
 
-2001-03-18 Sunday 22:49  tobi
+2001-03-18 Sunday 13:49  tobi
 
 	* Makefile (1.6), doc/HISTORY (1.19), src/fc2cfr.c (1.6): Adapted
 	fc2cfr to latest fidoconfig.
 
-2001-01-07 Sunday 00:19  tobi
+2001-01-06 Saturday 15:19  tobi
 
 	* src/netmail.cpp (1.21): bugfix for lastrun.cfr handling with
 	borland c
 
-2001-01-06 Saturday 23:58  tobi
+2001-01-06 Saturday 14:58  tobi
 
 	* dos/: makefile (1.8), makefile.bcd (1.2): fixed dos makefile
 
-2001-01-06 Saturday 23:56  tobi
+2001-01-06 Saturday 14:56  tobi
 
 	* dos/makefile.bcd (1.1): file makefile.bcd was initially added on
 	branch cfroute-1_0.
 
-2001-01-06 Saturday 23:11  tobi
+2001-01-06 Saturday 14:11  tobi
 
 	* win/: makefile.bcw (1.1), makeit.bat (1.9): added windows
 	makefile
 
-2001-01-05 Friday 01:20  tobi
+2001-01-04 Thursday 16:20  tobi
 
 	* emx/: makefile (1.8), makefile.emo (1.2), makefile.emx (1.2):
 	fixed OS/2 makefiles
 
-2001-01-05 Friday 01:19  tobi
+2001-01-04 Thursday 16:19  tobi
 
 	* emx/makefile.emx (1.1): file makefile.emx was initially added on
 	branch cfroute-1_0.
 
-2001-01-05 Friday 01:19  tobi
+2001-01-04 Thursday 16:19  tobi
 
 	* emx/makefile.emo (1.1): file makefile.emo was initially added on
 	branch cfroute-1_0.
 
-2001-01-05 Friday 00:52  tobi
+2001-01-04 Thursday 15:52  tobi
 
 	* VERSION (1.1): file VERSION was initially added on branch
 	cfroute-1_0.
 
-2001-01-05 Friday 00:49  tobi
+2001-01-04 Thursday 15:49  tobi
 
 	* doc/: HISTORY (1.18), manual.eng (1.10): updated docs and manual
 
-2001-01-05 Friday 00:38  tobi
+2001-01-04 Thursday 15:38  tobi
 
 	* doc/HISTORY (1.17): updated history
 
-2001-01-05 Friday 00:27  tobi
+2001-01-04 Thursday 15:27  tobi
 
 	* src/cfroute.cpp (1.15): removed debug output
 
-2000-12-22 Friday 02:00  tobi
+2000-12-21 Thursday 17:00  tobi
 
 	* src/: cfroute.cpp (1.14), dirute.c (1.6), netmail.cpp (1.20): fix
 	for handling of lastroute.cfr wrt busy systems
 
-2000-12-04 Monday 23:20  tobi
+2000-12-04 Monday 14:20  tobi
 
 	* src/netmail.cpp (1.19): removed some debug code
 
-2000-12-04 Monday 22:46  tobi
+2000-12-04 Monday 13:46  tobi
 
 	* Makefile (1.5): fixed makefile
 
-2000-12-04 Monday 22:41  tobi
+2000-12-04 Monday 13:41  tobi
 
 	* src/: inbounds.cpp (1.1), inbounds.hpp (1.1): forgot some files
 	in last checkin
 
-2000-12-04 Monday 22:37  tobi
+2000-12-04 Monday 13:37  tobi
 
 	* Makefile (1.4), doc/HISTORY (1.16), doc/manual.eng (1.9),
 	src/basic.cpp (1.17), src/cfroute.cpp (1.13), src/dirute.h (1.3),
@@ -122,100 +122,100 @@
 	(1.6), unix/makefile.beos (1.5), unix/makefile.unx (1.3): New:
 	KILLINTRANSITFILES, INBOUND
 
-2000-12-03 Sunday 18:59  sms
+2000-12-03 Sunday 09:59  sms
 
 	* Makefile (1.3): using RMOPT from huskymak.cfg
 
-2000-11-30 Thursday 12:34  tobi
+2000-11-30 Thursday 03:34  tobi
 
 	* win/makeit.bat (1.8): fixed windows make batch
 
-2000-11-30 Thursday 12:32  tobi
+2000-11-30 Thursday 03:32  tobi
 
 	* src/fc2cfr.c (1.4): portability fix
 
-2000-11-30 Thursday 12:08  tobi
+2000-11-30 Thursday 03:08  tobi
 
 	* doc/cfroute.faq (1.7), doc/fidoconf.txt (1.2), src/fc2cfr.c
 	(1.3): documented and enhanced fc2cfr
 
-2000-11-30 Thursday 12:07  tobi
+2000-11-30 Thursday 03:07  tobi
 
 	* Makefile (1.2): fixed makefile
 
-2000-11-30 Thursday 12:06  tobi
+2000-11-30 Thursday 03:06  tobi
 
 	* doc/fidoconf.txt (1.1): file fidoconf.txt was initially added on
 	branch cfroute-1_0.
 
-2000-11-30 Thursday 11:33  tobi
+2000-11-30 Thursday 02:33  tobi
 
 	* src/basic.cpp (1.16): more portability fixes
 
-2000-11-29 Wednesday 22:54  tobi
+2000-11-29 Wednesday 13:54  tobi
 
 	* win/makeit.bat (1.7): fixed makefiles
 
-2000-11-29 Wednesday 22:51  tobi
+2000-11-29 Wednesday 13:51  tobi
 
 	* dos/makefile (1.7): fixed makefiles
 
-2000-11-29 Wednesday 22:45  tobi
+2000-11-29 Wednesday 13:45  tobi
 
 	* unix/: common.mak (1.5), makefile.beos (1.4),
 	makefile.linux-cross (1.7), makefile.unx (1.2): fixed makefiles
 
-2000-11-29 Wednesday 22:38  tobi
+2000-11-29 Wednesday 13:38  tobi
 
 	* emx/makefile (1.7): fixed makefile
 
-2000-11-29 Wednesday 22:29  tobi
+2000-11-29 Wednesday 13:29  tobi
 
 	* doc/: HISTORY (1.15), cfroute.faq (1.6): updated docs
 
-2000-11-29 Wednesday 22:28  tobi
+2000-11-29 Wednesday 13:28  tobi
 
 	* doc/cfroute.faq (1.5): updated faq
 
-2000-11-29 Wednesday 21:38  tobi
+2000-11-29 Wednesday 12:38  tobi
 
 	* src/dirute.c (1.5): fixed problem with lastrun.cfg or unix
 
-2000-11-29 Wednesday 21:07  tobi
+2000-11-29 Wednesday 12:07  tobi
 
 	* src/dirute.c (1.4): now it also works without smapi ...
 
-2000-11-29 Wednesday 21:00  tobi
+2000-11-29 Wednesday 12:00  tobi
 
 	* src/dirute.c (1.3): performance fix for unix
 
-2000-11-29 Wednesday 20:29  tobi
+2000-11-29 Wednesday 11:29  tobi
 
 	* src/: basic.cpp (1.15), fastecho.cpp (1.6): portability fixes
 
-2000-11-29 Wednesday 20:20  tobi
+2000-11-29 Wednesday 11:20  tobi
 
 	* src/fc2cfr.c (1.2): added fidoconfig to cfroute converter
 
-2000-11-29 Wednesday 20:20  tobi
+2000-11-29 Wednesday 11:20  tobi
 
 	* src/fc2cfr.c (1.1): file fc2cfr.c was initially added on branch
 	cfroute-1_0.
 
-2000-11-29 Wednesday 20:19  tobi
+2000-11-29 Wednesday 11:19  tobi
 
 	* src/cfroute.cpp (1.12): huskymak fixes
 
-2000-11-29 Wednesday 20:19  tobi
+2000-11-29 Wednesday 11:19  tobi
 
 	* src/basic.cpp (1.14): fix: netsquish and netjam did not work if
 	EOLENDSCOMMAND was not set
 
-2000-11-29 Wednesday 16:29  tobi
+2000-11-29 Wednesday 07:29  tobi
 
 	* doc/manual.eng (1.8): clarified doc on RECODE
 
-2000-11-27 Monday 23:14  tobi
+2000-11-27 Monday 14:14  tobi
 
 	* doc/HISTORY (1.14), doc/manual.eng (1.7), src/basic.cpp (1.13),
 	src/cfroute.cpp (1.11), src/errors.hpp (1.5), src/handlers.cpp
@@ -223,15 +223,15 @@
 	NOLOOPROUTE keyword makes cfroute NOT pack any mail where a mail
 	loop has been detected.
 
-2000-11-02 Thursday 01:43  tobi
+2000-11-01 Wednesday 16:43  tobi
 
 	* src/fecfg146.h (1.2): portability fix
 
-2000-10-09 Monday 19:33  tobi
+2000-10-09 Monday 10:33  tobi
 
 	* src/fecfg146.c (1.2): fix for fastecho reading routines
 
-2000-10-08 Sunday 20:24  tobi
+2000-10-08 Sunday 11:24  tobi
 
 	* LICENSE (1.3, cfroute-1_0-root), README (1.6, cfroute-1_0-root),
 	doc/HISTORY (1.13, cfroute-1_0-root), doc/cfroute.faq (1.4,
@@ -242,25 +242,25 @@
 	(1.7), unix/makefile.unx (1.1, cfroute-1_0-root): Last
 	modifications before forking off the stable branch
 
-2000-10-07 Saturday 19:02  tobi
+2000-10-07 Saturday 10:02  tobi
 
 	* src/: cfroute.cpp (1.9), dirute.h (1.2, cfroute-1_0-root),
 	platform.h (1.7, cfroute-1_0-root), protos.hpp (1.6,
 	cfroute-1_0-root): Husky adaptions
 
-2000-10-07 Saturday 18:55  tobi
+2000-10-07 Saturday 09:55  tobi
 
 	* src/platform.h (1.6): Husky adaptions
 
-2000-10-07 Saturday 18:52  tobi
+2000-10-07 Saturday 09:52  tobi
 
 	* src/platform.h (1.5): reworked platform.h for husky use
 
-2000-10-07 Saturday 18:49  tobi
+2000-10-07 Saturday 09:49  tobi
 
 	* README (1.5): removed cr's from README
 
-2000-10-07 Saturday 18:49  tobi
+2000-10-07 Saturday 09:49  tobi
 
 	* Makefile (1.1, cfroute-1_0-root), dos/makefile (1.6,
 	cfroute-1_0-root), emx/makefile (1.6, cfroute-1_0-root),
@@ -270,46 +270,46 @@
 	win/makeit.bat (1.6, cfroute-1_0-root): modified makefiles for
 	fecfg146.c, and added Husky makefile
 
-2000-10-07 Saturday 18:48  tobi
+2000-10-07 Saturday 09:48  tobi
 
 	* src/: fastecho.cpp (1.5, cfroute-1_0-root), fecfg145.c (1.2),
 	fecfg145.h (1.4), fecfg146.c (1.1, cfroute-1_0-root), fecfg146.h
 	(1.1, cfroute-1_0-root): fixed fastecho code
 
-2000-10-04 Wednesday 00:22  tobi
+2000-10-03 Tuesday 15:22  tobi
 
 	* src/: fastecho.cpp (1.4), netmail.cpp (1.16, cfroute-1_0-root),
 	squish.cpp (1.11, cfroute-1_0-root), structs.cpp (1.3,
 	cfroute-1_0-root): Cosmetic things for JAM; removed debug
 	statements.
 
-2000-10-04 Wednesday 00:03  tobi
+2000-10-03 Tuesday 15:03  tobi
 
 	* doc/HISTORY (1.12), doc/manual.eng (1.5), src/basic.cpp (1.12,
 	cfroute-1_0-root), src/errors.hpp (1.4, cfroute-1_0-root),
 	src/netmail.cpp (1.15), src/routing.cpp (1.6, cfroute-1_0-root):
 	more work on the immediate feature
 
-2000-10-03 Tuesday 23:44  tobi
+2000-10-03 Tuesday 14:44  tobi
 
 	* doc/HISTORY (1.11), dos/makefile (1.5), src/netmail.cpp (1.14),
 	src/recode.cpp (1.3, cfroute-1_0-root), src/squish.cpp (1.10): -
 	implemented handling of immediate flag - some fixes to make cfroute
 	compile on DOS (Borland C)
 
-2000-10-03 Tuesday 00:12  tobi
+2000-10-02 Monday 15:12  tobi
 
 	* doc/: HISTORY (1.10), cfroute.faq (1.3), manual.eng (1.4):
 	cfroute now supports jam! (the corresponding .c files have the
 	wrong cvs log, sorry for that)
 
-2000-10-03 Tuesday 00:06  tobi
+2000-10-02 Monday 15:06  tobi
 
 	* src/: basic.cpp (1.11), cfroute.cpp (1.8), errors.hpp (1.3),
 	handlers.cpp (1.3, cfroute-1_0-root), protos.hpp (1.5), squish.cpp
 	(1.9), structs.cpp (1.2): bugfix for structure read/write code
 
-2000-10-01 Sunday 22:20  tobi
+2000-10-01 Sunday 13:20  tobi
 
 	* FILE_ID.DIZ (1.2, cfroute-1_0-root), README (1.4), doc/HISTORY
 	(1.9), dos/makefile (1.4), emx/makefile (1.5), src/basic.cpp
@@ -326,27 +326,27 @@
 	structure packing constraints, cfroute is now truely platform
 	independent.
 
-2000-07-03 Monday 17:47  tobi
+2000-07-03 Monday 08:47  tobi
 
 	* doc/HISTORY (1.8), src/routing.cpp (1.5): Bug fixes for EXCEPT
 	statement.
 
-2000-03-04 Saturday 21:45  tobi
+2000-03-04 Saturday 12:45  tobi
 
 	* src/: cfroute.cpp (1.6), squish.cpp (1.7): Fixed crashes on bad
 	configuration syntax, and removed some warnings
 
-2000-01-21 Friday 22:59  tobi
+2000-01-21 Friday 13:59  tobi
 
 	* doc/HISTORY (1.7), src/basic.cpp (1.9), src/netmail.cpp (1.11),
 	src/squish.cpp (1.6): - Fix for month field - Fix for compiling
 	with emx
 
-1999-12-28 Tuesday 12:00  tobi
+1999-12-28 Tuesday 03:00  tobi
 
 	* doc/HISTORY (1.6), src/netmail.cpp (1.10): Comitted bugfix by ED.
 
-1999-12-09 Thursday 17:02  tobi
+1999-12-09 Thursday 08:02  tobi
 
 	* doc/HISTORY (1.5), doc/manual.eng (1.3), src/basic.cpp (1.7),
 	src/cfroute.cpp (1.5), src/errors.hpp (1.2), src/handlers.cpp
@@ -354,17 +354,17 @@
 	(1.1), src/squish.cpp (1.5): Applied patches by Eduard Dulich. See
 	HISTORY for details.
 
-1999-12-08 Wednesday 21:07  tobi
+1999-12-08 Wednesday 12:07  tobi
 
 	* src/basic.cpp (1.6), src/fecfg145.h (1.2), src/protos.hpp (1.2),
 	win/makeit.bat (1.4): Fixes for gcc 2.95
 
-1999-08-27 Friday 01:50  tobi
+1999-08-26 Thursday 16:50  tobi
 
 	* doc/HISTORY (1.4), src/routing.cpp (1.4): Another fix/change for
 	the EXCEPT keyword.
 
-1999-08-05 Thursday 20:03  tobi
+1999-08-05 Thursday 11:03  tobi
 
 	* doc/HISTORY (1.3), emx/makefile (1.4), src/cfroute.cpp (1.4),
 	src/routing.cpp (1.3): Fix: EXCEPT was not recogniced for the FROM
@@ -372,28 +372,28 @@
 	node masks.  Also fixed the EMX makefile and a small bug in the
 	generation of the version number for the development version.
 
-1999-07-15 Thursday 09:00  georgi
+1999-07-15 Thursday 00:00  georgi
 
 	* src/netmail.cpp (1.7): recoding mail
 
-1999-03-17 Wednesday 16:25  tobi
+1999-03-17 Wednesday 07:25  tobi
 
 	* doc/HISTORY (1.2), src/basic.cpp (1.5): Fix: Routing dependent on
 	the day of the week did not work on Sundays (i.E. "U" was not
 	recognised as specifying Sunday in the route statement). [TE]
 
-1999-03-15 Monday 13:21  tobi
+1999-03-15 Monday 04:21  tobi
 
 	* doc/distrib.txt (1.4, cfroute-a95): Modified the distribution
 	info
 
-1999-03-15 Monday 12:25  tobi
+1999-03-15 Monday 03:25  tobi
 
 	* README (1.3, cfroute-a95), doc/distrib.txt (1.3),
 	doc/file_id.diz.bin (1.2, cfroute-1_0-root, cfroute-a95),
 	doc/future.txt (1.1, cfroute-a95): Updated docs for release.
 
-1999-03-15 Monday 11:47  tobi
+1999-03-15 Monday 02:47  tobi
 
 	* doc/file_id.diz.bin (1.1), dos/makefile (1.3, cfroute-a95),
 	unix/makefile.bsd (1.2, cfroute-a95), unix/makefile.linux (1.2,
@@ -401,32 +401,32 @@
 	Unix makefiles to use g++ instead of gcc Added FILE_ID.DIZ for
 	binary distribution
 
-1999-03-06 Saturday 14:51  tobi
+1999-03-06 Saturday 05:51  tobi
 
 	* src/: config.cpp (1.3, cfroute-1_0-root), netmail.cpp (1.6)
 	(utags: cfroute-a95): Some small fixes for gcc 2.8
 
-1999-02-21 Sunday 13:09  tobi
+1999-02-21 Sunday 04:09  tobi
 
 	* emx/makefile (1.3, cfroute-a95), src/platform.h (1.3,
 	cfroute-a95), win/makefile (1.3), win/makeit.bat (1.3,
 	cfroute-a95): Further perparations for the upcoming release.
 
-1999-02-21 Sunday 00:35  tobi
+1999-02-20 Saturday 15:35  tobi
 
 	* dos/makefile (1.2), emx/makefile (1.2), unix/ATTENTION (1.1,
 	cfroute-a95), unix/common.mak (1.2, cfroute-a95),
 	unix/makefile.linux-cross (1.3), win/makefile (1.2), win/makeit.bat
 	(1.2): Preparations for the upcoming release.
 
-1999-02-07 Sunday 21:11  tobi
+1999-02-07 Sunday 12:11  tobi
 
 	* src/: basic.cpp (1.4, cfroute-a95), datetime.cpp (1.2,
 	cfroute-a95), fastecho.cpp (1.2, cfroute-a95), log.cpp (1.2,
 	cfroute-a95), netmail.cpp (1.5), platform.h (1.2): Another bunch of
 	year 2000 fixes.
 
-1999-01-30 Saturday 21:10  tobi
+1999-01-30 Saturday 12:10  tobi
 
 	* src/akas.cpp (1.2, cfroute-1_0-root, cfroute-a95), src/basic.cpp
 	(1.3), src/cfroute.cpp (1.3, cfroute-a95), src/config.cpp (1.2),
@@ -438,18 +438,18 @@
 	warnings and fixed some bugs that only manifested if   optimization
 	(-O2 on gcc) was turned on.
 
-1999-01-30 Saturday 17:18  tobi
+1999-01-30 Saturday 08:18  tobi
 
 	* src/: netmail.cpp (1.3), squish.cpp (1.3): - Fixed SERIOUS bug in
 	the Linux version: .?UT - files were not appended to,	but
 	OVERWRITTEN!!!
 
-1999-01-30 Saturday 14:09  tobi
+1999-01-30 Saturday 05:09  tobi
 
 	* src/basic.cpp (1.2): Fixed a segmentation fault in the VIA line
 	analysator.
 
-1999-01-29 Friday 03:13  tobi
+1999-01-28 Thursday 18:13  tobi
 
 	* FILE_ID.DIZ (1.1, cfroute-a95), LICENSE (1.2, cfroute-a95),
 	doc/HISTORY (1.1, cfroute-a95), doc/cfroute.faq (1.2, cfroute-a95),
@@ -461,12 +461,12 @@
 	attaches on bulk netmail (flow file was   created in qqq outbound
 	instead of binkley outbound)
 
-1999-01-05 Tuesday 00:12  tobi
+1999-01-04 Monday 15:12  tobi
 
 	* LICENSE (1.1), README (1.2): Updated docs and added a license
 	which is officially approved by Carlos.
 
-1998-12-30 Wednesday 12:27  tobi
+1998-12-30 Wednesday 03:27  tobi
 
 	* README (1.1), doc/cfroute.faq (1.1), doc/changelog.txt (1.1),
 	doc/distrib.txt (1.1), doc/file_id.diz (1.1), doc/manual.eng (1.1),
