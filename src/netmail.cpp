@@ -267,6 +267,7 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 		return ECONV_OPENFAILIN;
 	strcpy (completepath,PKTPath);
 	strcat (completepath,ext);
+        adaptcase(completepath);
 	out=fopen (completepath,"r+b");
 	if (out==NULL)
 	{
@@ -459,7 +460,7 @@ void ProcessLine (char *line,S_Visu *storage,C_StringList *SL_Via, C_StringList 
 		else
 		if (strstr (first+1,"Via")==first+1) // Already processed...
 		{
-			possible=ScanForAddress (first);
+ 			possible=ScanForAddress (first);
 			if (possible!=NULL)
 			{
 				GetFullQualifiedAddress (possible,&FQA,NULL);

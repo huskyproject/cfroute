@@ -200,8 +200,9 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 		}
 		CONTROLBYTES=MsgGetCtrlLen (in);
 	}
-	strcpy (completepath,PKTPath);
-	strcat (completepath,ext);
+	strcpy    (completepath,PKTPath);
+	strcat    (completepath,ext);
+        adaptcase (completepath);
 	out=fopen (completepath,"r+b");
 	if (out==NULL)
 	{
