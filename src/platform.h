@@ -1,3 +1,6 @@
+#ifndef __PLATFORM_H
+#define __PLATFORM_H
+
 /* Map Husky defines to cfroute defines */
 #if defined(OS2) && !defined(OS_2)
 #define OS_2
@@ -13,6 +16,7 @@
 #define MSDOS
 #endif
 
+#ifdef DEFINE_IDENT
 #if defined(OS_2)
         char *IDENTProgramName="CFR-OS/2";
 #elif defined(WIN)
@@ -25,6 +29,7 @@
 #else
 #error Unknown operating system!
 #endif
+#endif
 
 #ifdef UNIX
 #define DIRSEPS "/"
@@ -36,5 +41,4 @@
 
 #include "dirute.h"
 
-
-
+#endif

@@ -11,6 +11,8 @@
 #ifndef __DIRUTE_H__
 #define __DIRUTE_H__
 
+#include "platform.h"
+
 #ifndef UNIX
 #ifndef OS_2
 #define findclose(x) (x)

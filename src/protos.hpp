@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "platform.h"
 #if !defined(OS_2) && !defined(UNIX)
 #include <dir.h>
 #else

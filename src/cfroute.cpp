@@ -4,7 +4,9 @@ extern "C" {
 }
 #endif 
 
+#define DEFINE_IDENT
 #include "platform.h"
+
 
 unsigned short IDENTMajor=0;
 unsigned short IDENTMinor=95;
