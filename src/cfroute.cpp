@@ -501,9 +501,7 @@ void ProcessNetmail (char *NetmailDir)
 			FILE_NORMAL | FILE_READONLY,
 			&findmsg,sizeof (findmsg),&ulFileCount,FIL_STANDARD);
 #else
-        printf ("DEB: %s\n", complete);
 	control=findfirst (complete,&findmsg,FA_ARCH);
-        printf ("DEB: %d\n", control);
 #endif
 	while (!control)
 	{
