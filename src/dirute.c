@@ -15,6 +15,7 @@
 
 #if defined(UNIX)
 
+#include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
@@ -303,7 +304,7 @@ int adaptcase(char *pathname)
                         buf[i] = tolower(((int)(pathname[i])));
                 buf[i] = '\0';
 
-                if (!fexist(buf))
+                if (!file_exists(buf))
                 {
                     if (!findfirst(buf, &ffblk, FA_DIREC | FA_RDONLY |
                                    FA_ARCH | FA_HIDDEN))
