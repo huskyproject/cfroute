@@ -4,7 +4,7 @@
 #elif defined(WIN)
         #include <dos.h>
         char *IDENTProgramNAme="CFR-WIN32";
-#elif defined(DOS)
+#elif defined(MSDOS)
         char *IDENTProgramName="CFR-DOS";
 #elif defined(UNIX)
         char *IDENTProgramName="CFR-UNX";

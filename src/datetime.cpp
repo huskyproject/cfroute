@@ -13,7 +13,7 @@
 
 long GetJulianDate(int Day, int Month, int Year)
 {
-        if (Year < 100)
+        if (Year < 300)
         {
                 DATETIME d;
                 DosGetDateTime (&d);

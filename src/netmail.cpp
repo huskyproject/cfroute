@@ -240,7 +240,7 @@ int SignNet (FILE *onet,S_FQAddress addressinnet)
 		point[0]=0;
 	else
 		sprintf (point,".%hu",OurAddress.Point);
-	sprintf (ViaLine,"%cVia %hu:%hu/%hu%s%s%s @%02hu%02hu%02hu.%02hu%02hu%02hu %s\r",
+	sprintf (ViaLine,"%cVia %hu:%hu/%hu%s%s%s @%04hu%02hu%02hu.%02hu%02hu%02hu %s\r",
 		1,OurAddress.Zone,OurAddress.Net,OurAddress.Node,point,
 						OurAddress.Domain[0]?"@":"",OurAddress.Domain,dt.year,
 						dt.month,dt.day,dt.hours,dt.minutes,dt.seconds,
@@ -643,6 +643,7 @@ void ProcessLine (char *line,S_Visu *storage,C_StringList *SL_Via, C_StringList 
 // handle easily.
 int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringList *SL_Path)
 {
+        DATETIME dtnow;
         S_MSG header;
 	struct S_FQAddress FQA;
 	C_FileRead FHandler;
@@ -652,6 +653,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 	int count;
 	storage->ProcessedHere=0;
 	storage->MSGIDZone=0;
+
 	// Get as much info as possible from the header
 	if (FHandler.OpenFile (path)!=SUCCESS)
 		return ENH_OPENFAIL;
@@ -708,11 +710,19 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 		}
 		if (storage->date.month!=0) // If we don't have a month, quit parsing
 		{
-			storage->date.year=atoi (Parsing+7);
+			storage->date.year=1900 + atoi (Parsing+7);
 			storage->time.hour=atoi (Parsing+11);
 			storage->time.minute=atoi (Parsing+14);
 			storage->time.second=atoi (Parsing+17);
 			storage->DateParsed=1;
+
+                        /* sliding window adaption of year number */
+                        
+                        DosGetDateTime(&dtnow);
+                        while (storage->date.year + 50 <= dtnow.year)
+                                storage->date.year += 100;
+                        while (storage->date.year - 50 > dtnow.year)
+                                storage->date.year -= 100;
 		}
 	}
 	storage->attrib.number=header.Attribute.number;
@@ -832,7 +842,7 @@ int ShowNet (char *path)
 	printf ("Original date & time: %s  ",extra.OrigDateTime);
 	if (extra.DateParsed)
 	{
-		printf ("Parsed: %02u-%02u-%02u  %02u:%02u:%02u",
+		printf ("Parsed: %02u-%02u-%04u  %02u:%02u:%02u",
 		extra.date.day,extra.date.month,extra.date.year,
 		extra.time.hour,extra.time.minute,extra.time.second);
 	}
@@ -991,7 +1001,7 @@ void BufferHeader (S_Visu *header, C_StringList *SL_Header)
 	SL_Header->AddString (buffer);
 	if (header->DateParsed)
 	{
-		sprintf (buffer,"Date: %02hu-%02hu-%02hu  %02hu:%02hu:%02hu - %ld days ago",
+		sprintf (buffer,"Date: %02hu-%02hu-%04hu  %02hu:%02hu:%02hu - %ld days ago",
 			header->date.day,header->date.month,header->date.year,
 			header->time.hour,header->time.minute,header->time.second,
 			(long) GetToday()-GetJulianDate (header->date.day,header->date.month,header->date.year));

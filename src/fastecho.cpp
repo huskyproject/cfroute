@@ -140,7 +140,7 @@ int FastEchoConfig (void)
 			printf ("From FE: Password for %s:%s/%s.%s: %s\n",
 			WildAddr.Zone,WildAddr.Net,WildAddr.Node,WildAddr.Point,
 			NewNode.password);
-       fseek (readin,FEConfig.NodeRecSize-sizeof (Node),SEEK_CUR);
+        fseek (readin,FEConfig.NodeRecSize-sizeof (Node),SEEK_CUR);
 	}
 	fclose (readin);
 	return 0;

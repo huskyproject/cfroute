@@ -50,7 +50,7 @@ void DosGetDateTime (DATETIME *dt)
         dt->seconds = ltm->tm_sec;
         dt->day     = ltm->tm_mday;
         dt->month   = ltm->tm_mon + 1;
-        dt->year    = ltm->tm_year;
+        dt->year    = ltm->tm_year + 1900;
 }
 #else
 void DosGetDateTime (DATETIME *dt)

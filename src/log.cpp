@@ -30,8 +30,8 @@ int CLog::OpenLog (void)
 	inited=1;
         DosGetDateTime (&dt);
         sprintf (buffer,
-                 "%s started at %s %02d,%02d (%s) %02u:%02u:%02u\n",
-                 IDENTString,Months[dt.month-1],dt.day,dt.year%100,
+                 "%s started at %s %02d,%04d (%s) %02u:%02u:%02u\n",
+                 IDENTString,Months[dt.month-1],dt.day,dt.year,
                  Days[GetDOW()],dt.hours,dt.minutes,dt.seconds);
         WriteOnLog ("%s",buffer);
 	WriteOnLog ("------------------------------------------------------\n");
