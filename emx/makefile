@@ -3,7 +3,7 @@
 
 ### Directory options
 SRCDIR=../src
-SMAPIDIR=x:/smapi
+SMAPIDIR=../../smapi
 
 ### Compiler flags
 CFLAGS = -Zomf -O2 -DOS_2 -DEMX -DSQUISHCFS -DOS2 -I$(SMAPIDIR)

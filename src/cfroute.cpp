@@ -569,8 +569,8 @@ unsigned long getcompiletime(void)
         switch (datestr[0])
         {
         case 'A':
-                rv = (datestr[1] == 'u') ? 4*100      // April
-                                         : 8*100;     // August
+                rv = (datestr[1] == 'u') ? 8*100      // August
+                                         : 4*100;     // April
                 break;
         case 'F':
                 rv = 2*100; break; // February

@@ -11,6 +11,8 @@ each feature.
 
 Current Beta (not yet released)
 -------------------------------
+    - Fix: The "EXCEPT" statement did not work for "FROM" routes (EXCEPT
+      clauses were always considered as applying to the "TO" mask).
     - Fix: Routing dependent on the day of the week did not work on Sundays
       (i.E. "U" was not recognised as specifying Sunday in the route
       statement). [TE]
@@ -48,7 +50,7 @@ Current Beta (not yet released)
         unknown systems, is packed in unarchived form directly into the
         Binkley outbound.
       - Fixed handling of file attaches.
-      - Fixed name generation sheme of QQQ files.  It though is still not
+      - Fixed name generation scheme of QQQ files.  It though is still not
         completely non-intersecting with the Fastecho scheme. See the
         manual entry on FASTECHOPACK for more information.
     - Fixes for GNU compilers.
@@ -239,7 +241,7 @@ Current Beta (not yet released)
       Then simply use the macros anywhere. Macros can contain both commands
       and parameters, even other macros. They can be used for the most
       simplest things, such as
-      DEFINE NORTH_AMERICA 1:* ENDDEFINE
+  E  ( @ 3®[√&ÇaÅE¿ß	az⁄2j≠:∑ODEFINE
       DEFINE REST_WORLD 2:* 3:* 4:* 5:* 6:* ENDDEFINE
       DEFINE GEORGE_PEACE 1:270/101 ENDDEFINE
       DEFINE MANUEL_FUENTES 2:348/201 ENDDEFINE

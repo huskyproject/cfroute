@@ -431,7 +431,11 @@ void CRouteHandler::SetOnFrom (void)
 void CRouteHandler::SwitchExcept (void)
 {
 	OnExcept=!OnExcept;
-	OnFrom=0;
+
+// TE 990805: I commented out the following line because EXCEPT can be
+//            applied to either From or To statements.
+//	OnFrom=0;  
+
 }
 
 int CRouteHandler::Process (char *Address)
