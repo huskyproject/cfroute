@@ -6,11 +6,15 @@ The distribution file names of the CFRoute 0.95a release are:
   cfr-a95b.zip  (binaries for all platforms)
   cfr-a95s.zip  (source code)
 
-You can obtain these files under these name via
+You can obtain these files under these names via:
 
-  File Request at 2:2476/418
-  File Request at 1:1/102.0, 1:106/2000.0, 1:106/3000.0
-  ftp at ftp://ftp.juge.com
+  - The master site, which is immediately updated:  	
+    File Request at 2:2476/418  
+  
+  - Other sites, which will be updated soon after the master site:
+    File Request at 1:1/102.0, 1:106/2000.0, 1:106/3000.0
+    ftp at ftp://ftp.juge.com
+    http at http://wwwcip.rus.uni-stuttgart.de/~phy27258/projects.html
 
 If you want to get in-development source code snapshots, i.E. because you
 reported a bug that has been fixed, but the fixed version is not yet

@@ -92,19 +92,20 @@ The steps 3 to 5 can be omitted if you already have the SMAPI installed as a
 system-wide shared object file (i.e. libsmapilnx.so is in the
 LD_LIBRARY_PATH).
 
-3. Obtain the source code of the SMAPI, which is contained in files like
-   smapiss.zip or smapi?? zip, where ?? should be 15 or greater. Current
-   versions of the smapi can be obtained from
-   ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz
+3. Obtain the source code of the SMAPI. You should use SMAPI 1.5.6 or newer
+   versions. SMAPI 1.5.6 can be obtained as smapi-1.5.6.tar.gz from
+   http://www.tichy.de/husky/download.html, or by requesting SMAPI156.ZIP
+   from 2:2476/418. You can also use the -current snapshots available at
+   ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz.
 
 4. Unzip the SMAPI by entering, depending on which form of the smapi you
    have downloaded, either
      mkdir ~/smapi
      cd ~/smapi
-     unzip smapi??.zip
+     unzip smapi156.zip
    or
      cd ~
-     tar xzf smapi-latest.tar.gz
+     tar xzf smapi-1.5.6.tar.gz
 
 5. Build the smapi
      cd ~/smapi
