@@ -31,29 +31,29 @@ CDEFS=-D$(OSTYPE) $(ADDCDEFS) -DSQUISHCFS -Isrc
 
 all: cfroute$(EXE) fc2cfr$(EXE)
 
-cfroute$(EXE): cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ)
-	$(CXX) $(LFLAGS) $(EXENAMEFLAG)cfroute$(EXE) cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) $(LIBS)
+cfroute$(EXE): cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) inbounds$(OBJ)
+	$(CXX) $(LFLAGS) $(EXENAMEFLAG)cfroute$(EXE) cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) inbounds$(OBJ) $(LIBS)
 
 fc2cfr$(EXE): fc2cfr$(OBJ)
 	$(CXX) $(LFLAGS) $(EXENAMEFLAG)fc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS)
 
 clean:
-	-$(RM) cfroute$(OBJ)
-	-$(RM) dirute$(OBJ)
-	-$(RM) fecfg146$(OBJ)
-	-$(RM) buffer$(OBJ)
-	-$(RM) structs$(OBJ)
-	-$(RM) fc2cfr$(OBJ)
+	-$(RM) $(RMOPT) cfroute$(OBJ)
+	-$(RM) $(RMOPT) dirute$(OBJ)
+	-$(RM) $(RMOPT) fecfg146$(OBJ)
+	-$(RM) $(RMOPT) buffer$(OBJ)
+	-$(RM) $(RMOPT) structs$(OBJ)
+	-$(RM) $(RMOPT) fc2cfr$(OBJ)
 
 
 distclean: clean
-	-$(RM) cfroute$(EXE)
-	-$(RM) fc2cfr§(EXE)
+	-$(RM) $(RMOPT) cfroute$(EXE)
+	-$(RM) $(RMOPT) fc2cfr$(EXE)
 
 install: all
 	$(INSTALL) $(IBOPT) cfroute$(EXE) $(BINDIR)
 	$(INSTALL) $(IBOPT) fc2cfr$(EXE) $(BINDIR)
 
 uninstall:
-	-$(RM) $(BINDIR)$(DIRSEP)cfroute$(EXE)
-	-$(RM) $(BINDIR)$(DIRSEP)fc2cfr$(EXE)
+	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)cfroute$(EXE)
+	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)fc2cfr$(EXE)

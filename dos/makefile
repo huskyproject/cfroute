@@ -7,7 +7,7 @@ SMAPIDIR=..\..\smapi
 FCDIR=..\..\fidoconf
 
 ### Compiler flags
-CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -I$(FCDIR) -I..\.. -DMSDOS -O2 -w -ml $(RELEASE)
+CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -I$(FCDIR) -I..\.. -DMSDOS -O2 -w -ml
 
 ### Linker flags
 LFLAGS = -L$(SMAPIDIR) -L$(FCDIR) -ml

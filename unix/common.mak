@@ -26,6 +26,7 @@ cfroute.o: akas.cpp basic.cpp config.cpp datetime.cpp \
 dirute.o: dirute.c dirute.h
 buffer.o: buffer.cpp buffer.hpp
 structs.o: structs.cpp structs.hpp
+inbounds.o: inbounds.cpp inbounds.hpp
 fecfg146.o: fecfg146.c fecfg146.h
 
 clean:

@@ -24,7 +24,7 @@ OBJ      = .o
 EXE      = 
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ) inbounds$(OBJ)
 
 
 ### include the build rules that are common for all unix systems

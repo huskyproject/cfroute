@@ -49,9 +49,11 @@ CLog Log;
 
 #include "config.cpp"
 #include "akas.cpp"
+#include "inbounds.hpp"
 
 CAddresses AddressHandler;
 C_Password PasswordHandler;
+CInbounds InboundHandler;
 
 #include "routing.cpp"
 
@@ -67,7 +69,7 @@ char QQQOutboundDirectory[256];
 byte IgnoreLastUsed,EOLEndsCommand=0;
 byte RouteBossHold=0,RouteBossDirect=0;
 byte RecordViaLines=0;
-byte IgnoreBSY=0,KillInTransit=0;
+byte IgnoreBSY=0,KillInTransit=0,KillInTransitFiles=0;
 byte PathLogStyle=0,FastechoPack=0;
 byte IgnoreUnknownAttribs=0;
 unsigned char *ControlText;

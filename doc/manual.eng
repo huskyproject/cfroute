@@ -195,6 +195,33 @@ defined.  This is a list of the verbs that may be used.
   Example:
   OUTBOUND Q:\FILES\MAIL\FIDO
 
+- INBOUND inbound_directory
+  Why does CFRoute need to know about your inbound directory?  Well,
+  this is for file attach handling.  When you  get  a  transit  mail
+  with an attached file (e.g. a file attach for one of your points),
+  the subject line of such a mail will only contain the file name of
+  the  attached file, but we do not know where the mailer has placed
+  this file.  Some  tossers,  like  Fastecho,  add the absolute path
+  name to the subject line of  the  transit  mail.   In  this  case,
+  CFRoute  knows  all  it needs to know from the mail, and you don't
+  need any  INBOUND  keyword  in  your  configurations.
+  Some other tossers, like HPT, do *NOT* put the full path name into
+  the subject of the mail (HPT behaves this  way  because  adding  a
+  path  could  lead  to  an  overflow in the subject field, which is
+  length limited).  In  this  case,  CFRoute  has  to search for the
+  attached file.  Using the INBOUND keyword, you can configure which
+  directories CFRoute will search.  You  can  use  multiple  INBOUND
+  keywords,  and  should  do  so to configure any inbound directory,
+  i.E. your local inbound,  yor  normal inbound, your known inbound,
+  and your protected inbound and, if you want to allow for  attached
+  files inside arcmail bundles, also your temporary inbound.
+  And, of course, you can also "abuse" the INBOUND keyword for local
+  mail,  e.g.  if  you frequently send files from r:\some\directory,
+  you could just add that directory with a INBOUND statement in your
+  cfroute.cfg.  Then, you don't need  to  type the full path name to
+  this file when sending the attach, but you  can  simply  type  the
+  filename and cfroute will automatically find the file.
+
 - MAIN address.
   Your main (primary) address. It must be 4D or 5D.
   Example:
@@ -242,9 +269,9 @@ defined.  This is a list of the verbs that may be used.
   recoding file name in the format as it is also used by hpt, so you can
   specify the same filename that is specified as outmap in fidoconfig.
   All outbound mail will be recoded according to this map file. This can be
-  used as a temporary workaround for KOI8-R systems in Russia, that do not 
-  yet have a mail reader that supports cyrillic recoding according to the 
-  CHRS kludge. 
+  used as a temporary workaround for KOI8-R systems in Russia, that do not
+  yet have a mail reader that supports cyrillic recoding according to the
+  CHRS kludge.
 
 - INCLUDE filename
   Processes a file  as part of the  configuration. Include's can be
@@ -378,6 +405,14 @@ defined.  This is a list of the verbs that may be used.
   in-transit mail even if it doesn't have the kill/sent flag.  I do
   not think that is correct so  I have added this keyword to change
   the default behaviour.
+
+- KILLTRANSITFILES
+  The same for file-attaches of intransit mail. By default, CFRoute
+  will only  flag files  for deletion when  the message has a "KFS"
+  flag. When you enable this keyword, file-attaches from in-transit
+  netmail will always be flagged for deletion.  "Flagging for dele-
+  tion" means  telling the mailer  to delete the file  after it has
+  been successfully transferred to the recipient.
 
 - IGNOREBSY
   CFR honors .BSY flags.  If there is a message to  be  sent  to  a

@@ -152,9 +152,28 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
 
             fprintf (f,"\n");
 
-            fprintf (f,"LOG %scfroute.log\n", config->logFileDir);
+            if (config->logFileDir != NULL)
+                fprintf (f,"LOG %scfroute.log\n", config->logFileDir);
 
-            fprintf (f,"OUTBOUND %s\n", config->outbound);
+            if (config->outbound != NULL)
+                fprintf (f,"OUTBOUND %s\n", config->outbound);
+            fprintf (f,"                ; cfroute must know about all your inbound\n");
+            fprintf (f,"                ; directories in order to find file attaches.\n");
+            if (config->inbound != NULL)
+                fprintf(f, "INBOUND %s\n", config->inbound);
+            if (config->protInbound != NULL &&
+                config->protInbound != config->inbound)
+                fprintf(f, "INBOUND %s\n", config->protInbound);
+            if (config->listInbound != NULL &&
+                config->listInbound != config->inbound)
+                fprintf(f, "INBOUND %s\n", config->listInbound);
+            if (config->tempInbound != NULL &&
+                config->tempInbound != config->inbound)
+                fprintf(f, "INBOUND %s\n", config->tempInbound);
+            if (config->localInbound != NULL &&
+                config->localInbound != config->inbound)
+                fprintf(f, "INBOUND %s\n", config->localInbound);
+                
             if (config->outtab != NULL)
               fprintf (f,"RECODE %s\n", config->outtab);
             if (config->lockfile != NULL)
