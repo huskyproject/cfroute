@@ -15,17 +15,13 @@
 
 #ifdef NEED_RECODING
 
-#if defined(__linux__) || defined(__FreeBSD__) || defined(__DJGPP__)
 typedef          char       CHAR;               // 1 byte
 typedef          int        INT;                // 4 byte
 typedef          void       VOID;
-#endif
 
 VOID recodeToInternalCharset( CHAR *string);
 VOID recodeToTransportCharset( CHAR *string);
 void getctab(CHAR *dest,  CHAR *charMapFileName);
-
-//CHAR intab[], outtab[];
 
 CHAR intab[] = {
 "\000\001\002\003\004\005\006\007\010\011\012\013\014\015\016\017"
