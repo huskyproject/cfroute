@@ -256,10 +256,10 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 	MsgReadMsg (in,&headerin,0L,0L,NULL,MsgGetCtrlLen (in),ControlText);
 	
 	if (DoRecode) {
-		recodeToTransportCharset (headerin.from, 36);
-		recodeToTransportCharset (headerin.to, 36);
-		recodeToTransportCharset (headerin.subj, 72);
-		recodeToTransportCharset (headerin.__ftsc_date, 20);
+		recodeToTransportCharset ((char*)headerin.from, 36);
+		recodeToTransportCharset ((char*)headerin.to, 36);
+		recodeToTransportCharset ((char*)headerin.subj, 72);
+		recodeToTransportCharset ((char*)headerin.__ftsc_date, 20);
 	}
 	
 	/* We truncate the last 2 bytes of the .PKT if they are both zero.

@@ -235,15 +235,21 @@ int ReadRouteFile (char *FileName)
 								break;
 							case PT_MACRO:
 								IsParameter=0;
-								switch (ProcessMacro (CurrentToken.Code,CommandProcessor))
-								{
-									case WARNING:
+                                                                if (CommandProcessor!=NULL)
+   								        switch (ProcessMacro (CurrentToken.Code,CommandProcessor))
+								        {
+  									case WARNING:
 										printf (" (%s, line %lu)\n",FileName,LineCounter);
 										WarningCount++;
 										break;
 									case FATAL:
 										return FATAL;
-								}
+                                                                        }
+                                                                else
+                                                                {
+                                                                        printf ("Unexpected Macro %s at line %lu.\n",Token,LineCounter);
+                                                                        WarningCount++;
+                                                                }
 								break;
 							default:
 								if ((Mac=MacroHandler.FindMacro (Token))==NULL)
@@ -277,17 +283,17 @@ int ReadRouteFile (char *FileName)
 					if (IsParameter==1)
 					{
 						if (CommandProcessor!=NULL)
-						switch (CommandProcessor (Token,Main))
-						{
-							case WARNING:
-								printf (" (%s, line %lu)\n",FileName,LineCounter);
+                                                        switch (CommandProcessor (Token,Main))
+                                                        {
+                                                        case WARNING:
+                                                                printf (" (%s, line %lu)\n",FileName,LineCounter);
 								WarningCount++;
 								break;
 							case FATAL:
 								return FATAL;
 							case NEEDEXTRAPAR:
-							MandatoryPar++;
-						}
+		    					        MandatoryPar++;
+                                                        }
 						else
 						{
 							printf ("Unexpected parameter %s at line %lu.\n",Token,LineCounter);
