@@ -8,7 +8,7 @@
 
 #ifdef UNIX
 #include <sys/stat.h>
-#if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(_AIX) && !defined(__GLIBC__)
+#if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(_AIX) && !defined(__GLIBC__) && !defined(mkdir)
 #define mkdir __mkdir
 #endif
 #else
