@@ -13,7 +13,8 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 	size_t length;
 	MsgH=MsgOpenMsg (BaseH,MOPEN_READ,MsgNumber);
 	storage->MsgNumber=MsgNumber;
-	storage->formattype=formatSQUISH;
+        storage->formattype = (BaseH->type == MSGTYPE_JAM) ? formatJAM
+                                                          : formatSQUISH;
 	storage->MSGIDZone=0;
 	storage->ProcessedHere=0;
 	if (MsgH==NULL)

@@ -162,7 +162,6 @@ void S_MSG::Import(const unsigned char *buffer)
 
     ReplyTo = get_word(pbuf);         pbuf += 2;
     Attribute = get_word(pbuf);       pbuf += 2;
-    printf ("DEBUG %u\n", Attribute);
     NextReply = get_word(pbuf);       pbuf += 2;
 
     assert((size_t)(pbuf - buffer) == get_filesize());

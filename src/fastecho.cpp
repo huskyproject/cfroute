@@ -61,7 +61,6 @@ int FastEchoConfig (void)
 	if (readin==NULL)
 		return ECH_OPENFAILED;
 	read_fe_config(&FEConfig,readin);
-        printf ("DEBUG %lu\n", (unsigned long)FEConfig.offset);
 	if (!OutboundDirSetup)
 	{
 		strcpy (OutboundDirectory,FEConfig.OutBound);

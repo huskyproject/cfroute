@@ -15,7 +15,7 @@
 
 #include "structs.hpp"
 
-typedef	enum {formatMSG, formatSQUISH} format;
+typedef	enum {formatMSG, formatSQUISH, formatJAM} format;
 
 typedef struct
 {
@@ -1265,6 +1265,8 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
                 case formatMSG:         printf ("MSG.\n");
                                         break;
                 case formatSQUISH:      printf ("SQUISH.\n");
+                                        break;
+                case formatJAM:         printf ("JAM.\n");
                                         break;
                 default:                printf ("unknown.\n");
         }
