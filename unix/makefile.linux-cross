@@ -7,13 +7,15 @@
 ### Directory options
 SRCDIR=../src
 SMAPIDIR=../../smapi
+FCDIR=../../fidoconf
 
 ### Compiler flags
-CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR) $(RELEASE)
+CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR) -I../..
 
 ### Linker flag
 LFLAGS = -s -L$(SMAPIDIR)
 LIBS=-lsmapilnx
+LIBS2=-lfidoconfiglnx
 
 ### Platform specifics
 DEL      = rm
