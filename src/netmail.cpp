@@ -862,7 +862,8 @@ int ShowNet (char *path)
 // being packed into a QQQ file if:
 // - FASTECHOPACK has been specified in the cfroute cfg
 // - FECFONIG     has been specified in the cfroute cfg
-// - the mail is not crash, direct, immediate or hold.
+// - the mail is not crash, direct, immediate or hold, or has a file
+//   attached
 // - the destination system is listed in fastecho.cfg 
 //   (which can be seen from the fact if PasswordHandler knows this
 //   system or not).
@@ -1336,7 +1337,9 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
 		FindUniqueQQQ (x->savepath);
         }
         else
-		FindPKTPath (x->ShouldGo,x->savepath);
+                FindPKTPath (x->ShouldGo,x->savepath);
+        
+        FindPKTPath (x->ShouldGo, x->savepathattach);
 
 	Log.WriteOnLog ("File: %s%s\n",x->savepath,x->ext);
 	AddressHandler.AKAMatch (x->ShouldGo,&x->OurAKA);
@@ -1406,7 +1409,7 @@ int AnalyzeNet (char *path)
 	// Process file-attaches and file-requests
 	if (extra.attrib.bits.FileAttached)
 	{
-		if (SubjectToFile(extra.Subject,x.savepath,x.extattach,
+		if (SubjectToFile(extra.Subject,x.savepathattach,x.extattach,
                                   extra.attrib2.bits.Truncate,
                                   extra.attrib2.bits.KillFileSent)!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to update "
@@ -1415,7 +1418,7 @@ int AnalyzeNet (char *path)
         if (extra.attrib.bits.FileRequest)
 	{
 		strcpy (x.extattach,"REQ");
-		if (SubjectToFile (extra.Subject,x.savepath,
+		if (SubjectToFile (extra.Subject,x.savepathattach,
                                    x.extattach,0,0)!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to update"
                                         " filerequest queue.\n");

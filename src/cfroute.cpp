@@ -1,5 +1,7 @@
 #ifdef SQUISHCFS
+extern "C" {
 #include "msgapi.h" /* this has to be done BEFORE the pragma pack !!! */
+}
 #endif 
 
 #include "platform.h"

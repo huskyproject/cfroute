@@ -1,6 +1,31 @@
-There are presently no official distribution sites at all. If you want to
-have a copy of cfroute, write a netmail to Tobias Ernst @ 2:2476/418 or an
-e-mail to tobi@bland.fido.de.
+Distribution sites for CFRoute
+-------------------------------
 
-By the time that CFRoute 0.95a will be released, there will be at least one
-official site for f'req and one for ftp.
+The distribution file names of the CFRoute 0.95a release are:
+
+  cfr-a95b.zip  (binaries for all platforms)
+  cfr-a95s.zip  (source code)
+
+You can obtain these files under these name via
+
+  File Request at 2:2476/418
+  File Request at 1:1/102.0, 1:106/2000.0, 1:106/3000.0
+  ftp at ftp://ftp.juge.com
+
+If you want to get in-development source code snapshots, i.E. because you
+reported a bug that has been fixed, but the fixed version is not yet
+public, you can get the file "cfroute-latest.tar.gz" from
+
+  ftp://ftp.sar-gmbh.com/pub/freeware/husky
+
+Contact
+-------
+
+If you have comments, bug-reports, ideas for features, or even want to use
+the source code to enhance cfroute yourself, you are invited to contact
+me/us!
+
+Current Maintainer: Tobias Ernst, 2:2476/418, tobi@bland.fido.de
+Original Author:    Carlos Fernandez Sanz,    cfs@nova.es
+
+[EOF]

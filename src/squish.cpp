@@ -372,7 +372,7 @@ int AnalyzeSquishNet (HAREA BaseH,unsigned long MsgNumber)
 	// Process file-attaches and file-requests
 	if (extra.attrib.bits.FileAttached)
 	{
-		if (SubjectToFile(extra.Subject,x.savepath,x.extattach,
+		if (SubjectToFile(extra.Subject,x.savepathattach,x.extattach,
                                   extra.attrib2.bits.Truncate,
                                   extra.attrib2.bits.KillFileSent)!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to update"
@@ -381,7 +381,7 @@ int AnalyzeSquishNet (HAREA BaseH,unsigned long MsgNumber)
 	if (extra.attrib.bits.FileRequest)
 	{
 		strcpy (x.extattach,"REQ");
-		if (SubjectToFile (extra.Subject,x.savepath,
+		if (SubjectToFile (extra.Subject,x.savepathattach,
                                    x.extattach,0,0)!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to "
                                         "update filerequest queue.\n");

@@ -282,6 +282,10 @@ defined.  This is a list of the verbs that may be used.
   ROUTE_AMERICA to do the actual work.
 
 - FASTECHOPACK [ALL]
+
+  Use this  keyword  with  extreme  care  and  only  after thorough
+  consideration.  (See the paragraph marked with ATTENTION below).
+
   If you run Fastecho as your Tosser and want the Netmail for  your
   links  to  be archived together with the echomail arcmail bundles
   (like Fastecho does when Fastecho  is  used for Routing), you can
@@ -294,23 +298,50 @@ defined.  This is a list of the verbs that may be used.
   directly  after  running  CFroute, and Fastecho will compress the
   .QQQ files into the arcmail bundles.
 
-  If FASTECHOPACK is specified  without any parameter, CFRoute will
-  only create QQQ files for  packets  that  are  addressed  to  any
-  system  which is either listed in the Fastecho configuration file
-  (see FECONFIG keyword)  or  has  a  packet  password defined (see
-  PASSWORD keyword), and the mail does not carry any of the  crash,
+  ATTENTION!!!!  Fastecho will rename  the  .QQQ files to .PKT; but
+  otherwise it will leave the name of the file  as  is.   I.e.  the
+  file  is added to the archive under the name that CFRoute chooses
+  for the file.  The problem  is  that  CFRoute does not know which
+  files are already in the archive, nor which file  names  Fastecho
+  (when  tossing  echomail)  has  used  or  will use in the future.
+  Hence, it is possible that sometimes, CFroute chooses a file name
+  that is already in the file  (because Fastecho has put it there),
+  or Fastecho will choose a file  name  that  CFroute  has  already
+  used.   The  result  is that the old file will be REPLACED by the
+  new file in the  archive  -  mail  will  be lost!.  To circumvent
+  this, you need an intelligent archiver that is able to  recognise
+  this  situation  and  rename  the  PKT  files if necessary before
+  adding them to  the  archive.   I  call this a packet-serializing
+  packer.  The packers currently available, like zip, rar  etc.  do
+  not  support  this,  but I intend to release a packet-serializing
+  front end for them.   Until  then,  you  can  write a simple REXX
+  script or similar that does the serializing job.  That's how I do
+  it at my system.
+
+  If you did not understand the previous paragraph, or do not  know
+  how  to  handle  the  problem, simply DO NOT USE THE FASTECHOPACK
+  FEATURE.  You have been warned.
+
+  Now  to  continue  with  the  description  of  the   options   of
+  FASTEHCOPACK:
+
+  If  FASTECHOPACK is specified without any parameter, CFRoute will
+  only create QQQ  files  for  packets  that  are  addressed to any
+  system which is either listed in the Fastecho configuration  file
+  (see  FECONFIG  keyword)  or  has  a packet password defined (see
+  PASSWORD keyword), and the mail does  not carry any of the crash,
   immediate, direct or hold falgs.
 
-  If  you  specify  FASTECHOPACK ALL, CFroute will always write QQQ
+  If you specify FASTECHOPACK ALL, CFroute will  always  write  QQQ
   files.  I don't see why anybody would want to use this option, as
-  Fastecho will then create  arcmail  packets (packed with ARC) for
-  unknown systems, which is a bad idea, because most  node  systems
+  Fastecho  will  then create arcmail packets (packed with ARC) for
+  unknown systems, which is a  bad  idea, because most node systems
   do not automatically uncompress arcmail packets from systems with
-  which  they  don't  have a session password.  Also, Fastecho will
-  disregard any  crash,  immediate,  direct  or  hold flavours hwen
-  packing .QQQ files.  I only included the ALL option in  order  to
-  be  able  to  simulate  the  behaviour of CFRoute 0.94a and older
-  versions, although this behaviour does  not  make any sense in my
+  which they don't have a session password.   Also,  Fastecho  will
+  disregard  any  crash,  immediate,  direct  or hold flavours hwen
+  packing .QQQ files.  I only  included  the ALL option in order to
+  be able to simulate the behaviour  of  CFRoute  0.94a  and  older
+  versions,  although  this behaviour does not make any sense in my
   opinion.
 
 - NODOMAINDIR
