@@ -4,7 +4,6 @@ Distribution sites for CFRoute
 The distribution file names of the CFRoute 1.0a release are:
 
   cfr10a-b.zip            (binaries for all platforms)
-  cfr10a-s.zip            (source code)
   cfroute-1.0a-src.tar.gz (source code)
 
 You can obtain these files under these names via:
