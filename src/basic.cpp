@@ -373,7 +373,8 @@ int GetTokenType (char *Token)
 
 int GetFullQualifiedAddress (char *Saddress, struct S_FQAddress *storage,struct S_FQAddress *Main)
 {
-	int NoMain,count,count2;
+	int NoMain;
+        size_t count,count2;
 	char Compo[25]; // Maximum: AAAAA:BBBBB:CCCCC:DDDDD\0
 	char *search,*first,*colon,*slash,*point;
 	char address[80];
@@ -500,7 +501,7 @@ int GetFullQualifiedAddress (char *Saddress, struct S_FQAddress *storage,struct 
 
 int HasWildcards (char *address)
 {
-	int count;
+	size_t count;
 	for (count=0;count<strlen (address);count++)
 		if ((address[count]=='#') ||
 			(address[count]=='?') ||
@@ -511,7 +512,8 @@ int HasWildcards (char *address)
 
 int SplitWildcardedAddress (char *origaddress, struct S_WAddress *storage,struct S_WAddress *Main)
 {
-	int NoMain,count,count2;
+	int NoMain;
+        size_t count,count2;
 	char *colon,*slash,*point;
 	char address[81];
 	if (Main==NULL)

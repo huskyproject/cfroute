@@ -58,10 +58,10 @@ private:
 	int Inited; // Signal if a config file is open or not
 public:
 	// Routines
-	CConfigHandler::CConfigHandler();
+	CConfigHandler();
 	int Open (char *FileName);
 	int Close ();
-	int CConfigHandler::ReadLine(char *ReadBuffer,long *linecounter=NULL);
+	int ReadLine(char *ReadBuffer,long *linecounter=NULL);
 	// Variables
 	char ConfigFileName[128]; // Name of the current config file, if any
 };

@@ -15,6 +15,7 @@
 
 #if defined(UNIX)
 
+#include <stdlib.h>
 #include <time.h>
 #include <string.h>
 #include <assert.h>
@@ -132,8 +133,8 @@ static int match(const char *name, const char *pattern, int attribute,
         return rc;
 }
 
-static int copy_info(struct ffblk *pffblk, struct dirent *de, 
-                     struct stat *psb)
+static void copy_info(struct ffblk *pffblk, struct dirent *de, 
+                      struct stat *psb)
 {
         struct tm *ltm;
 
@@ -286,7 +287,7 @@ int adaptcase(char *pathname)
         struct ffblk ffblk;
 
         if (!*pathname)
-                return;
+                return 0;
 
         j = 0; i = 0;
    

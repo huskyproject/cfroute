@@ -364,7 +364,7 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 	{
 		while (ToCopy>0)
 		{
-			if (ToCopy>BufferSize)
+			if (ToCopy>(long)((unsigned long)BufferSize))
 				read=fread (buffer,1,BufferSize,in);
 			else
 				read=fread (buffer,1,(size_t) ToCopy,in);

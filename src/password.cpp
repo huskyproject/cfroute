@@ -67,7 +67,7 @@ int C_Password::NewPassword (void)
 
 int C_Password::Process (char *token)
 {
-	S_WAddress Proc,Last,*point;
+	static S_WAddress Proc,Last,*point;
 	if (currentinited==0) // It is a password
 	{
 		if (strlen (token)>8)

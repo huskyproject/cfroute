@@ -556,7 +556,7 @@ void ProcessNetmail (char *NetmailDir)
 	}
 }
 
-#ifndef OS2
+#if !defined(OS2) && !defined(UNIX)
 extern unsigned _stklen=32000;
 #endif
 
@@ -722,9 +722,9 @@ int main (int argc,char **argv)
 			IDENTString,__DATE__,__TIME__);
 #endif
 #ifndef UNIX        
-	printf ("By Carlos Fern ndez Sanz, Madrid, Spain. (Formerly 2:341/70).\n");
+	printf ("By Carlos Fern ndez Sanz, Madrid, Spain. Formerly 2:341/70, now cfs@nova.es.\n");
 #else
-        printf ("By Carlos Fernandez Sanz, Madrid, Spain. (Formerly 2:341/70).\n");
+        printf ("By Carlos Fernandez Sanz, Madrid, Spain. Formerly 2:341/70, now cfs@nova.es.\n");
 #endif
         printf ("Modifications by Tobias Ernst, Stuttgart, GER. 2:2476/418, tobi@bland.fido.de\n");
 #ifdef OS_2

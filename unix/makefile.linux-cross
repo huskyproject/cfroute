@@ -24,6 +24,13 @@ EXE      =
 ### List of object files
 cfrobjs = cfroute$(OBJ) dirute$(OBJ)
 
+### After compiling, the executable must be branded in order to work
+### under FreeBSD emulation.
+
+default: branded
+
+branded: cfroute$(EXE)
+	brandelf -t Linux cfroute$(EXE)
 
 ### include the build rules that are common for all unix systems
 include common.mak

@@ -66,7 +66,8 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 	ReadOffset=0;
 	while (TotalToRead>0)
 	{
-		ReadThisPass=(TotalToRead>=(CONTROLBYTES-1))?(CONTROLBYTES-1):TotalToRead;
+		ReadThisPass=(TotalToRead>=((unsigned long)(CONTROLBYTES-1)))?
+                                ((unsigned long)(CONTROLBYTES-1)):TotalToRead;
 		memset (ControlText,0,CONTROLBYTES);
 		MsgReadMsg (MsgH,&SqHeader,ReadOffset,ReadThisPass,ControlText,0L,NULL);
 		p=ControlText;
@@ -186,7 +187,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 	char NoPathSubject[80],lasttwo[2];
 	long ToCopy,CurrentPos;
 	size_t BufferSize;
-	long read;
+	size_t read;
 	in=MsgOpenMsg (BaseH,MOPEN_READ,MsgNumber);
 	if (in==NULL)
 		return ECONV_OPENFAILIN;
@@ -306,7 +307,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 	{
 		while (ToCopy>0)
 		{
-			if (ToCopy>BufferSize)
+			if (ToCopy>(long)((unsigned long)BufferSize))
 				read=MsgReadMsg (in,NULL,CurrentPos,BufferSize,(unsigned char *) buffer,0L,NULL);
 			else
 				read=MsgReadMsg (in,NULL,CurrentPos,ToCopy,(unsigned char *) buffer,0L,NULL);

@@ -195,7 +195,7 @@ int CViaHandler::Unlock (void)
 	return SUCCESS;
 }
 
-CViaHandler::IsLocked (void)
+int CViaHandler::IsLocked (void)
 {
 	return locked;
 }
@@ -373,7 +373,7 @@ CRouteHandler::CRouteHandler (void)
 	SetAs=0;
 }
 
-CRouteHandler::GetViaSystem (S_FQAddress *storage, int count)
+int CRouteHandler::GetViaSystem (S_FQAddress *storage, int count)
 {
 	if (count>=ViaCount)
 		return OUTRANGE;
@@ -434,7 +434,7 @@ void CRouteHandler::SwitchExcept (void)
 	OnFrom=0;
 }
 
-CRouteHandler::Process (char *Address)
+int CRouteHandler::Process (char *Address)
 {
 	CViaHandler *InUseViaHandler;
 	S_FQAddress FQA;
