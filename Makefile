@@ -48,6 +48,7 @@ clean:
 
 distclean: clean
 	-$(RM) cfroute$(EXE)
+	-$(RM) fc2cfr§(EXE)
 
 install: all
 	$(INSTALL) $(IBOPT) cfroute$(EXE) $(BINDIR)
