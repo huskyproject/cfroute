@@ -5,17 +5,14 @@
 ### Directory options
 SRCDIR=../src
 SMAPIDIR=../../smapi
+BINDIR=/usr/local/bin
 
 ### Compiler flags
 CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR)
 
-#-DNEED_RECODING=<outtabfile>
-#outtabfile - file for recoding outgoing characters (used for example in russia)
-#CFLAGS += -DNEED_RECODING=\"/usr/lib/ifmail/outkoi8alt\"
-
 ### Linker flag
 LFLAGS = -s -L$(SMAPIDIR)
-LIBS=-lsmapilnx
+LIBS=-lsmapi
 
 ### Platform specifics
 DEL      = rm
@@ -30,3 +27,5 @@ cfrobjs = cfroute$(OBJ) dirute$(OBJ)
 ### include the build rules that are common for all unix systems
 include common.mak
 
+install:
+	install -s cfroute $(BINDIR)
