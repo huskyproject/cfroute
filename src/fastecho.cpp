@@ -1,4 +1,3 @@
-typedef unsigned long dword;
 
 #define MODE_SETPASSIVE 1
 #define MODE_KEEPLAST   2
@@ -40,7 +39,7 @@ int FastEchoConfig (void)
 	char *feenv,configpath[80];
 	ExtensionHeader EH;
 	Node NewNode;
-	dword offset;
+	unsigned long offset;
 	word count;
 	int control;
 	if (FEConfDir[0]==0)
