@@ -281,7 +281,7 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 	Set_Local(headerout.Attrib,0);
 	headerout.Cost=0;
 	memcpy (&headerout.DateTime,&headerin.__ftsc_date,20);
-        fwrite (&headerout,1,sizeof (S_Packed),out);
+        headerout.write(out);
 	fwrite (&headerin.to,1,strlen ((char *) headerin.to)+1,out);
 	fwrite (&headerin.from,1,strlen ((char *) headerin.from)+1,out);
 	if (headerin.attr&MSGFILE)

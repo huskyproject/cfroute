@@ -348,5 +348,3 @@ void DateTime::Export(unsigned char *buffer)
 
     assert((size_t)(pbuf - buffer) == get_filesize());
 }
-    
-

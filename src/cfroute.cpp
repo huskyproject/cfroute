@@ -333,15 +333,17 @@ int ReadRouteFile (char *FileName)
 }
 
 #ifdef SQUISHCFS
-void ProcessSquish (char *SquishBase)
+void ProcessSquish (char *SquishBase, int msgtype)
 {
 	unsigned long counttotal=0,countproc=0,count=0,countdelayed=0;
 	HAREA BaseH;
-	printf ("Processing Squish base %s\n",SquishBase);
-	BaseH=MsgOpenArea ((unsigned char *) SquishBase,MSGAREA_NORMAL,MSGTYPE_SQUISH);
+        const char *areatype = (msgtype==MSGTYPE_SQUISH) ? "Squish" : "Jam";
+	printf ("Processing %s base %s\n",areatype, SquishBase);
+	BaseH=MsgOpenArea ((unsigned char *) SquishBase,MSGAREA_NORMAL,
+                           msgtype);
 	if (BaseH==NULL)
 	{
-		printf ("Failed to open Squish area: ");
+		printf ("Failed to open %s area: ", areatype);
 		switch (msgapierr)
 		{
 			case MERR_NOMEM:
@@ -377,10 +379,10 @@ void ProcessSquish (char *SquishBase)
 #ifdef DEBUG
 	printf ("Completed netmail processing.\n");
 #endif
-	printf ("Total %lu messages in Squish base, %lu delayed, %lu packed.\n",
-		counttotal,countdelayed,countproc);
+	printf ("Total %lu messages in %s base, %lu delayed, %lu packed.\n",
+		counttotal,areatype,countdelayed,countproc);
 	if (MsgCloseArea (BaseH)==-1)
-		printf ("Warning: Failed to close Squish area.\n");
+		printf ("Warning: Failed to close %s area.\n", areatype);
 }
 #endif
 
@@ -899,19 +901,25 @@ int main (int argc,char **argv)
 #endif
 		if (MsgOpenApi (&minf)==-1 || ControlText==NULL)
 		{
-			printf ("Fatal: Failed to init. the Squish system.\n");
+			printf ("Fatal: Failed to init the Squish/Jam API.\n");
 			exit (5);
 		}
 	}
 #endif
 	for (count=0;count<SL_NetmailDir.GetStringCount();count++)
 	{
-		if (SL_NetmailDir.GetString(count)[0]!='!')
-			ProcessNetmail (SL_NetmailDir.GetString (count));
+		if (SL_NetmailDir.GetString(count)[0]=='!')
 #ifdef SQUISHCFS
-		else
-			ProcessSquish (SL_NetmailDir.GetString (count)+1);
+			ProcessSquish (SL_NetmailDir.GetString (count)+1,
+                                       MSGTYPE_SQUISH)
 #endif
+                ; else if (SL_NetmailDir.GetString(count)[0]=='?') 
+#ifdef SQUISHCFS
+                        ProcessSquish(SL_NetmailDir.GetString(count)+1,
+                                      MSGTYPE_JAM)
+#endif
+                ; else
+			ProcessNetmail (SL_NetmailDir.GetString (count));
 	}
 #ifdef SQUISHCFS
 	if (UseSquish)

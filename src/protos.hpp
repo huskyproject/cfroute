@@ -103,6 +103,7 @@ int InitComIgnoreUnknownAttribs (S_FQAddress Main);
 // Parameter processors
 int ProcParNetmail (char *Token, struct S_FQAddress Main);
 int ProcParNetSquish (char *Token, struct S_FQAddress Main);
+int ProcParNetJam (char *Token, struct S_FQAddress Main);
 int ProcParOutboundDir (char *Token, struct S_FQAddress Main);
 int ProcParQQQOutboundDir (char *Token, struct S_FQAddress Main);
 int ProcParLogFilename (char *Token, struct S_FQAddress Main);

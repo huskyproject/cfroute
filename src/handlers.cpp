@@ -51,6 +51,20 @@ int ProcParNetSquish (char *Token, S_FQAddress Main)
 #endif
 	return Result;
 }
+
+int ProcParNetJam (char *Token, S_FQAddress Main)
+{
+	int Result=SUCCESS;
+	char SquishBase[256];
+	strcpy (SquishBase,"?");
+	strcat (SquishBase,Token);
+	SL_NetmailDir.AddString (SquishBase);
+	UseSquish=1;
+#ifdef DEBUG
+	printf ("Added Jambase %s.\n",SquishBase);
+#endif
+	return Result;
+}
 #endif
 
 int ProcParOutboundDir (char *Token, S_FQAddress Main)

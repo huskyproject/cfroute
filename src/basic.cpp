@@ -157,6 +157,7 @@ CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT
                             {"NETMAIL",TT_NETMAILDIR,NULL,ProcParNetmail,1,PT_COMMAND},
 #ifdef SQUISHCFS
                             {"NETSQUISH",TT_NETSQUISH,NULL,ProcParNetSquish,1,PT_COMMAND},
+                            {"NETJAM",TT_NETJAM,NULL,ProcParNetJam,1,PT_COMMAND},
 #endif
                             {"LOG",TT_LOGFILENAME,NULL,ProcParLogFilename,1,PT_COMMAND},
 			    {"RECODE",TT_RECODEFILENAME,NULL,ProcParRecode,1,PT_COMMAND},
