@@ -94,7 +94,6 @@ void FindAttachedFile(char *buffer, int maxlen)
         for (i = 0; i < InboundHandler.GetInboundCount(); i++)
         {
             sprintf(buf2, "%s/%s", InboundHandler.GetInbound(i), buffer);
-            fprintf (stderr, "trying %s\n", buf2);
 
             if (file_exists((char *)buf2))
             {
@@ -111,7 +110,6 @@ void FindAttachedFile(char *buffer, int maxlen)
         {
             sprintf(buf2, "%s/%s", InboundHandler.GetInbound(i), buffer);
             adaptcase(buf2);
-            fprintf (stderr, "trying %s\n", buf2);
 
             if (file_exists((char *)buf2))
             {
