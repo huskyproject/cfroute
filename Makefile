@@ -15,12 +15,12 @@ else
 endif
 
 ifeq ($(SHORTNAME), 1)
-  LIBS=-L$(LIBDIR) -lsmapi
+  LIBS=-L$(LIBDIR) -lsmapi -lfidoconf
 else
-  LIBS=-L$(LIBDIR) -lsmapi
+  LIBS=-L$(LIBDIR) -lsmapi -lfidoconfig
 endif
 
-CDEFS=-D$(OSTYPE) $(ADDCDEFS) -Isrc
+CDEFS=-D$(OSTYPE) $(ADDCDEFS) -DSQUISHCFS -Isrc
 
 %$(OBJ): src$(DIRSEP)%.c
 	$(CC) $(CFLAGS) $(CDEFS) -c $<
@@ -29,22 +29,30 @@ CDEFS=-D$(OSTYPE) $(ADDCDEFS) -Isrc
 	$(CXX) $(CFLAGS) $(CDEFS) -c $<
 
 
-cfroute$(EXE): cfroute.o dirute.o fecfg146.o buffer.o structs.o
-	$(CXX) $(LFLAGS) $(EXENAMEFLAG)cfroute$(EXE) cfroute.o dirute.o fecfg146.o buffer.o structs.o $(LIBS)
+all: cfroute$(EXE) fc2cfr$(EXE)
+
+cfroute$(EXE): cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ)
+	$(CXX) $(LFLAGS) $(EXENAMEFLAG)cfroute$(EXE) cfroute$(OBJ) dirute$(OBJ) fecfg146$(OBJ) buffer$(OBJ) structs$(OBJ) $(LIBS)
+
+fc2cfr$(EXE): fc2cfr$(OBJ)
+	$(CXX) $(LFLAGS) $(EXENAMEFLAG)fc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS)
 
 clean:
-	-$(RM) cfroute.o
-	-$(RM) dirute.o
-	-$(RM) fecfg146.o
-	-$(RM) buffer.o
-	-$(RM) structs.o
+	-$(RM) cfroute$(OBJ)
+	-$(RM) dirute$(OBJ)
+	-$(RM) fecfg146$(OBJ)
+	-$(RM) buffer$(OBJ)
+	-$(RM) structs$(OBJ)
+	-$(RM) fc2cfr$(OBJ)
 
 
 distclean: clean
 	-$(RM) cfroute$(EXE)
 
-install: cfroute$(EXE)
+install: all
 	$(INSTALL) $(IBOPT) cfroute$(EXE) $(BINDIR)
+	$(INSTALL) $(IBOPT) fc2cfr$(EXE) $(BINDIR)
 
 uninstall:
 	-$(RM) $(BINDIR)$(DIRSEP)cfroute$(EXE)
+	-$(RM) $(BINDIR)$(DIRSEP)fc2cfr$(EXE)
