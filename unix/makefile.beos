@@ -1,0 +1,31 @@
+### Make file for CFRoute for Linux
+### Compiler: gcc (2.7 or 2.8)
+### Requires gmake or another make that can cope with VPATH !!!
+
+### Directory options
+SRCDIR=../src
+SMAPIDIR=../../smapi
+BINDIR=/boot/home/config/bin
+
+### Compiler flags
+CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR)
+
+### Linker flag
+LFLAGS = -s -L$(SMAPIDIR)
+LIBS=-lsmapi
+
+### Platform specifics
+DEL      = rm
+CC       = g++
+OBJ      = .o
+EXE      = 
+
+### List of object files
+cfrobjs = cfroute$(OBJ) dirute$(OBJ)
+
+
+### include the build rules that are common for all unix systems
+include common.mak
+
+install:
+	install -s cfroute $(BINDIR)
