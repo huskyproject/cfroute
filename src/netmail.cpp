@@ -1,15 +1,15 @@
 #ifndef UNIX
-#include <conio.h>
+  #include <conio.h>
 #else
-#define getch getchar
-#ifdef __FreeBSD__
-#include <sys/time.h>
-#else
-#include <utime.h>
-#endif
+  #define getch getchar
+  #ifdef __FreeBSD__
+    #include <sys/time.h>
+    #include <sys/types.h>
+  #endif
+  #include <utime.h>
 #endif
 #if defined __BORLANDC__
-#include <utime.h>
+  #include <utime.h>
 #endif
 #include <stdlib.h>             // <malloc.h>
 #include "buffer.hpp"
