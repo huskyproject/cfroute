@@ -20,7 +20,7 @@ OBJ      = .obj
 EXE      = .exe
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg146$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg146$(OBJ) inbounds$(OBJ)
 
 ### Build rules
 .SUFFIXES:
@@ -51,11 +51,17 @@ fecfg146$(OBJ): $(SRCDIR)\fecfg146.c
 buffer$(OBJ): $(SRCDIR)\buffer.cpp
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
 
+inbounds$(OBJ): $(SRCDIR)\inbounds.cpp
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+
 structs$(OBJ): $(SRCDIR)\structs.cpp
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
 
 cfroute$(EXE): $(cfrobjs)
-	$(CC) $(LFLAGS) -ecfroute$(EXE) $(cfrobjs) $(LIBS)
+	$(CC) $(LFLAGS) -ecfroute$(EXE) @&&|
+$(cfrobjs)
+$(LIBS)
+|
 
 fc2cfr$(EXE): fc2cfr$(OBJ)
 	$(CC) $(LFLAGS) -efc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS2) $(LIBS)
