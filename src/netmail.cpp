@@ -8,6 +8,9 @@
 #include <utime.h>
 #endif
 #endif
+#if defined __BORLANDC__
+#include <utime.h>
+#endif
 #include <stdlib.h>             // <malloc.h>
 #include "buffer.hpp"
 // #include "datetime.cpp"
@@ -1387,18 +1390,17 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
 	return SUCCESS;
 }
 
-void touchFile(const char *path)
+void touchFile(char *path)
 {
     FILE *touch;
     unsigned char buffer[8];
     int nok = 1;
     
-#ifdef UNIX
-#ifdef __FreeBSD__
+#if defined(UNIX) && (defined(__FreeBSD__) || defined(__NetBSD__))
     nok=utimes(path, NULL);
-#else
-    nok=utime(path, NULL);
 #endif
+#if defined(UNIX) || defined(__BORLANDC__)    
+    nok=utime(path, NULL);
 #endif
 
     if (nok)
