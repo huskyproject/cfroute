@@ -1,16 +1,17 @@
 Distribution sites for CFRoute
 -------------------------------
 
-The distribution file names of the CFRoute 0.95a release are:
+The distribution file names of the CFRoute 1.0a release are:
 
-  cfr-a95b.zip  (binaries for all platforms)
-  cfr-a95s.zip  (source code)
+  cfr10a-b.zip            (binaries for all platforms)
+  cfr10a-s.zip            (source code)
+  cfroute-1.0a-src.tar.gz (source code)
 
 You can obtain these files under these names via:
 
   - The master site, which is immediately updated:  	
     File Request at: 2:2476/418  
-    My Homepage at:  http://wwwcip.rus.uni-stuttgart.de/~phy27258/projects.html
+    My Homepage at: http://www.physcip.uni-stuttgart.de/tobi
   
   - Other sites, which will be updated soon after the master site:
     File Request at 1:1/102.0, 1:106/2000.0, 1:106/3000.0
@@ -20,7 +21,12 @@ If you want to get in-development source code snapshots, i.E. because you
 reported a bug that has been fixed, but the fixed version is not yet
 public, you can get the file "cfroute-latest.tar.gz" from
 
-  ftp://ftp.sar-gmbh.com/pub/freeware/husky
+    http://cvs.physcip.uni-stuttgart.de/cvs2
+
+PLEASE NOTE THAT IF YOU GET THE BINARY DISTRIBUTION ARCHIVE AND MAKE IT
+AVAILABLE TO OTHERS, THE CFROUTE LICENSE ***FORCES*** YOU TO ALSO MAKE AT
+LEAST ONE OF THE SOURCE CODE DISTRIBUTION ARCHIVES AVAILABE ***AT THE SAME
+PLACE***!!!
 
 Contact
 -------

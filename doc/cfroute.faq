@@ -40,11 +40,9 @@ Interested Developer's Questions
 --------------------------------
 
 Q: Can I have the CFRoute code?
-A: Yes.  Simply contact me and I'll be happy to e-mail it to you.  Note from
-   Tobias:  The source code is not open  (i.E. free to give away to anyone),
-   though, that means that anybody who wnats to get the code has to  ask  ME
-   for  it.   I  do  not  like this situation as well, but it is part of the
-   licensing terms under which I took over the development of CFRoute.
+A: Yes.  It is available from the Husky CVS server at
+   http://husky.physcip.uni-stuttgart.de. Or just write a mail to me and I'll
+   send it to you.
 
 Q: What do you want in exchange for the source code?
 A: The same that I give to the programmers of the source code I use.  That's
@@ -52,7 +50,7 @@ A: The same that I give to the programmers of the source code I use.  That's
    I do.
 
 Q: What compiler do I need to compile the source code?
-A: You need EMX 0.9c (GCC 2.7.2) for OS/2,  RSX  (GCC  2.7.2)  for  NT,  and
+A: You need EMX 0.9d (GCC 2.8.1) for OS/2,  RSX  (GCC  2.7.2)  for  NT,  and
    Borland  C  3.1 for DOS.  The source code also has some defines for other
    compilers, but they are not  being  actively  maintained, i.E. if you use
    any other compiler, you will have some additional work to do.

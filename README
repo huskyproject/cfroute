@@ -20,6 +20,13 @@ below.
 Hints on Compiling the Source Code
 ----------------------------------
 
+CFRoute can be compiled using the general Husky build process (i.E., obtain a
+proper huskymak.cfg file, then use the top-level Makefile that is supplied
+with cfroute). See the Documentation in the Huskybse package for the details.
+
+The following instructions are only for users who don't want to use the Husky
+build process, but only want to compile Cfroute as a standalone tool.
+
 I) Requriements
 
 a) Compilers
@@ -62,8 +69,8 @@ not be able to access Squish or Jam style message areas.
 
 If you do define SQUISHCFS while compiling, CFRoute will require to be linked
 against the SMAPI library. CFRoute 1.0a requires smapi 1.6.4; for Jam support
-you'd best use smapi 1.6.4a. Smapi can be obtained at the Homepage of the
-Husky project: http://husky.physcip.uni-stuttgart.de.
+you'd best use smapi 1.6.4b or higher. Smapi can be obtained at the Homepage
+of the Husky project: http://husky.physcip.uni-stuttgart.de.
 
 
 d) Defines
@@ -75,12 +82,7 @@ enabled.
 II) Step by step instructions
 
 The following instructions describe how to compile CFRoute on a typical Unix
-system. They should work for Linux and FreeBSD. Note that CFRoute presently
-does not work properly on Non-Intel architectures. Also note that instead if
-following these instructions, you could also use the Husky build process
-which is described in the instructions found in the Huskybse package. CFRoute
-contains a top-level Makefile to be used for the Husky build process.
-
+system. They should work for most Unix systems, Intel or Non-Intel.
 Commands that should be typed in verbatim are indented.
 
 1. Obtain the source code of cfroute (you probably did it already ;-) which
@@ -99,29 +101,29 @@ The steps 3 to 5 can be omitted if you already have the SMAPI installed as a
 system-wide shared object file (i.e. libsmapilnx.so is in the
 LD_LIBRARY_PATH).
 
-3. Obtain the source code of the SMAPI. You should use SMAPI 1.6.4a or newer
-   versions. SMAPI 1.6.4a can be obtained as smapi-1.6.4a-src.tar.gz from
+3. Obtain the source code of the SMAPI. You should use SMAPI 1.6.4b or newer
+   versions. SMAPI 1.6.4b can be obtained as smapi-1.6.4b-src.tar.gz from
    http://husky.phscip.uni-stuttgart.de, or by requesting SMAPI
    from 2:2476/418.
 
 4. Unzip the SMAPI by entering:
 
      cd ~
-     tar xzf smapi-1.5.6.tar.gz
+     tar xzf smapi-1.6.4b-src.tar.gz
+
+5. Rename the smapi directory so that cfroute can find it:
+
+     mv smapi-1.6.4b smapi
 
 5. Build the smapi
      cd ~/smapi
-     make -f makefile.lnx libsmapilnx.a
-   This will create a file named "libsmapilnx.a".
-   (If you know what I mean, you can type "make -f makefile.lnx", which will
-   create a .so file, which you can place in the library path, but this is
-   not requried, if you don't do it, cfroute will find the .a file and link
-   it statically).
+     gmake -f makefile.unx
+   This will create a file named "libsmapiunix.a".
 
 
 6. Build cfroute:
       cd ~/cfroute/unix
-      gmake -f makefile.linux
+      gmake -f makefile.unx
    This should create an executable named "cfroute" in ~/cfroute/unix.
    This executable is all that you need for running cfroute. Place it in
    your path or wherever you seem fit.

@@ -14,7 +14,7 @@ nodelist-sensitive routing. If anybody fells he has the time and skill in
 order to add this feature to CFRoute, you are invited to do it! I will try
 to help you in your work if I can by providing information, hints, etc.
 
-As a starting point, you can take cfr-a95s.zip. If you have made any changes
+As a starting point, you can take cfr10a-s.zip. If you have made any changes
 that seem to work and that you want to submit, use the GNU diff utility
 (available as GNUDIFF.ZIP for OS/2 and Win32 on my system, and already
 included in most Linux distributions) to create a diff/patch file that
@@ -31,7 +31,7 @@ that you have done back to the server. The CVS software deals with all sort
 of problems like multiple programmers changing the same source file
 simultaneously, etc. It is really a nice utility! If you like more
 information, you can visit www.cyclic.com. If you want to have access, to
-our CVS server, write to me or to Thomas Winter and ask for a password.
+our CVS server, write to me and ask for a password.
 
 In any case, please try to stick to the coding style of CFRoute if you do
 any changes. The policy is not to indent curly braces, but to indent the
@@ -55,13 +55,12 @@ Also, please don't use constructs like
   fread(&structure, sizeof(structure), 1, stream); 
 if possible. This is not portable accross different RISC architectures,
 because the layout of "structure" cannot be guranteed to be the same across
-all architectures. I know that CFRoute has code like this in it, but I will
-rewrite it soon. Please do use fread to read into an array of bytes and then
-use binary logic to copy the array into your structure.
+all architectures. Please do use fread to read into an array of bytes and then
+use binary logic to copy the array into your structure (examples can be seen
+in structs.cpp).
 
 In any case, if you have any questions and want to contribute, simply write
 to me at tobi@bland.fido.de or Tobias Ernst @ 2:2476/418. You will be
 welcome!
 
 [EOF]
- 

@@ -1,6 +1,6 @@
 #ifdef SQUISHCFS
 extern "C" {
-#include "msgapi.h" /* this has to be done BEFORE the pragma pack !!! */
+#include "msgapi.h"
 }
 #endif 
 
@@ -8,8 +8,8 @@ extern "C" {
 #include "platform.h"
 
 
-unsigned short IDENTMajor=0;
-unsigned short IDENTMinor=95;
+unsigned short IDENTMajor=1;
+unsigned short IDENTMinor=0;
 char *IDENTPos="a";
 char IDENTString[80];
 

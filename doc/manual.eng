@@ -8,7 +8,7 @@
           a freeware Netmail packer for Binkley-style mailers
 
 
-                   for OS/2, Linux, DOS and Windows-32
+                for  OS/2, Linux/Unix, DOS and Windows-32
 
 
                  by Carlos Fern ndez Sanz. Madrid, Spain
@@ -46,6 +46,7 @@ several features that are unique to it.
     - Parses via lines to get complete path information.
     - Detects loops.
     - Powerful wildcarding system, supporting ?, * and #.
+    - Supports any number of *.MSG, Squish and Jam netmail folders.
     - Compiled for OS/2, Linux, DOS and Windows-32.
     - Complete domain support.
     - Long filenames supported.
@@ -230,7 +231,7 @@ defined.  This is a list of the verbs that may be used.
   Example:
   PASSWORD EXAMPLE 2:341/70 62
 
-- RECODE recodmapefile
+- RECODE recodemapfile
   Just do not use this feature.
   FTSC documents FTS 0054 and the superseding FSP 1013 define a way how to
   handle mails with different charsets (e.G. CP866 and KOI8-R) correctly, by
@@ -905,4 +906,4 @@ related to CFR directly:
 
     Hauke   Hagenhoff, the   Binkley-XE  development  team, Harald
 Pollack, Dana Booth, Bob Juge,  Jos‚ Luis Ben¡tez,  Patrick Klein,
-Francisco Sedano, Tobias Burchhardt, Harald Harms.
+Francisco Sedano, Tobias Burchhardt, Harald Harms, Eduard Dulich.

@@ -9,16 +9,18 @@ specific alpha release have been made by the same person, the person is
 only mentioned in the headline of that alpha release, rather than after
 each feature.
 
-Current Beta (not yet released)
--------------------------------
+
+CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
+----------------------------------------------------------
 
     - Mail with Immediate flag is now packed as IUT instead of OUT, and
       you can specify "Immediate" as a routing flag in the ROUTE statement
       in the config file. Attention: Some mailers (e.g. BTXE) don't support
       the IUT flavour. So don't use the Immediate flag nor a "Immediate"
-      ruting statement if you have such a mailer.
+      ruting statement if you have such a mailer. [TE]
     - New: Support for JAM Message base (NETJAM keyword). This requires
-      SMAPI 1.6.4b or newer!
+      SMAPI 1.6.4b or newer! [TE, with help of the JAM part of smapi, written
+      by Fedor Lizunkov's and Pavel Gulchouck]
     - Removed all fread/fwrite calls that read directly into structures.
       Cfroute now works without structure packing, independently of
       endianness or other architecture details. You can now use cfroute
