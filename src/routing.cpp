@@ -91,8 +91,7 @@ int CViaHandler::DoesMatch (S_FQAddress TargetAddress,S_FQAddress OriginAddress,
 	{
 		for (count=0;count<RouteToCount;count++)
 		{
-			if (RouteToSystem[count]->Reverse==1)
-				except=!except; // Change the except condition
+			except =  (RouteToSystem[count]->Reverse==1);
 			last=CompareAddress (TargetAddress,RouteToSystem[count]);
 			if (last)
 				if (except)
@@ -110,8 +109,7 @@ int CViaHandler::DoesMatch (S_FQAddress TargetAddress,S_FQAddress OriginAddress,
 	{
 		for (count=0;count<RouteFromCount;count++)
 		{
-			if (RouteFromSystem[count]->Reverse==1)
-				except=!except; // Change the except condition
+			except =  (RouteFromSystem[count]->Reverse==1);
 			last=CompareAddress (OriginAddress,RouteFromSystem[count]);
 			if (last)
 				if (except)
