@@ -10,6 +10,12 @@ only mentioned in the headline of that alpha release, rather than after
 each feature.
 
 
+Current Version
+---------------
+
+    - If the new keyword "NOLOOPROUTE" is set in the config file, we will
+      not pack a mail if we have detected a possible mail loop. [TE]
+
 CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
 ----------------------------------------------------------
 

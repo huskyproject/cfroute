@@ -197,6 +197,7 @@ CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT
                             {"NODOMAINDIR",TT_NODOMAINDIR,InitComNoDomainDir,NULL,0,PT_COMMAND},
                             {"KILLINTRANSIT",TT_KILLINTRANSIT,InitComKillInTransit,NULL,0,PT_COMMAND},
                             {"FASTECHOPACK",TT_FASTECHOPACK,InitComFastechoPack,ProcParFastechoPack,0,PT_COMMAND},
+                            {"NOLOOPROUTE",TT_NOLOOPROUTE,InitComNoLoopRoute,NULL,0,PT_COMMAND},
                             {"ALL",TT_QQQALL,NULL,NULL,0,PT_QQQMODE},
                             {"ENC",TT_ENCRYPTED,NULL,NULL,0,PT_ENC},
                             {"NONENC",TT_NONENCRYPTED,NULL,NULL,0,PT_ENC},

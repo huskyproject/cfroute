@@ -98,6 +98,7 @@ int InitComKillInTransit (S_FQAddress Main);
 int InitComLogpath (S_FQAddress Main);
 int InitComFastechoPack (S_FQAddress Main);
 int InitComNoDomainDir (S_FQAddress Main);
+int InitComNoLoopRoute (S_FQAddress Main);
 int InitComFEConfig (S_FQAddress Main);
 int InitComIgnoreUnknownAttribs (S_FQAddress Main);
 

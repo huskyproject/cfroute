@@ -109,6 +109,7 @@
 #define	TT_RECODEFILENAME  112
 #define TT_NETJAM          113
 #define TT_IMMEDIATE       114
+#define TT_NOLOOPROUTE     115
 
 // Main() errors
 #define ENOMAIN             95 // Main address not specified
