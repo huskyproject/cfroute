@@ -584,7 +584,7 @@ typedef struct
 typedef struct
 {
  FEAddress adr;
- dword import,export;
+ dword import,exprt;
  struct date lastimport,lastexport;
  dword dupes;
  dword importbytes,exprotbytes;
@@ -594,8 +594,9 @@ typedef struct
 {
  word conference;               /* conference # of area */
  dword tagcrc;                  /* CRC32 of area tag    */
- dword import,export;
+ dword import,exprt;
  struct date lastimport,lastexport;
  dword dupes;
 } StatArea;
+
 

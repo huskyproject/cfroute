@@ -8,7 +8,7 @@
 
 #ifdef UNIX
 #include <sys/stat.h>
-#if !defined(__FreeBSD__) && !defined(_AIX)
+#if !defined(__FreeBSD__) && !defined(_AIX) && !defined(__GLIBC__)
 #define mkdir __mkdir
 #endif
 #else
@@ -609,7 +609,7 @@ int SplitWildcardedAddress (char *origaddress, struct S_WAddress *storage,struct
 			strcpy ((char *) &storage->Net,address);
                         if ((storage->Node[strlen (storage->Node)-1]=='*') ||
                                 (storage->Node[strlen (storage->Node)-1]=='?') ||
-                                (storage->Node[strlen (storage->Node)-1]=='#'))
+                                (stoE (íš  8‘Ä†‚9	EÀ _êÁÎÙ˜cŠy=D)-1]=='#'))
 				 strcpy ((char *) &storage->Point,"*");
 			break;
 		case 3: // Slash & point

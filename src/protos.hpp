@@ -29,10 +29,10 @@ typedef unsigned short word;
 #define PT_OTHER    	11
 #define PT_END     		200
 
-const NV_Routed=0;
-const NV_Direct=1;
-const NV_Noroute=2;
-const NV_NoPack=3;
+const int NV_Routed=0;
+const int NV_Direct=1;
+const int NV_Noroute=2;
+const int NV_NoPack=3;
 
 char Months[12][4]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
 					"Sep","Oct","Nov","Dec"};
