@@ -4,13 +4,15 @@
 ### Directory options
 SRCDIR=..\src
 SMAPIDIR=..\..\smapi
+FCDIR=..\..\fidoconf
 
 ### Compiler flags
-CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -DMSDOS -O2 -w -ml
+CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -I$(FCDIR) -I..\.. -DMSDOS -O2 -w -ml
 
 ### Linker flags
-LFLAGS = -L$(SMAPIDIR) -ml
-LIBS = smapibcd.lib
+LFLAGS = -L$(SMAPIDIR) -L$(FCDIR) -ml
+LIBS2= fconfbcd.lib
+LIBS= smapibcd.lib
 
 ### Platform specifics
 CC       = bcc $(RELEASEFLAGS)
@@ -24,7 +26,7 @@ cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg146$(OBJ)
 .SUFFIXES:
 .SUFFIXES: .cpp .c $(OBJ)
 
-all: cfroute$(EXE)
+all: cfroute$(EXE) fc2cfr$(EXE)
 
 cfroute$(OBJ):  $(SRCDIR)\cfroute.cpp $(SRCDIR)\akas.cpp $(SRCDIR)\basic.cpp \
                 $(SRCDIR)\buffer.cpp $(SRCDIR)\config.cpp \
@@ -36,6 +38,9 @@ cfroute$(OBJ):  $(SRCDIR)\cfroute.cpp $(SRCDIR)\akas.cpp $(SRCDIR)\basic.cpp \
                 $(SRCDIR)\scontrol.cpp $(SRCDIR)\errors.hpp \
                 $(SRCDIR)\fecfg146.h $(SRCDIR)\protos.hpp $(SRCDIR)\squish.cpp
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+
+fc2cfr$(OBJ): $(SRCDIR)\fc2cfr.c
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
 
 dirute$(OBJ): $(SRCDIR)\dirute.c
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
@@ -51,3 +56,6 @@ structs$(OBJ): $(SRCDIR)\structs.cpp
 
 cfroute$(EXE): $(cfrobjs)
 	$(CC) $(LFLAGS) -ecfroute$(EXE) $(cfrobjs) $(LIBS)
+
+fc2cfr$(EXE): fc2cfr$(OBJ)
+	$(CC) $(LFLAGS) -efc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS2) $(LIBS)
