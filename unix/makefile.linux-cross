@@ -25,7 +25,7 @@ OBJ      = .o
 EXE      = 
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ) inbounds$(OBJ)
 
 ### After compiling, the executable must be branded in order to work
 ### under FreeBSD emulation.

@@ -72,8 +72,9 @@ against the SMAPI library. CFRoute 1.0a requires smapi 1.6.4; for Jam support
 you'd best use smapi 1.6.4b or higher. Smapi can be obtained at the Homepage
 of the Husky project: http://husky.physcip.uni-stuttgart.de.
 
-The Husky makefile also builds a tool named "fc2cfr", which requires
-fidoconfig 0.10-stable.
+The makefiles also build a tool named "fc2cfr", which requires
+fidoconfig 0.10-stable. However, if you don't already have the fidoconfig
+library, you probably don't need the fc2cfr utility, so don't worry :-)
 
 d) Defines
 

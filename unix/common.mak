@@ -37,3 +37,5 @@ clean:
 	-rm structs$(OBJ)
 	-rm fecfg146$(OBJ)
 	-rm fc2cfr$(OBJ)
+	-rm inbounds$(OBJ)
+	-rm fc2cfr$(EXE)
