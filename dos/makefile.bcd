@@ -1,5 +1,5 @@
 ### Make file for CFRoute for DOS
-### Compiler: Borland C++ 3.1
+### Compiler: Borland C++ 3.1 or 4.0
 
 ### Directory options
 SRCDIR=..\src
@@ -15,12 +15,12 @@ LIBS2= fconfbcd.lib
 LIBS= smapibcd.lib
 
 ### Platform specifics
-CC       = bcc $(RELEASEFLAGS)
+CC       = bcc
 OBJ      = .obj
 EXE      = .exe
 
 ### List of object files
-cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg146$(OBJ)
+cfrobjs = cfroute$(OBJ) dirute$(OBJ) structs$(OBJ) buffer$(OBJ) fecfg146$(OBJ) inbounds$(OBJ)
 
 ### Build rules
 .SUFFIXES:
@@ -37,25 +37,52 @@ cfroute$(OBJ):  $(SRCDIR)\cfroute.cpp $(SRCDIR)\akas.cpp $(SRCDIR)\basic.cpp \
                 $(SRCDIR)\protos.hpp $(SRCDIR)\routing.cpp \
                 $(SRCDIR)\scontrol.cpp $(SRCDIR)\errors.hpp \
                 $(SRCDIR)\fecfg146.h $(SRCDIR)\protos.hpp $(SRCDIR)\squish.cpp
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+|
 
 fc2cfr$(OBJ): $(SRCDIR)\fc2cfr.c
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+|
 
 dirute$(OBJ): $(SRCDIR)\dirute.c
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+|
 
 fecfg146$(OBJ): $(SRCDIR)\fecfg146.c
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+|
 
 buffer$(OBJ): $(SRCDIR)\buffer.cpp
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+|
+
+inbounds$(OBJ): $(SRCDIR)\inbounds.cpp
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+|
 
 structs$(OBJ): $(SRCDIR)\structs.cpp
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+	$(CC) -c -o$*$(OBJ) @&&|
+-I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
+|
 
 cfroute$(EXE): $(cfrobjs)
-	$(CC) $(LFLAGS) -ecfroute$(EXE) $(cfrobjs) $(LIBS)
+	$(CC) $(LFLAGS) -ecfroute$(EXE) @&&|
+$(cfrobjs)
+$(LIBS)
+|
 
 fc2cfr$(EXE): fc2cfr$(OBJ)
 	$(CC) $(LFLAGS) -efc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS2) $(LIBS)
+
+clean:
+	-del *.OBJ
+
+distclean: clean
+	-del fc2cfr$(EXE)
+	-del cfroute$(EXE)
