@@ -6,14 +6,17 @@
 
 VPATH=$(SRCDIR)
 .cpp$(OBJ):
-	$(CXX) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
+	$(CXX) -c -o $*$(OBJ) -I$(SRCDIR) -I../.. $(CFLAGS) $(REL) $<
 .c$(OBJ):
-	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
+	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) -I../.. $(CFLAGS) $(REL) $<
 
-all: cfroute$(EXE)
+all: cfroute$(EXE) fc2cfr$(EXE)
 
 cfroute$(EXE): $(cfrobjs)
 	$(CXX) $(LFLAGS) -o cfroute$(EXE) $(cfrobjs) $(LIBS)
+
+fc2cfr$(EXE): fc2cfr$(OBJ)
+	$(CXX) $(LFLAGS) -o fc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS2) $(LIBS)
 
 cfroute.o: akas.cpp basic.cpp config.cpp datetime.cpp \
         encdet.cpp  errors.hpp fastecho.cpp handlers.cpp log.cpp macro.cpp \
@@ -32,3 +35,4 @@ clean:
 	-rm buffer$(OBJ)
 	-rm structs$(OBJ)
 	-rm fecfg146$(OBJ)
+	-rm fc2cfr$(OBJ)
