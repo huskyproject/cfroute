@@ -11,6 +11,10 @@ each feature.
 
 CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
 ----------------------------------------------------------
+    - Fix: Modified the handling of LASTRUN.CFR. Previously, on some Unix
+      variants, it could happen that a file that could not be processed
+      because the destination link was busy was NOT reprocessed on a later
+      run, unless you used the -I option.
     - New: Keyword KILLTRANSITFILES. If this keyword is set, attached files
       from intransit mail will be deleted after the mailer has sent them, even
       if the (transit) mail did not carry the KFS flag. [TE]

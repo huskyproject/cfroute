@@ -86,6 +86,9 @@ correct to load more than one file from the command line. Example:
         the message and the date  of the .MSG file; we  are talking
         about the later now). If you are  using such a  program, it
         is wise to use -I in the first run after using it.
+        I would even recommend to  run cfroute at least  once a day
+        with  the -I option,   just to make sure  that really every
+        netmail is scanned out even in unusual situation.
     -D  If used, CFR will dump the configuration  file(s) as it has
         parsed them. If you think CFR may be doing something wrong,
         try -D.
