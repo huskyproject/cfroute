@@ -205,18 +205,23 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
             for (i=0; i<config->linkCount; i++)
             {
                 if (config->links[i].pktPwd != NULL)
-                {
-                    fprintf(f, "PASSWORD %s ", config->links[i].pktPwd);
-                    fc_print_address(f,&(config->links[i].hisAka));
-                    fprintf(f, "\n");
+		{
+		    if (config->links[i].pktPwd[0] != 0)
+                    {
+                        fprintf(f, "PASSWORD %s ", config->links[i].pktPwd);
+                        fc_print_address(f,&(config->links[i].hisAka));
+                        fprintf(f, "\n");
+                    }
                 }
                 else if (config->links[i].defaultPwd != NULL)
                 {
-                    fprintf(f, "PASSWORD %s ", config->links[i].defaultPwd);
-                    fc_print_address(f,&(config->links[i].hisAka));
-                    fprintf(f, "\n");
+                    if (config->links[i].defaultPwd[0] != 0)
+                    {
+                        fprintf(f, "PASSWORD %s ", config->links[i].defaultPwd);
+                        fc_print_address(f,&(config->links[i].hisAka));
+                        fprintf(f, "\n");
+                    }
                 }
-
             }
 
             fprintf (f, "\n");
