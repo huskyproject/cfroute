@@ -398,13 +398,14 @@ int GetFullQualifiedAddress (char *Saddress, struct S_FQAddress *storage,struct 
 		*search=0;
 	}
 	else
-    {
-		storage->Domain[0]=0;
-        search=address+strlen(address)-1; /* Last char */
-        while (!isdigit (*search) && *search!=':' && *search!='/' &&
-                *search!='.')
-            *(search--)=0;
-    }
+        {
+                storage->Domain[0]=0;
+                search=address+strlen(address)-1; /* Last char */
+                while (search >= address &&
+                       !isdigit (*search) && *search!=':' && *search!='/' &&
+                       *search!='.')
+                        *(search--)=0;
+        }
 	for (count=0;count<strlen (address);count++)
 		if (!isdigit (address[count]) && address[count]!=':' &&
 			address[count]!='/' && address[count]!='.')
