@@ -3,7 +3,7 @@
         char *IDENTProgramName="CFR-OS/2";
 #elif defined(WIN)
         #include <dos.h>
-        char *IDENTProgramNAme="CFR-WIN32";
+        char *IDENTProgramName="CFR-WIN32";
 #elif defined(MSDOS)
         char *IDENTProgramName="CFR-DOS";
 #elif defined(UNIX)

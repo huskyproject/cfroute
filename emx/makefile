@@ -6,18 +6,16 @@ SRCDIR=../src
 SMAPIDIR=x:/smapi
 
 ### Compiler flags
-# replace -g with -O2 for release build
-CFLAGS = -g -DOS_2 -DEMX -DSQUISHCFS -DOS2 -I$(SMAPIDIR)
+CFLAGS = -Zomf -O2 -DOS_2 -DEMX -DSQUISHCFS -DOS2 -I$(SMAPIDIR)
 
 ### Linker flags
-# add -s to LFLAGS and remove -g for release build
-LFLAGS = -g -L$(SMAPIDIR)
-LIBS=-lsmapiemx
+LFLAGS = -s -L$(SMAPIDIR) -Zomf
+LIBS=-lsmapiemo
 
 ### Platform specifics
 DEL      = rm
 CC       = gcc
-OBJ      = .o
+OBJ      = .obj
 EXE      = .exe
 
 ### List of object files
