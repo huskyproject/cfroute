@@ -9,6 +9,12 @@ specific alpha release have been made by the same person, the person is
 only mentioned in the headline of that alpha release, rather than after
 each feature.
 
+Current Beta (not yet released)
+-------------------------------
+    - Fix: Routing dependent on the day of the week did not work on Sundays
+      (i.E. "U" was not recognised as specifying Sunday in the route
+      statement). [TE]
+
 0.95a [TE]
 -----------
     - Cleaned up the source code tree, moved things into subdirectories,

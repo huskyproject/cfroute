@@ -278,7 +278,7 @@ int GetTokenInfo (char *Token, struct S_Codes *storage)
 	{
 		if (*Update!='M' && *Update!='T' && *Update!='W' &&
 			*Update!='H' && *Update!='F' && *Update!='S' &&
-			*Update!='S')
+			*Update!='U')
 		{
 			canbedow=0;
 			break;
@@ -339,7 +339,7 @@ int GetTokenType (char *Token)
 	{
 		if (*Update!='M' && *Update!='T' && *Update!='W' &&
 			*Update!='H' && *Update!='F' && *Update!='S' &&
-			*Update!='S')
+			*Update!='U')
 		{
 			canbedow=0;
 			break;
