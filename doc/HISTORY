@@ -9,6 +9,8 @@ specific alpha release have been made by the same person, the person is
 only mentioned in the headline of that alpha release, rather than after
 each feature.
 
+CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
+----------------------------------------------------------
     - New: Keyword KILLTRANSITFILES. If this keyword is set, attached files
       from intransit mail will be deleted after the mailer has sent them, even
       if the (transit) mail did not carry the KFS flag. [TE]
@@ -18,9 +20,6 @@ each feature.
       name to the subject of netmails with file-attaches, like e.g. hpt.
       When the tosser does append the path (like Fastecho), you don't need
       the INBOUND keyword, although it won't to any harm. [TE]
-
-CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
-----------------------------------------------------------
     - Fix: LASTRUN.CFR did not work properly on Unix - cfroute was always
       rescanning the complete netmail folder, instead of only new netmails.
       This is fixed now (if you want the old behaviour, use the -I command
