@@ -1,16 +1,19 @@
 ### Make file for CFRoute for OS/2
 ### Compiler: EMX 0.9c or 0.9d
+### Requires gmake 3.76.1 or higher
 
 ### Directory options
 SRCDIR=../src
 SMAPIDIR=../../smapi
+FCDIR=../../fidoconf
 
 ### Compiler flags
-CFLAGS = -Zomf -O2 -DOS_2 -DEMX -DSQUISHCFS -DOS2 -I$(SMAPIDIR) $(DEBUG)
+CFLAGS = -Zomf -O2 -DOS_2 -DEMX -DSQUISHCFS -DOS2 -I../.. $(DEBUG)
 
 ### Linker flags
 LFLAGS = -s -L$(SMAPIDIR) -Zomf
 LIBS=-lsmapiemo
+LIBS2=-lfconfemo
 
 ### Platform specifics
 DEL      = rm
@@ -23,29 +26,31 @@ cfrobjs = cfroute$(OBJ) dirute$(OBJ) buffer$(OBJ) structs$(OBJ) fecfg146$(OBJ)
 
 ### Build rules
 .SUFFIXES:
-.SUFFIXES: .cpp $(OBJ) .c $(OBJ)
+.SUFFIXES: .cpp $(OBJ) .c $(OBJ) .hpp
 
 VPATH=$(SRCDIR)
 .cpp$(OBJ):
 	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
-VPATH=$(SRCDIR)
 .c$(OBJ):
 	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
 
-all: cfroute$(EXE)
+all: cfroute$(EXE) fc2cfr$(EXE)
 
 cfroute$(EXE): $(cfrobjs)
 	$(CC) $(LFLAGS) -o cfroute$(EXE) $(cfrobjs) $(LIBS)
 
-cfroute.o: akas.cpp basic.cpp buffer.cpp config.cpp datetime.cpp \
+cfroute$(OBJ): akas.cpp basic.cpp buffer.cpp config.cpp datetime.cpp \
         encdet.cpp  errors.hpp fastecho.cpp handlers.cpp log.cpp macro.cpp \
         netmail.cpp password.cpp protos.hpp routing.cpp scontrol.cpp \
         errors.hpp fecfg146.h protos.hpp squish.cpp dirute.h structs.hpp
 
-dirute.o: dirute.c dirute.h
-structs.o: structs.cpp structs.hpp
-buffer.o: buffer.cpp errors.hpp protos.hpp buffer.hpp
-fecfg146.o: fecfg146.c fecfg146.h
+dirute$(OBJ): dirute.c dirute.h
+structs$(OBJ): structs.cpp structs.hpp
+buffer$(OBJ): buffer.cpp errors.hpp protos.hpp buffer.hpp
+fecfg146$(OBJ): fecfg146.c fecfg146.h
+
+fc2cfr$(EXE): fc2cfr$(OBJ)
+	$(CC) $(LFLAGS) -o fc2cfr$(EXE) fc2cfr$(OBJ) $(LIBS2) $(LIBS)
 
 clean:
 	-cmd /c del cfroute$(EXE)
