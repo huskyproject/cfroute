@@ -17,7 +17,7 @@ LIBS=-lsmapilnx
 
 ### Platform specifics
 DEL      = rm
-CC       = /compat/linux/usr/bin/gcc
+CC       = /compat/linux/usr/bin/g++
 OBJ      = .o
 EXE      = 
 

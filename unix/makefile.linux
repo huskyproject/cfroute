@@ -7,7 +7,7 @@ SRCDIR=../src
 SMAPIDIR=../../smapi
 
 ### Compiler flags
-CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR) 
+CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR)
 
 ### Linker flag
 LFLAGS = -s -L$(SMAPIDIR)
@@ -15,7 +15,7 @@ LIBS=-lsmapilnx
 
 ### Platform specifics
 DEL      = rm
-CC       = gcc
+CC       = g++
 OBJ      = .o
 EXE      = 
 

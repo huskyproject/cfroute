@@ -7,17 +7,15 @@ SRCDIR=../src
 SMAPIDIR=../../smapi
 
 ### Compiler flags
-# replace -g with -O2 for release build
-CFLAGS = -g -DUNIX -DSQUISHCFS -I$(SMAPIDIR) 
+CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR)
 
 ### Linker flag
-# add -s to LFLAGS and remove -g for release build
-LFLAGS = -g -L$(SMAPIDIR)
+LFLAGS = -s -L$(SMAPIDIR)
 LIBS=-lsmapibsd
 
 ### Platform specifics
 DEL      = rm
-CC       = gcc28
+CC       = g++28
 OBJ      = .o
 EXE      = 
 

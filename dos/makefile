@@ -13,7 +13,7 @@ LFLAGS = -L$(SMAPIDIR) -ml
 LIBS = smapibcd.lib
 
 ### Platform specifics
-CC       = bcc
+CC       = bcc $(RELEASEFLAGS)
 OBJ      = .obj
 EXE      = .exe
 
