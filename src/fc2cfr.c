@@ -27,7 +27,7 @@ static int writeArea(FILE *f, s_area *area, char netMail) {
    return 0;
 }
 
-static void fc_print_address(FILE *f, s_addr *paddr)
+static void fc_print_address(FILE *f, hs_addr *paddr)
 {
     fprintf (f, "%u:%u/%u.%u", paddr->zone, paddr->net,
              paddr->node, paddr->point);
