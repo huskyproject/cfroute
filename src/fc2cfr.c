@@ -7,10 +7,10 @@
 
 static int writeArea(FILE *f, s_area *area, char netMail) {
    switch (area->msgbType) {
-      
+
       case (MSGTYPE_SQUISH): fprintf(f, "NETSQUISH ");
                              break;
-      
+
       case (MSGTYPE_SDM):    fprintf(f, "NETMAIL ");
                              break;
 
@@ -37,9 +37,9 @@ static void fc_print_address(FILE *f, s_addr *paddr)
     }
 }
 
-#define ALL 0
-#define RFILE 1
-#define MAIL 2
+#define ALL id_route
+#define RFILE id_routeFile
+#define MAIL id_routeMail
 
 #define ROUTE 0
 #define DIRECT 3
@@ -59,7 +59,6 @@ static void fc_convert_route(FILE *f, s_route *route, int what)
     static s_route *lastroute = NULL;
 
     if (lastroute == NULL || route->flavour != lastroute->flavour ||
-        route->enc != lastroute->enc ||
         (route->target == NULL && lastroute->target != NULL) ||
         (route->target != NULL && lastroute->target == NULL) ||
         (route->target != NULL && lastroute->target != NULL &&
@@ -76,15 +75,15 @@ static void fc_convert_route(FILE *f, s_route *route, int what)
             case nopack:
                 mode = NOPACK;
                 break;
-                
+
             case noroute:
                 mode = DIRECT;
                 break;
-                
+
             case boss:
                 mode = BOSS;
                 break;
-                
+
             case host:
             case hub:
             case route_extern:
@@ -93,9 +92,9 @@ static void fc_convert_route(FILE *f, s_route *route, int what)
                 abort();
             }
         }
-        
+
         fprintf(f, "%s ", commands[mode + what]);
-        
+
         if (route->flavour != normal)
         {
             switch (route->flavour)
@@ -107,7 +106,7 @@ static void fc_convert_route(FILE *f, s_route *route, int what)
             default:        fprintf(stderr, "unknwon flavour\n"); abort();
             }
         }
-        
+
         if (route->target != NULL)
         {
             fc_print_address(f, &(route->target->hisAka));
@@ -129,7 +128,7 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
     FILE *f;
     int  i;
     s_area *area;
-    
+
     f = fopen(fileName, "w");
     if (f != NULL)
     {
@@ -138,14 +137,14 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
         if (what & CVT_PASSWORDS) fprintf(f," -p");
         if (what & CVT_SETTINGS) fprintf(f," -s");
         fprintf(f,"\n");
-        
+
         if (what & CVT_SETTINGS)
         {
             fprintf (f,"EOLENDSCOMMAND  ; end of line terminates any comments. This avoids ambiguities.\n");
-            
+
             fprintf (f,";VIABOSSHOLD\n");
             fprintf (f,";VIABOSSDIRECT  ; we do NOT set VIABOSSDIRECT to mimic hpt's behaviour, but I\n");
-            fprintf (f,"                ; strongly recommend that you DO set VIABOSSDIRECT. Please\n"); 
+            fprintf (f,"                ; strongly recommend that you DO set VIABOSSDIRECT. Please\n");
             fprintf (f,"                ; do read the cfroute documentation.\n");
             fprintf (f,"NODOMAINDIR     ; hpt and fidoconfig do not support domain outbound.\n");
             fprintf (f,";KILLINTRANSIT  ; not necessary; hpt sets the K/S flag on intransit mail\n");
@@ -173,18 +172,18 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
             if (config->localInbound != NULL &&
                 config->localInbound != config->inbound)
                 fprintf(f, "INBOUND %s\n", config->localInbound);
-                
+
             if (config->outtab != NULL)
               fprintf (f,"RECODE %s\n", config->outtab);
             if (config->lockfile != NULL)
               fprintf (f, "CHECKFILE %s\n", config->lockfile);
-            
+
             fprintf (f, "\n");
-            
+
             fprintf (f, "MAIN ");
             fc_print_address(f,config->addr);
             fprintf (f, "\n");
-            
+
             for (i=1; i<config->addrCount; i++)
             {
                 fprintf(f, "AKA  ");
@@ -197,7 +196,7 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
             for (i=0; i<config->netMailAreaCount; i++) {
                 writeArea(f, &(config->netMailAreas[i]), 1);
             }
-            
+
             fprintf (f, "\n");
         }
 
@@ -217,36 +216,36 @@ int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
                     fc_print_address(f,&(config->links[i].hisAka));
                     fprintf(f, "\n");
                 }
-                
+
             }
-            
+
             fprintf (f, "\n");
         }
-            
+
         if (what & CVT_ROUTES)
         {
             fprintf (f,"TOPDOWN         ; the FIRST matching route is taken - this is the same logic\n");
             fprintf (f,"                ; which hpt is using\n");
 
-            for (i = 0; i < config->routeFileCount; i++)
+/*          for (i = 0; i < config->routeFileCount; i++)
             {
                 fc_convert_route(f, config->routeFile + i, RFILE);
             }
             for (i = 0; i < config->routeMailCount; i++)
             {
                 fc_convert_route(f, config->routeMail + i, MAIL);
-            }
+            } */
             for (i = 0; i < config->routeCount; i++)
             {
-                fc_convert_route(f, config->route + i, ALL);
+                fc_convert_route(f, config->route + i, config->route[i].id);
             }
-            
+
             fprintf (f, "\n");
         }
 
         return 0;
     } else printf("Could not write %s\n", fileName);
-    
+
     return 1;
 }
 
@@ -257,7 +256,7 @@ int main (int argc, char *argv[])
     const char *fn = NULL;
     int usage = 0;
     int what = 0;
-    
+
     printf("fconf2cfr\n");
     printf("---------\n");
 
@@ -289,7 +288,7 @@ int main (int argc, char *argv[])
               usage = 1;
         }
     }
-        
+
 
     if (fn == NULL || usage)
     {
@@ -309,9 +308,9 @@ int main (int argc, char *argv[])
     }
 
     if (what == 0) what = 0xFF;
-    
+
     printf("Generating Config-file %s\n", fn);
-    
+
     config = readConfig(NULL);
     if (config!= NULL)
     {
@@ -319,6 +318,6 @@ int main (int argc, char *argv[])
         disposeConfig(config);
         return 0;
     }
-    
+
     return 1;
 }

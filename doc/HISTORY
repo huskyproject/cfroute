@@ -9,6 +9,12 @@ specific alpha release have been made by the same person, the person is
 only mentioned in the headline of that alpha release, rather than after
 each feature.
 
+Current CFRoute
+---------------
+    - Chg: Adapted fc2cfr to recent fidoconfig change in logic of
+      parsing route, routeMail, routeFile. See Fidoconfig ChangeLog
+      entry from Mar 9, 2001.
+
 CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
 ----------------------------------------------------------
     - Fix: Modified the handling of LASTRUN.CFR. Previously, on some Unix
