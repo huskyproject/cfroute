@@ -1,0 +1,9 @@
+cfroute (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Sun,  8 Jul 2001 23:57:05 +0200
+
+Local variables:
+mode: debian-changelog
+End:

@@ -1,0 +1,18 @@
+Source: cfroute
+Section: mail
+Priority: optional
+Maintainer: Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>
+Build-Depends: debhelper (>> 3.0.0), libsmapi2-dev, libfidoconf0
+Standards-Version: 3.5.2
+
+Package: cfroute
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Very powerful Netmail Router for Binkley Style Outbound
+ Alternate routing based upon Destination system, origin system,
+ day of the week, file attach and encryption.
+ Extremely flexible parser.
+ Very powerful wildcard processor.
+ Generates type 2 and 2+ packets.
+ Unlimited number of AKAs, passwords, routes, etc. No hardcoded limits!
+ Multiple netmail directories.

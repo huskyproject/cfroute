@@ -1,0 +1,59 @@
+This package was debianized by Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net> on
+Sun,  8 Jul 2001 23:57:05 +0200.
+
+It was downloaded from http://husky.physcip.uni-stuttgart.de/
+
+Upstream Author(s): The Husky Team. Look at the Web-Page at
+http://husky.physcip.uni-stuttgart.de/team.html
+
+Copyright:
+
+CFRoute 1.0a - A Freeware Netmail Packer for Binkley-style Mailers
+Copyright (c) 1999 Carlos Fernandez Sanz, cfs@nova.es
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+If the software as a whole is being made publicly available, as for example
+on an ftp server or via file request, or on CD or other medium that is being
+sold or otherwise distributed publicly, no matter if the version that is
+being made available is a "official" release or a "beta" or "alpha" or other
+test version, the following additional conditions apply:
+
+3. If a binary form of the software is being made available publicly,
+   source code that can be used to create the respective binary version 
+   must be available from the same source at no additional charge. 
+   This applies to official release versions as well as to "beta" or "alpha" 
+   test  versions as soon as they are distributed to a public audience. 
+
+4. Every time a new version of the software is being made publicly available
+   for the first time, the copyright holder is to be sent an informal
+   notification, and if possible, a copy of the source and binary
+   distribution archives.
+
+5. Everybody who works on the software can add his name to the entry in 
+   the HISTORY file that describes his changes. Therefore, if the software 
+   is distributed as a whole in binary or source form, the HISTORY file 
+   must be included, and the names of the authors that are mentioned in 
+   this file must remain there unchanged.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
