@@ -1,0 +1,124 @@
+Using CFROUTE as part of the Husky Project with Fidoconfig
+==========================================================
+
+If you don't know what Husky is, visit http://husky.physcip.uni-stuttgart.de
+
+
+I Compiling
+-----------
+
+CFRoute comes with a top-level Makefile that adheres to the
+huskymak.cfg-style Husky build process. Instructions on how to compile and
+install Husky software can be found in the HUSKYBSE package in the
+"INSTALL" file (it is not very complicated!).
+
+Once you have set up huskymak.cfg and compiled the basic Husky libraries
+(SMAPI and FIDOCONFIG), just unpack the CFRoute source code tarball in the
+same directory where you unpacked the other pieces of Husky software, and
+then type "gmake all install" (or, if GNU make is your default make
+program, "make all install"). This should give you everything you want.
+
+
+II Using CFRoute with Fidoconfig
+--------------------------------
+
+Fidoconfig is an effort to create one single configuration file standard,
+and then have all your Fidonet tools use that one single configuration
+file. More information about that file standard can be found in the
+documentation subdirectory of the FIDOCONFIG package.
+
+CFRoute itself does not yet support the Fidoconfig file standard, but
+CFRoute 1.0 now ships with a flexible conversion program called "fc2cfr",
+which can convert Fidoconfig into directly usable cfroute configuration
+file.
+
+If you invoke fc2cfr with only one argument, the output filename, like
+this:
+
+   fc2cfr /etc/fido/cfroute.cfg
+
+then fc2cfr will create a complete cfroute configuration file. Fc2cfr can
+map all fidoconfig routing features except host, hub and external routing
+(but note that hpt also does not really support host and hub routing
+either). If fc2cfr encounters such a feature which it cannot convert, it
+will print an error message and exit with a non-zero return code. In all
+other cases, fc2cfr will create a working configuration file.  That file
+can be used without further considerations, and now,
+
+  cfroute /etc/fido/cfroute.cfg
+
+should yield exactly the same behaviour like "hpt pack". Of course, this is
+what I excpect and tried to achieve, and it also worked when I tried it at
+my system - but I don't give any warranties of course :-).
+
+Once you have checked that this really works, you can automate this process
+as follows. In your shell script, you could replace any call to "hpt pack"
+with a sequence like the following:
+
+   if [ ! -f /etc/fido/cfroute.cfg -o /etc/fido/config -nt /etc/fido/cfroute.cfg ]; then
+     fc2cfr /etc/fido/cfroute.cfg.new
+     if [ $? = 0 ]; then
+        cp /etc/fido/cfroute.cfg /etc/fido/cfroute.cfg.old
+	cp /etc/fido/cfroute.cfg.new /etc/fido/cfroute.cfg
+     fi
+   fi
+   cfroute /etc/fido/cfroute.cfg
+
+(If you are not using Unix, similar logic can be implemented in a REXX
+script or in another script language without too much problems.)
+
+This way, fc2cfr will always be called after you have changed your
+fidoconfig file (when /etc/fido/config is newer then /etc/fido/cfroute.cfg,
+or when /etc/fido/cfroute.cfg does not exist), so that you will never
+forget this step any more.
+
+
+III Extending cfroute beyond the capabilites of fidoconfig
+----------------------------------------------------------
+
+Sooner or later, you will want to use certain features of cfroute that hpt
+does not have and that cannot be written in fidoconfig (in fact, this is
+probably the reason why you installed cfroute at all ...). Then, of course,
+you cannot use an automatically generated configuration file any more. But
+you can still use fc2cfr to convert certain parts of fidoconfig, using the
+-s, -p and -r command line flags of fc2cfr, which mean "convert only
+settings, passwords, routes".
+
+For example, suppose you want to write complicated routing
+statements of your own, but keep the rest of your setup in fidoconfig. This
+works like this: *ONCE*, do call
+
+   fc2cfr -r /etc/fido/cfroute.routing
+
+From this point on, you will edit your routing setup in
+/etc/fido/cfroute.routing ONLY, using the enhanced routing syntax of
+cfroute. You must not call "fc2cfr -r" any more, and it is a good idea to
+remove the routing configuration (all route, routeMail, routeFile
+statements) from fidoconfig now, to avoid confusion. Then, you call
+
+  fc2cfr -p /etc/fido/cfroute.passwords
+  fc2cfr -s /etc/fido/cfroute.settings
+
+To convert the other settings and the packet passwords. Now, you can write
+/etc/fido/cfroute.cfg with a text editor and put the following lines into
+it:
+
+  include /etc/fido/cfroute.settings
+  include /etc/fido/cfroute.passwords
+  include /etc/fido/cfroute.routes
+
+Now, any time your fidoconfig file changes, you again call 
+
+  fc2cfr -p /etc/fido/cfroute.passwords
+  fc2cfr -s /etc/fido/cfroute.settings
+
+to migrate the new passwords and aka and folder settings to cfroute (you
+can either do this manually, or do it in a script similar to the own shown
+in the previous sections). But you must NEVER call
+  fc2cfr -r /etc/fido/cfroute.routing 
+any more, because once you have manually edited the cfroute.routing file,
+of course calling fc2cfr -r again would destroy all your manual changes! In
+order to change the routing setup, simply edit /etc/fido/cfroute.routes
+with a text editor.
+
+[EOF]
