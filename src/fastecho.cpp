@@ -27,7 +27,7 @@ union dfd
 	unsigned short number;
 };
 
-#include "fecfg145.h"
+#include "fecfg146.h"
 
 CONFIG FEConfig;
 
@@ -129,7 +129,7 @@ int FastEchoConfig (void)
 	count=0;
 	while (count<FEConfig.NodeCnt)
 	{
-                read_fe_node(&NewNode, readin);
+                read_fe_node(&NewNode, readin,FEConfig.NodeRecSize);
 		count++;
 		sprintf (WildAddr.Zone,"%hu",NewNode.addr.zone);
 		sprintf (WildAddr.Net,"%hu",NewNode.addr.net);
@@ -143,7 +143,7 @@ int FastEchoConfig (void)
 			printf ("From FE: Password for %s:%s/%s.%s: %s\n",
 			WildAddr.Zone,WildAddr.Net,WildAddr.Node,WildAddr.Point,
 			NewNode.password);
-        fseek (readin,FEConfig.NodeRecSize-FE_NODE_SIZE,SEEK_CUR);
+                free_fe_node(&NewNode);
 	}
 	fclose (readin);
 	return 0;

@@ -1,15 +1,16 @@
 /*
- *  FECFG145.H
+ *  FECFG146.H
  *
- *  'C' Structures of FastEcho 1.45 (also work for 1.46)
+ *  'C' Structures of FastEcho 1.46 
  *  Copyright (c) 1995 by Tobias Burchhardt.  Last update: 30 Jun 1995.
  *  Modified by Aleksandar Ivanisevic 30 Oct 1996.
  *  Minor alterations by Andrew Clarke 22 Dec 1996.
  *  Modfications by Tobias Ernst 04 Oct 1998
+ *  Merged changes from fecfg146.h from T. Burchhardt 04 Oct 2000
  */
 
-#ifndef __FECFG145_H__
-#define __FECFG145_H__
+#ifndef __FECFG146_H__
+#define __FECFG146_H__
 
 /*
 We don't set pragma pack anymore. The result is that the structures below
@@ -37,12 +38,13 @@ that are used by MsgEd, such reader functions can be found in fecfg145.c.
  *  have no longer a fixed length!
  */
 
-#define MAX_AREAS       3072    /* max # of areas       */
-#define MAX_NODES       1024    /* max # of nodes       */
-#define MAX_GROUPS      26      /* max # of groups      */
-#define MAX_AKAS        32      /* max # of akas        */
-#define MAX_ROUTE       15      /* max # of 'vias'      */
-#define MAX_ORIGINS     20      /* max # of origins     */
+#define MAX_AREAS       4096    /* max # of areas          */
+#define MAX_NODES       1024    /* max # of nodes          */
+#define MAX_GROUPS      32      /* max # of groups         */
+#define MAX_AKAS        32      /* max # of akas           */
+#define MAX_ROUTE       15      /* max # of 'vias'         */
+#define MAX_ORIGINS     20      /* max # of origins        */
+#define MAX_GATES	10	/* max # of Internet gates */
 
 /*
  *  Note: The MAX_AREAS and MAX_NODES are only the absolute maximums as the
@@ -58,6 +60,9 @@ that are used by MsgEd, such reader functions can be found in fecfg145.c.
  *
  *  Same goes for the # of AKAs and Groups - use the values found in
  *  CONFIG.AkaCnt and CONFIG.GroupCnt!
+ *
+ *  Note: Define INC_FE_TYPES, INC_FE_BAMPROCS  and  INC_FE_DATETYPE
+ *  to include the typedefs if necessary.
  */
 
 /********************************************************
@@ -206,6 +211,11 @@ enum ARCmailExt
 #define AREA_DUPEBOARD          4
 
 /********************************************************
+ * GateDef.flags                                        *
+ ********************************************************/
+#define GATE_KEEPMAILS	0x0001
+
+/********************************************************
  * Types and other definitions                          *
  ********************************************************/
 
@@ -252,22 +262,22 @@ typedef struct CONFIGURATION
     char MsgBase[_MAXPATH];
     char InBound[_MAXPATH];
     char OutBound[_MAXPATH];
-    char Unpacker[_MAXPATH];  /* DOS default decompression program */
+    char Unpacker[_MAXPATH];    /* DOS default decompression program */
     char LogFile[_MAXPATH];
     char unused2[336];
-    char Unpacker2[_MAXPATH];  /* OS/2 default decompression program */
+    char Unpacker2[_MAXPATH];   /* OS/2 default decompression program */
     char UnprotInBound[_MAXPATH];
     char StatFile[_MAXPATH];
     char SwapPath[_MAXPATH];
     char SemaphorePath[_MAXPATH];
     char BBSConfigPath[_MAXPATH];
-    char DBQueuePath[_MAXPATH];
-    char unused3[32];
+    char QueuePath[_MAXPATH];   /* DBQueuePath */
+    char RulesPrefix[32];       
     char RetearTo[40];
     char LocalInBound[_MAXPATH];
     char ExtAfter[_MAXPATH - 4];
     char ExtBefore[_MAXPATH - 4];
-    unsigned char unused4[480];
+    unsigned char unused3[480];
     struct
     {
         unsigned char what;
@@ -277,7 +287,7 @@ typedef struct CONFIGURATION
     CC[10];
     unsigned char security, loglevel;
     unsigned short def_days, def_messages;
-    unsigned char unused5[462];
+    unsigned char unused4[462];
     unsigned short autorenum;
     unsigned short def_recvdays;
     unsigned char openQQQs, Swapping;
@@ -287,7 +297,7 @@ typedef struct CONFIGURATION
     char TempPath[_MAXPATH];
     unsigned char graphics, BBSSoftware;
     char AreaFixHelp[_MAXPATH];
-    unsigned char unused6[504];
+    unsigned char unused5[504];
     unsigned short AreaFixFlags;
     unsigned char QuietLevel, Buffers;
     unsigned char FWACnt;  /* # of ForwardAreaFix records */
@@ -326,7 +336,8 @@ typedef struct CONFIGURATION
     unsigned char GroupCnt, OriginCnt;    /* # of GroupName + Origin records */
     unsigned short mailer;
     unsigned short maxarcsize, maxarcdays;
-    char reserved[806];
+    unsigned short minInbPKTSize;
+    char reserved[804];
 
     unsigned short AreaRecSize, GrpDefRecSize;
                                        /*
@@ -361,28 +372,24 @@ typedef struct
     unsigned char aka, autopassive, newgroup, resv1;
     struct
     {
-        unsigned short flags1;
-/*
         unsigned passive          : 1;
-        unsigned dddd             : 1;   Type 2+/4D
+        unsigned dddd             : 1; /*Type 2+/4D */
         unsigned arcmail060       : 1;
         unsigned tosscan          : 1;
         unsigned umlautnet        : 1;
         unsigned exportbyname     : 1;
         unsigned allowareacreate  : 1;
         unsigned disablerescan    : 1;
-        unsigned arc_status       : 2;   NetmailStatus for ARCmail attaches
-        unsigned arc_direct       : 1;   Direct flag for ARCmail attaches
-        unsigned noattach         : 1;   don't create a ARCmail file attach
-        unsigned mgr_status       : 2;   NetMailStatus for AreaFix receipts
-        unsigned mgr_direct       : 1;   Direct flag for ...
+        unsigned arc_status       : 2; /*NetmailStatus for ARCmail attaches */
+        unsigned arc_direct       : 1; /*Direct flag for ARCmail attaches   */
+        unsigned noattach         : 1; /*don't create a ARCmail file attach */
+        unsigned mgr_status       : 2; /*NetMailStatus for AreaFix receipts */
+        unsigned mgr_direct       : 1; /*Direct flag for ... */
         unsigned not_help         : 1;
         unsigned not_notify       : 1;
         unsigned packer           : 4;
         unsigned packpriority     : 1;
         unsigned resv             : 2;
-*/
-        unsigned char flags2;
     }
     flags;                      /* 24 bits total! */
     struct
@@ -413,16 +420,21 @@ typedef struct
     unsigned short resv4;
     unsigned short maxarcsize;
     char name[36];             /* Name of sysop */
-    unsigned char areas[1];    /*
+    unsigned char *areas;      /* 
                                 *  Bit-field with CONFIG.MaxAreas / 8
                                 *  bits, Unsigned Char 0/Bit 7 is conference #0
+                                * 
+                                *  Pointer will be alloc'ed by read_fe_node;
+                                *  call free_fe_node to release it!
                                 */
 }
 Node;                          /*
                                 *  Total size of each record is stored in
                                 *  CONFIG.NodeRecSize.
                                 */
-#define FE_NODE_SIZE (80 + (2 * FE_ADDRESS_SIZE))
+#define FE_NODE_SIZE (79 + (2 * FE_ADDRESS_SIZE))
+                                /* FE_NODE_SIZE is size of the record except
+                                   for the variable length "areas" field */
 
 
 typedef struct
@@ -519,7 +531,10 @@ typedef struct
 ExtensionHeader;
 #define FE_EXTHEADER_SIZE 6
 
-#define EH_AREAFIX      0x0001          /* CONFIG.FWACnt * <ForwardAreaFix> */
+                                /* note: original .h file defined this constant
+                                   to 0x0001, but this obviously did not work
+                                 */ 
+#define EH_AREAFIX      0x000d          /* CONFIG.FWACnt * <ForwardAreaFix> */
 
 enum AreaFixAreaListFormat
 {
@@ -543,12 +558,16 @@ typedef struct
     }
     flags;
     char file[_MAXPATH];
+    char resv0[56];
     unsigned short sec_level;
     unsigned short resv1;
+    unsigned char resv3[3];
     unsigned long groups;
-    char resv2[4];
+    char resv2[33];              /* THIS LOOKS LIKE BULLSHIT FIXME */
 }
 ForwardAreaFix;
+
+#define FE_FORWARD_AREAFIX_SIZE 160
 
 #define EH_GROUPS       0x000C  /* CONFIG.GroupCnt * <GroupNames> */
 
@@ -568,9 +587,19 @@ typedef struct
     unsigned char group;
     unsigned char resv[15];
     Area area;
-    unsigned char nodes[1];     /* variable, c.MaxNodes / 8 bytes */
+    unsigned char *nodes;       /* 
+                                 * variable, c.MaxNodes / 8 bytes 
+                                 *
+                                 *  Pointer will be malloc'ed by
+                                 *  read_fe_groupdefaults,
+                                 *  call free_fe_groupdefaults to release it!
+                                 */
+
 }
 GroupDefaults;
+#define FE_GROUPDEFAULTS_SIZE (16 + FE_AREA_SIZE)
+                                /* This is the length of the record except for
+                                   the variable length "nodes" field */
 
 #define EH_AKAS         0x0007  /* CONFIG.AkaCnt * <SysAddress> */
 
@@ -582,7 +611,7 @@ typedef struct
     unsigned long flags;        /* unused */
 }
 SysAddress;
-#define FE_SYS_ADDRESS_SIZE FE_ADDRESS_SIZE + 34
+#define FE_SYS_ADDRESS_SIZE (FE_ADDRESS_SIZE + 34)
 
 #define EH_ORIGINS      0x0008  /* CONFIG.OriginCnt * <OriginLines> */
 
@@ -613,6 +642,7 @@ typedef struct
     unsigned char resv[7];
 }
 Packers;
+#define FE_PACKERS_SIZE 74
 
 #define EH_UNPACKERS    0x000B  /* CONFIG.Unpackers * <Unpackers> (DOS)  */
 #define EH_UNPACKERS2   0x100B  /* CONFIG.Unpackers * <Unpackers> (OS/2) */
@@ -733,7 +763,16 @@ int read_fe_config(CONFIG *c, FILE *fp);
 int read_fe_extension_header(ExtensionHeader *h, FILE *fp);
 int read_fe_sysaddress(SysAddress *a, FILE *fp);
 int read_fe_area(Area *a, FILE *fp);
-int read_fe_node(Node *a, FILE *fp);
+
+                                /* length is the length as announced by the
+                                   extension header */
+int read_fe_node(Node *n, FILE *fp, size_t length);
+void free_fe_node(Node *n);
+int read_fe_groupdefaults(GroupDefaults *g, FILE *fp, size_t length);
+void free_fe_groupdefaults(GroupDefaults *g);
+
+int read_fe_packers(Packers *p, FILE *fp);
+int read_fe_frequest(ForwardAreaFix *f, FILE *fp);
 
 #ifdef __cplusplus
 }
