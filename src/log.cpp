@@ -20,7 +20,7 @@ CLog::CLog (void)
 
 int CLog::OpenLog (void)
 {
-        DATETIME dt;
+        //DATETIME dt;
 	char buffer[256];
 	if (inited)
 		return ELH_ALREADYOPEN;
@@ -28,6 +28,7 @@ int CLog::OpenLog (void)
 	if (flog==NULL)
 		return ELH_CANTOPEN;
 	inited=1;
+/*
         DosGetDateTime (&dt);
         sprintf (buffer,
                  "%s started at %s %02d,%04d (%s) %02u:%02u:%02u\n",
@@ -35,6 +36,7 @@ int CLog::OpenLog (void)
                  Days[GetDOW()],dt.hours,dt.minutes,dt.seconds);
         WriteOnLog ("%s",buffer);
 	WriteOnLog ("------------------------------------------------------\n");
+*/
 	return SUCCESS;
 }
 
