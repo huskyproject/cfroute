@@ -1387,12 +1387,44 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
 	return SUCCESS;
 }
 
+void touchFile(const char *path)
+{
+    FILE *touch;
+    unsigned char buffer[8];
+    int nok = 1;
+    
+#ifdef UNIX
+#ifdef __FreeBSD__
+    nok=utimes(path, NULL);
+#else
+    nok=utime(path, NULL);
+#endif
+#endif
+
+    if (nok)
+    {
+                                // try conventional method
+        touch=fopen (path,"r+b");
+        if (!touch)
+            touch=fopen (path, "wb");
+        if (touch)
+        {
+            fseek (touch,0,SEEK_SET);
+            if (fread (buffer,1,8,touch)==8)
+            {
+                fseek (touch,0,SEEK_SET);
+                fwrite (buffer,1,8,touch);
+            }
+            fclose (touch);
+        }
+    }
+}
+
 int AnalyzeNet (char *path)
 {
         S_Visu extra;
 	struct S_Control x;
 	char buffer[256];
-	FILE *touch;
 	x.GotSystem=0; x.is_qqq = 0;
         adaptcase(path);
 	strcpy (x.define,path);
@@ -1407,25 +1439,8 @@ int AnalyzeNet (char *path)
                                 " the waypoint was busy.\n\n");
 		// Touch file so it is not skipped in the next run
 		// because of lastrun.cfr
-#ifndef UNIX
-		touch=fopen (path,"r+b");
-		if (touch)
-		{
-			fseek (touch,0,SEEK_SET);
-			if (fread (buffer,1,16,touch)==16)
-			{
-				fseek (touch,0,SEEK_SET);
-				fwrite (buffer,1,16,touch);
-			}
-			fclose (touch);
-		}
-#else
-#ifdef __FreeBSD__
-                utimes(path, NULL);
-#else
-                utime(path, NULL);
-#endif
-#endif
+
+                touchFile(path);
 		return (ENH_DELAYED);
 	}
 
