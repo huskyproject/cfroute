@@ -1,6 +1,6 @@
 #ifdef SQUISHCFS
 extern "C" {
-#include "msgapi.h"
+#include "smapi/msgapi.h"
 }
 #endif 
 
@@ -81,7 +81,7 @@ byte WarningCount=0;
 #include "fastecho.cpp"
 
 #ifdef SQUISHCFS
-#include "msgapi.h"
+#include "smapi/msgapi.h"
 #include "squish.cpp"
 struct _minf minf;
 #endif
