@@ -1,0 +1,93 @@
+.\" CFroute Manpage.
+.TH "CFROUTE" "1" "cfroute" "09 Juli 2001" "Husky - Portable Fidonet Software"
+.SH "SYNOPSIS"
+\fBcfroute \fR
+config_file [config_file...] [\-I] [\-D] [\-V] [\-?]
+.SH "DESCRIPTION"
+CFRoute is a netmail packer for Binkley\-style mailers.
+Most mailers currently in use  support this efficient handling. The
+only exception I know of is FrontDoor. MainDoor, Xenia, Binkley (of
+course), Binkley\-XE, McMail, Portal of Power, etc, support BT\-style.
+CFR fully supports static (=BT\-style)  netmail routing, and has
+several features that are unique to it.
+.br 
+.SH
+General features
+.br
+.B \-
+Routes can be defined not only using the destination node but
+all  other  information  available: Origin  node,  encryption,
+file attached and day of the week.
+.br
+.B \-
+Different flavors  can be defined for  any combination of the
+routing factors, for example you can send messages to your RC
+crash if they were  written by you but hold them  if they are
+just in transit at your system.
+.br
+.B \-
+Unlimited number of routes, AKAs, netmail directories, packet
+passwords,  etc.  Only   limited  by  available   memory.  No
+harcoded limits at all.
+.br
+.B \- 
+Powerful and flexible configuration file parser.
+.br
+.B \- 
+Writes  type  2 (FTS\-0001, stone age) and  type 2+ (FSC\-0039)
+packets.
+.br
+.B \- 
+Parses via lines to get complete path information.
+.br
+.B \- 
+Detects loops.
+.br
+.B \- 
+Powerful wildcarding system, supporting ?, * and #.
+.br
+.B \- 
+Supports any number of *.MSG, Squish and Jam netmail folders.
+.br
+.B \- 
+Complete domain support.
+.br
+.B \- 
+Long filenames supported.
+
+.sp 2
+This manual page was written for the Debian GNU/Linux distribution
+because the original program does not have a manual page.
+
+.SH OPTIONS
+.B [-I]
+forces a complete netmail processing (ignoring file timestamps).
+.br
+.B [-D]
+write a configuration dump on screen.
+.br
+.B [-V]
+log via lines.
+.br
+.B [-?]
+shows the help (!?) screen.
+
+.SH FILES
+.br
+.nf
+.\" set tabstop to longest possible filename, plus a wee bit
+.ta \w'config   'u
+\fIconfig\fR  The CFRoute Configuration File. You have to write one !
+.br
+.sp 1
+See documentation for a (more or less) detailed explanation on the
+configuration file syntax.
+.SH SEE ALSO
+.BR fc2cfr "(1)"
+.SH NOTES
+All Husky-Software is written by various developers. For detailed information
+about the Husky-Team take a look at 
+http://husky.physcip.uni-stuttgart.de/team.html.
+.SH AUTHOR
+This manual page was written by Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>,
+for the Debian GNU/Linux system (but may be used by others).

@@ -1,0 +1,37 @@
+.\" fc2cfr Manpage.
+.TH "FC2CFR" "1" "fc2cfr" "09 Juli 2001" "Husky - Portable Fidonet Software"
+.SH "SYNOPSIS"
+\fBfc2cfr \fR
+[<flag> ...] <cfrouteConfigFileName>
+.SH "DESCRIPTION"
+Converts a FIDOCONFIG file to a CFROUTE configuration file.
+.br 
+.sp 2
+This manual page was written for the Debian GNU/Linux distribution
+because the original program does not have a manual page.
+
+.SH OPTIONS
+.B \-r
+convert routing information
+.br
+.B \-p
+convert packet passwords
+.br
+.B \-s
+convert misc. other settings (like netmailarea etc.)
+
+.SH FILES
+.br
+.nf
+.\" set tabstop to longest possible filename, plus a wee bit
+.ta \w'config   'u
+\fIconfig\fR  The CFRoute Configuration File.
+.SH SEE ALSO
+.BR cfroute "(1)"
+.SH NOTES
+All Husky-Software is written by various developers. For detailed information
+about the Husky-Team take a look at 
+http://husky.physcip.uni-stuttgart.de/team.html.
+.SH AUTHOR
+This manual page was written by Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>,
+for the Debian GNU/Linux system (but may be used by others).
