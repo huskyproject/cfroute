@@ -2,6 +2,11 @@
 #include <conio.h>
 #else
 #define getch getchar
+#ifdef __FreeBSD__
+#include <sys/time.h>
+#else
+#include <utime.h>
+#endif
 #endif
 #include <stdlib.h> // <malloc.h>
 #include "buffer.cpp"
@@ -717,7 +722,7 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 			storage->DateParsed=1;
 
                         /* sliding window adaption of year number */
-                        
+
                         DosGetDateTime(&dtnow);
                         while (storage->date.year + 50 <= dtnow.year)
                                 storage->date.year += 100;
@@ -875,7 +880,7 @@ int ShowNet (char *path)
 // - FECFONIG     has been specified in the cfroute cfg
 // - the mail is not crash, direct, immediate or hold, or has a file
 //   attached
-// - the destination system is listed in fastecho.cfg 
+// - the destination system is listed in fastecho.cfg
 //   (which can be seen from the fact if PasswordHandler knows this
 //   system or not).
 
@@ -883,7 +888,7 @@ int DoQQQPack(S_FQAddress via, int AttribPack)
 {
         if ((FastechoPack == 2)  ||    /* Pack anything as QQQ */
             (FastechoPack == 1  &&     /* Pack mail to listed links only */
-             PasswordHandler.GetPassword(via, NULL) == SUCCESS &&
+             PasswordHandler.GetPassword(via, (char *)NULL) == SUCCESS &&
                                        /* destination system is a link */
              AttribPack == TT_NORMAL))
                                        /* no "priority" flag is set */
@@ -1032,7 +1037,7 @@ void BufferHeader (S_Visu *header, C_StringList *SL_Header)
 		header->attrib.bits.FileUpdateReq?"UpR ":"", // Direct
 		header->attrib2.bits.ArchiveSent?"A/S ":"",
 		header->attrib2.bits.KillFileSent?"KFS ":"",
-		(header->attrib2.bits.Direct 
+		(header->attrib2.bits.Direct
                  && (!(header->attrib.bits.Unused))) ? "Dir ":"",
 		header->attrib2.bits.Zonegate?"Zon ":"",
 		header->attrib2.bits.Hub?"Hub ":"",
@@ -1349,7 +1354,7 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
         }
         else
                 FindPKTPath (x->ShouldGo,x->savepath);
-        
+
         FindPKTPath (x->ShouldGo, x->savepathattach);
 
 	Log.WriteOnLog ("File: %s%s\n",x->savepath,x->ext);
@@ -1387,7 +1392,7 @@ int AnalyzeNet (char *path)
                                 " the waypoint was busy.\n\n");
 		// Touch file so it is not skipped in the next run
 		// because of lastrun.cfr
-#ifndef UNIX                
+#ifndef UNIX
 		touch=fopen (path,"r+b");
 		if (touch)
 		{
@@ -1400,11 +1405,15 @@ int AnalyzeNet (char *path)
 			fclose (touch);
 		}
 #else
-                printf ("DEB %s %d\n",path, utimes(path, NULL));
-#endif                
-		return (ENH_DELAYED);                
+#ifdef __FreeBSD__
+                utimes(path, NULL);
+#else
+                utime(path, NULL);
+#endif
+#endif
+		return (ENH_DELAYED);
 	}
-        
+
 	if (MSGToPKT (path,x.savepath,x.ext,x.ShouldGo,x.OurAKA,
                       extra.Destination,
                       Packet2Handler.DoesMatch(x.ShouldGo,x.ShouldGo,0,0), x.is_qqq)
@@ -1434,7 +1443,7 @@ int AnalyzeNet (char *path)
 			Log.WriteOnLog ("Warning: Failed to update"
                                         " filerequest queue.\n");
 	}
-	if (extra.attrib.bits.KillSent || 
+	if (extra.attrib.bits.KillSent ||
             (extra.attrib.bits.InTransit && KillInTransit))
 	{
 		if (remove (path))

@@ -61,7 +61,7 @@ public:
 	CConfigHandler();
 	int Open (char *FileName);
 	int Close ();
-	int ReadLine(char *ReadBuffer,long *linecounter=NULL);
+	int ReadLine(char *ReadBuffer,long *linecounter=(long *)NULL);
 	// Variables
 	char ConfigFileName[128]; // Name of the current config file, if any
 };
