@@ -239,11 +239,12 @@ defined.  This is a list of the verbs that may be used.
   handle this, you don't need the RECODE feature, and you'd really better
   fix your mail reader.
   If you still want to use this, it works as follows: The argument is a
-  recoding file name in the format as it is also used by hpt. All inbound
-  mail will be recoded according to this map, and all outbound mail will be
-  recoded in the other direction. This can be used as a temporary workaround
-  for KOI8-R systems in Russia that do not yet have a mail reader that
-  supports cyrillic recoding according to the CHRS kludge.
+  recoding file name in the format as it is also used by hpt, so you can
+  specify the same filename that is specified as outmap in fidoconfig.
+  All outbound mail will be recoded according to this map file. This can be
+  used as a temporary workaround for KOI8-R systems in Russia, that do not 
+  yet have a mail reader that supports cyrillic recoding according to the 
+  CHRS kludge. 
 
 - INCLUDE filename
   Processes a file  as part of the  configuration. Include's can be
