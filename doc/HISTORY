@@ -12,6 +12,8 @@ each feature.
 Current Beta (not yet released)
 -------------------------------
 
+    - New: Support for JAM Message base (NETJAM keyword). This requires
+      SMAPI 1.6.4b or newer!
     - Removed all fread/fwrite calls that read directly into structures.
       Cfroute now works without structure packing, independently of
       endianness or other architecture details. You can now use cfroute

@@ -19,9 +19,8 @@ A: CFR uses the file timestamp to determine when a .MSG should be queued for
    LASTRUN.CFR flag file).
 
 Q: Are there any plans to add Squish/JAM/whatever support?
-A: Squish has been adeed.  :-) There are no plans for JAM or other  support.
-   If you really want support for your beloved such-or-such msgbase, you may
-   ask for the source code and add it yourself.
+A: CFRoute 1.0 supports both Squish and Jam. Use the NetSquish resp. NetJam
+   keywords to declare netmail folders in these formats.
 
 Q: Why doesn't CFR pack the netmail with echomail?
 A: Besides from some arguments why not packing netmail has strong advantages
@@ -60,9 +59,10 @@ A: You need EMX 0.9c (GCC 2.7.2) for OS/2,  RSX  (GCC  2.7.2)  for  NT,  and
 
 Q: What tools have been used for CFRoute?
 A: Only  C++  compilers  and  the FTS-* and FSC-* documents.  If you want to
-   build a version of CFRoute that can access Squish message base files, you
-   also need  the  modified  Squish  library  labeled  "SMAPI",  of at least
-   revision 1.5.  It is available from http://www.fidosoft.sar-gmbh.com
+   build  a  version  of CFRoute that can access Squish and Jam message base
+   files, you also need the  modified  Squish library labeled "SMAPI", of at
+   least revision 1.6.4b. It is available at
+   http://husky.physcip.uni-stuttgart.de
 
 III Other questions
 -------------------

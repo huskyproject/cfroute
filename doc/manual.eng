@@ -2,7 +2,7 @@
 
 
 
-                           CFRoute 0.95 alpha
+                              CFRoute 1.0a
 
 
           a freeware Netmail packer for Binkley-style mailers
@@ -185,6 +185,9 @@ defined.  This is a list of the verbs that may be used.
   to  specify  a  Netmail  area in Squish file format.  Specify the
   base name of the squish  area,  but  do  NOT use a "!" as prefix!
   Example:  NETSQUISH O:\SQUISHBASE\NETMAIL
+
+- NETJAM  jam_netmail_directory
+  Like Netsquish, but defines a JAM netmail area.
 
 - OUTBOUND outbound_main_outbound_directory.
   Make sure it is the same as the mailer's. Required.
@@ -902,5 +905,3 @@ related to CFR directly:
     Hauke   Hagenhoff, the   Binkley-XE  development  team, Harald
 Pollack, Dana Booth, Bob Juge,  Jos‚ Luis Ben¡tez,  Patrick Klein,
 Francisco Sedano, Tobias Burchhardt, Harald Harms.
-
-
