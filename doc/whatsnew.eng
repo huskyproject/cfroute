@@ -1,0 +1,316 @@
+0.94a
+-----
+    - Fixed a potential problem with directory naming. Never ocurred but
+      one never knows...
+    - NoDomainDir should be working as expected.
+    - CFRoute can now import data from FastEcho. See FEConfig in the
+      documention.
+    - Corrected a few things on the documentation.
+    - NOPACKFILES wasn't working - one had to use NOPACKFILE to make it
+      work.
+    - NOPACK* was only working for netmail to be routed, but it was
+      packing netmail to be sent direct.
+
+0.93a
+-----
+    - Fixed a potential problem regarding messages headers containing %.
+    - INTL lines now has priority over .MSG headers, i.e. if the header's
+      net & node info don't match the INTL info, the INTL info will be
+      used.
+    - Replaced the English manual with the new one. It is still a draft,
+      though, being revised by a English-speaking person. New documentation
+      in Spanish (by myself), German and Dutch will follow.
+
+0.92a (not publicly released)
+-----------------------------
+    - Added a work around for misbehaved (IMHO) editors using newlines
+      characters.
+
+0.91a
+-----
+    - Via lines are now directly added to the .PKTs rather than
+      signing the .MSG first. CFR was signing .MSGs because it
+      allows to see the Via line added to local messages (it made
+      no difference to in-transit messages, obviously) and it
+      was nice for debugging, but it is no longer necessary.
+    - Point number is no longer added to via lines if it is zero,
+      i.e.
+        Via 2:341/70.0@fidonet.org...
+        is now
+        Via 2:341/70@fidonet.org
+      This is the way most program sign.
+    - Empty path lines are no longer logged.
+    - Fixed a bug regarding EXCEPT.
+
+0.90a
+-----
+      ===============================================================
+      First: Since we have reached 0.90, I think it is time to stop
+      adding features and start hunting bugs seriously. Please report
+      anything that you think to be a bug, or a possible bug. CFR 1.0
+      has to be bug free.
+      0.91 (unless it is released sooner than I would want to because
+      of a bug) will include up-to-date manuals (English & Spanish,
+      other languages welcome if any one is willing to do the
+      translation).
+      ===============================================================
+    - Fixed the most stupid bug ever: CFR couldn't parse this month's
+      messages because I have used "Dic" instead of "Dec" as the first
+      three letters (in Spanish the last month of the year is
+      "Diciembre"). No harm caused by this. CFR couldn't tell the
+      messages' age, that's all.
+    - Fixed a bug related to address comparison.
+    - Added path logging. If LOGPATH is specified, CFR attempts to
+      parse Via lines and to provide the path the message followed.
+      Example:
+      Path: 2:346/10.2 -> 2:346/10 -> 2:346/3 -> 2:348/201
+    - As a result of the work on the path stuff, the loop detector works
+      again 100%. Remember how it worked: If a local via line is found
+      followed by a non-local line (thus the message left our system
+      but now it back), CFR logs all via line since the last time
+      the message was processed at home.
+    - Added FASTECHOPACK. If you were using FASTECHO PACK and have switched
+      to CFR, but still want to send netmail inside the compressed bundled,
+      this one is for you (not for me; I prefer using .?UT). If used,
+      CFR will create .QQQs instead of .PKT. FastEcho will pack them with
+      its own .QQQs.
+    - Added NODOMAINDIR, if used CFR will not use the domain name to
+      get the outbound dir name. Instead, the default directory (plus
+      the zone number if different than the main zone) will be used.
+
+0.89a
+-----
+    - Fixed a small bug related to INCLUDE'ing. A warning was being
+      incorrectly issued.
+    - Added KILLINTRANSIT per request of Squish users. If used, CFR
+      will delete exported messages with the In-Transit flag event
+      it doesn't have kill/sent set. 
+0.88a
+-----
+    - EXCEPT was being incorrectly parsed as FROM.
+
+0.87a
+-----
+    - Windows 32-bit versions included. It compiles, that's all I
+      guarantee. Absolutely untested by myself.
+    - Fixed a problem regarding multiple netmail directories in the OS/2
+      version.
+    - Skipped messages are touched so they are not skipped in the next
+      run (because of lastrun.cfr being newer than the message file).
+    - Paths are now stripped from the subject line on attaches (only
+      filenames are left).
+    - Fixed a bug in the address solving function.
+    - Message bodies wasn't being checked for illegal 0s before the end
+      of the message. This is now corrected and CFR will only copy to
+      the first zero.
+
+0.86a
+-----
+    - The OS/2 version is now compiled with GCC. Note that now the EMX
+      run-time is required (even though I don't use any of the EMX
+      extensions). Please send input about noticed performance changes.
+    - Fixed a bug with the from specs.
+    - Added support for multiple netmail directories. Now you can use
+      as many netmail sentences as you want.
+0.85a
+-----
+    - Added a '-V' switch that forces CFR to log all via lines. Note that
+      the generated log most likely be very big. It is only used for
+      debugging purpuses.
+    - Added domain support for routing. Only to be used when there are
+      two nets with the same zone number.
+      Example:
+        route-to 2:341/70@fidonet 2:341/*
+        route-to 2:600/0@example 2:600/*
+    - CFR was always using the main AKA for the packet header. Fixed.
+    - Added a new macro, LOCAL, which is replaced for all local addresses.
+      I use it to avoid routing of local attaches, i.e.
+        DIRECT-FILES * FROM LOCAL
+      I have unintentionally routed a couple of big files so I decided to
+      make sure that wouldn't have again.
+    - Added VIABOSSHOLD and VIABOSSDIRECT. These two commands make CFRoute
+      send hold and direct (direct including crash, inmmediate, etc) netmail
+      to points thru their bosses. Usually viabossdirect will be used, and
+      viabosshold will not. Note that these commands don't apply to message
+      with file request.
+    - CFR now honors busy flags (.BSY files). By default it won't export
+      any netmail whose waypoint is busy. Use IGNOREBSY if you want CFR
+      to ignore these flags, but it is not recommended.
+0.84a
+-----
+    - Updated English manual with the last what's new entries.
+    - The in-transit flag is now stripped from the messages. I'm not sure
+      why this should be done, however I've got a complain from a downlink
+      and FastEcho does this, so just in case...
+    - Also stripping the local flag :-)
+    - Changed again the route system. The points are not being assumed any
+      longer, UNLESS a ASSUMEPOINTS is used. Ie.
+      route-to 2:2453/1031 2:2453/1030 -> 2453/1030.0
+      but
+      ASSUMEPOINTS
+      route-to 2:2453/1031 2:2453/1031 -> 2:2453/1030.*
+    - Removed the waypoint assumption, i.e.
+      ROUTE-TO 2:2453/1031 2:2453/1030 doesn't mean
+      ROUTE-TO 2:2453/1031 2:2453/1031 2:2453/1030.
+      If you want to do that, use ASSUMEWAYPOINTS.
+
+      I think those two keywords (ASSUMEPOINTS & ASSUMEWAYPOINTS) will
+      keep happy everyone.
+    - Added a command EOLENDSCOMMAND. If used, a command is finished
+      when the line that has it ends. Example:
+      ROUTE-TO 2:2453/1031
+      1030
+      is the same as route-to 2:2453/1031 1030
+      but
+      EOLENDSCOMMAND
+      ROUTE-TO 2:2453/1031
+      1031
+      is read as ROUTE-TO 2:2453/1031
+      and then a 'unexpected 1031' error is issued.
+      Note that DEFINEs are ended too! So if you use EOLENDSCOMMAND, you
+      no longer need to use ENDDEFINE.
+0.83a
+-----
+    - Changed format of ^AVia line to the format used by most software
+      today, i.e. ^Via address @YYYYMMDD.HHMMSS software
+    - Added a new command, DEFINE. Define allows to create user-defined
+      macros.
+        Syntax: DEFINE macroname [anything] ENDDEFINE
+      Then simply use the macros anywhere. Macros can contain both commands
+      and parameters, even other macros. They can be used for the most
+      simplest things, such as
+      DEFINE NORTH_AMERICA 1:* ENDDEFINE
+      DEFINE REST_WORLD 2:* 3:* 4:* 5:* 6:* ENDDEFINE
+      DEFINE GEORGE_PEACE 1:270/101 ENDDEFINE
+      DEFINE MANUEL_FUENTES 2:348/201 ENDDEFINE
+      ROUTE-TO GEORGE_PEACE NORTH_AMERICA
+      ROUTE-TO MANUEL_FUENTES REST_WORLD
+      and also for complex things, such as including a complete region
+      routing with dozens of route-to statements.
+      Of course, circular references are not allowed, ie.
+      DEFINE TEST1 TEST2 ENDDEFINE
+      DEFINE TEST2 TEST1 ENDDEFINE
+      TEST1
+      will cause CFR to terminate inmediately.
+0.82a
+-----
+    - Fixed a stupid bug that caused certain messages to lock CFR.
+    - Waypoints are now targets and .* is assumed if no point specification
+      is given, i.e.
+        route-to 2:341/70 2:341/62
+        means route-to 2:341/70 2:341/70.* 2:341/62.*
+    - To avoid confusion, the main address is no longer used to complete
+      waypoints. Waypoints have to be full 4D addresses, so
+        route-to 70 62
+      is NOT valid. It has to be route-to 2:341/70 62
+      I have changed this because changing the main address would change
+      the complete meaning of the route tree.
+      You can still use the main address as a seed to complete AKAs.
+    - Changed address resolving.
+        - For routing sentences: Every address is completed using the
+          previous address (remember: the starting address -waypoint-
+          has to be 4D). Ie:
+            route-to 2:2453/1031 1030 means
+                route-to 2:2453/1031 2453/1031.* 2:2453/1030.*
+            route-to 2:* 1030 causes an error has 2:* can't be used
+            to resolve 1030.
+        - For passwords & packet2: Sames rules as for routing sentences.
+        - For AKAs: Main still has to be 4D. Next AKAs are resolved
+          using the previous defined address, ie:
+            MAIN 2:341/70
+            AKA 400/0 10 .2 -> AKA 2:400/0 2:400/10 2:400/10.2
+    - Added a new parameter, -D, to force a complete listing of the
+      arrays creating upon reading the config. file(s). If you think
+      CFR is not working right but you don't like the debug version,
+      use -D with the normal version.
+0.81a
+-----
+    - Fixed a major bug in the MYPOINTS macro handler.
+0.8a
+----
+    - The OS/2 version now makes sure there isn't another copy of
+      CFRoute running. If you want to prevent this problem in DOS,
+      you can create a file yourself and destroy it after CFR
+      exits. Example:
+
+      ECHO . >RUNNING.CFR
+      CFR-DOS
+      DEL RUNNING.CFR
+
+      Check for RUNNING.CFR with CHECKFILE, as explained below.
+    - Added a new command, CHECKFILE file_name. If the filename specified
+      as parameter exists then CFR exists inmediately without any
+      processing. Most common use is to avoid running CFR and the tosser
+      at the same time. You can use as many filenames as you want, and
+      you can use wildcards. Example:
+
+      CHECKFILE H:\FETOSS\FEBUSY.*
+      CHECKFILE H:\CONTROL\ONPROC.NOW
+
+      causes CFR to exit if FastEcho is running or if ONPROC.NOW (that's
+      a file I use in my batches) exists.
+    - Changed wildcarded address parsing a bit. Shouldn't make any
+      important difference.
+    - PASSWORD now allows wildcards.
+    - MYPOINTS was adding .* to all AKAs, including those with a point
+      number, which should be skipped. So,
+            ADDRESS 2:341/70
+                AKA 2:341/31.15
+             DIRECT MYPOINTS
+      MYPOINTS was being processed as 2:341/70.* (correct) and 2:341/31.*
+      (wrong). Now it is correctly ignoring the addresses with a point
+      number. In the above example, only 2:341/70.* would be processed.
+    - Fixed a problem in the calculation of the day of the week in the
+      OS/2 version.
+    - Configuration file parser rewritten. It was becoming a bit complex
+      so I have decided to rewrite it right before it was too late.
+      Everything should work exactly as before.
+    - Added a NOPACK (and its counterparts NOPACKFILES & NOPACKMAIL)
+      to leave netmail untouched. I think the primary use for this command
+      is to avoid EXCEPT repetitions. A single node may qualify for many
+      routing sentences, so instead of excepting it from each one, a NOPACK
+      command is used at the end of the file.
+0.72a
+-----
+    - MSGID is used to get the zone information if no INTL kludge is
+      found.
+0.71a
+-----
+    - Fixed a bug in the lastrun.cfr processing.
+    - Finally found a bug that was turning me crazy. Messages with
+      an extension other than ".MSG" were being ignored, including
+      files with a '.msg' extension!!!! Thanks to Dana Booth for
+      pointing out that something was wrong with the OS/2 version.
+    - Added an argument parser, read the documentation for a complete
+      explanation.
+
+CFRoute 0.7 alpha
+-----------------
+    - Fixed a bug in the parser. * wasn't being parsed as *:*/*.* but
+      main_zone:main_net/*.*.
+    - Changed logging system. Only netmail that are packed get logged.
+    - Via lines for netmail already processed in the system (i.e. looped
+      netmail) are logged. Note that CFRoute will only log from the
+      last Via line generated at the system being run, not all via
+      lines.
+    - Added a control file (LASTRUN.CFR) that keeps track of the last
+      time CFRoute was run. CFRoute will not process any netmail whose
+      file date is older than the last time CFroute was run. This saves
+      a lot of time.
+    - Added a new command, INCLUDE. It is (obviously) used to include
+      a file as part of the configuration. For example, the main config
+      file could be
+
+        INCLUDE AKAS.CFR
+        INCLUDE ROUTING.CFR
+        INCLUDE PASSWORDS.CFR
+
+      As of now this feature is not really very important, however if
+      tracking features (such as bouncing) are written the configuration
+      file will become a lot larger.
+
+CFRoute 0.6 alpha
+-----------------
+    - Fixed a bug in the non-debug version. A password command was
+      causing a topdown request to be processed.
+

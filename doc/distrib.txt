@@ -1,0 +1,6 @@
+There are presently no official distribution sites at all. If you want to
+have a copy of cfroute, write a netmail to Tobias Ernst @ 2:2476/418 or an
+e-mail to tobi@bland.fido.de.
+
+By the time that CFRoute 0.95a will be released, there will be at least one
+official site for f'req and one for ftp.

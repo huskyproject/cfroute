@@ -1,0 +1,861 @@
+
+
+
+
+                           CFRoute 0.95 alpha
+
+
+          a freeware Netmail packer for Binkley-style mailers
+
+
+                   for OS/2, Linux, DOS and Windows-32
+
+
+                 by Carlos Fern ndez Sanz. Madrid, Spain
+         formerly: 2:341/70@fidonet.org, cfs@emporium.subred.org
+
+        now being maintained by  Tobias Ernst, Stuttgart, Germany
+                2:2476/418@fidonet.org, tobi@bland.fido.de
+
+
+
+1. What is CFRoute?
+-------------------
+    In short, CFRoute is a netmail packer for Binkley-style mailers.
+Most mailers currently in use  support this efficient handling. The
+only exception I know of is FrontDoor. MainDoor, Xenia, Binkley (of
+course), Binkley-XE, McMail, Portal of Power, etc, support BT-style.
+    CFR fully supports static (=BT-style)  netmail routing, and has
+several features that are unique to it.
+
+2. General features
+-------------------
+    - Routes can be defined not only using the destination node but
+      all  other  information  available: Origin  node,  encryption,
+      file attached and day of the week.
+    - Different flavors  can be defined for  any combination of the
+      routing factors, for example you can send messages to your RC
+      crash if they were  written by you but hold them  if they are
+      just in transit at your system.
+    - Unlimited number of routes, AKAs, netmail directories, packet
+      passwords,  etc.  Only   limited  by  available   memory.  No
+      harcoded limits at all.
+    - Powerful and flexible configuration file parser.
+    - Writes  type  2 (FTS-0001, stone age) and  type 2+ (FSC-0039)
+      packets.
+    - Parses via lines to get complete path information.
+    - Detects loops.
+    - Powerful wildcarding system, supporting ?, * and #.
+    - Compiled for OS/2, Linux, DOS and Windows-32.
+    - Complete domain support.
+    - Long filenames supported.
+    - Optionally generates FastEcho .QQQs instead of .UTs.
+    - Can import data from FastEcho.
+    - Freeware.
+    - Source code (C++) available.
+    - Documentation available in English (and an outdated version in
+      Spanish).
+
+3. Running CFRoute
+------------------
+    There  are  four files included in the CFR package.  CFR-DOS is
+the DOS version.   CFR-OS2  is  the  OS2  version.   CFR-WIN is the
+Windows/32 version.  CFR-LNX is the Linux version, which also  runs
+on FreeBSD if the linux compat packages are installed.
+    Routes are defined  in one  or more  configuration  file, which
+will be explained later. There are a few command line parameters.
+    One of them (order isn't  important) has to be a  configuration
+file. Mine is called ROUTE.CFR but  you can use any  name you like.
+You may use  several configuration  files if you want. Usually  the
+main file imports the others as will be explained later, but it  is
+correct to load more than one file from the command line. Example:
+
+    CFR-OS2 route.cfr password.cfr
+
+    These switches are supported:
+
+    -?  Get a help screen.
+    -I  ignore file dates. By  default, when  CFRoute  is  run,  it
+        saves the date and time. This way it can skip messages that
+        are older (thus they have been processed already) which  is
+        a lot faster than processing them all again. Unfortunately,
+        it is possible that some  program tries to get  clever (the
+        only program  I know of  is NetMgr) and modifies  a message
+        but keeps the original file date (don't confuse the date of
+        the message and the date  of the .MSG file; we  are talking
+        about the later now). If you are  using such a  program, it
+        is wise to use -I in the first run after using it.
+    -D  If used, CFR will dump the configuration  file(s) as it has
+        parsed them. If you think CFR may be doing something wrong,
+        try -D.
+        Also, -D will  force CFR to tell  which routes are  matched
+        the message being processed.
+        So if the problem relates to the configuration, -D will let
+        you fix it quickly.
+    -V  Log via lines. Log  will be  very large if used, but may be
+        helpful some times. Note that  CFR can parse via  lines and
+        log just the addresses, which is a lot more useful.
+
+4. Configuration files.
+-----------------------
+    Before getting to the routing, there are a few rules  that need
+to be  explained regarding  the parsing of the  configuration files
+(and how to changing those rules).
+
+     A.  Lines starting with ; are considered  to be comments,  and
+         not parsed. There  is  an exception  to this: If the  line
+         starts with ;CFR then  it will be  parsed (ignoring ;CFR).
+         Why this? Because  this  allows  to share a  file  between
+         several programs. Say you are using  FastEcho and want  to
+         try CFRoute for a few days. You can edit ROUTE.FE a bit to
+         add some stuff for CFRoute and still use the file with FE.
+         Example:
+
+         ;CFR NETMAIL C:\NETMAIL
+
+         CFRoute  will  parse  that and  get its  required  netmail
+         directory, while FastEcho will ignore the line.
+
+     B.  - Any word that is not a verb, is  considered a  parameter
+           for the previous verb.
+         - A verb ends the parsing of the previous verb.
+         - You can  use any number of  tabs and spaces you like  to
+           keep your configuration files readable.
+
+         In short, these three sentences mean that you may  write a
+         word in a different line, or all the configuration  in the
+         same line, etc. For CFR it doesn't make a difference.
+         If  you are  used to "one verb  one line" and  prefer that
+         end of line means end of command, use the keyword
+
+         EOLENDSCOMMAND.
+
+     C.  Routes  are  processed  bottom-up, which  means  that  the
+         *LAST* route that matches  the message data  will be  used
+         (the same way as FastEcho's pack). If you  use Squish, you
+         may prefer that  the first route is used instead. Use  the
+         keyword
+
+         TOPDOWN.
+
+      D. When  completing  addressed, CFR  will  use  the  previous
+         address used for a command of the  same type. AKAs will be
+         completed with the previous AKA or the main address (which
+         has to be complete as explained below). Addresses in route
+         sentences will be completed  with the previous  address in
+         that sentence (the first address must be complete), etc.
+
+      E. Attributes in the messages have  priority over routing. So
+         a message with the crash bit set will be set crash even if
+         there is a route sentence for it. By default messages that
+         are not to  be routed (crash, hold, etc) are  sent to  the
+         destination. Two keywords change this behaviour:
+
+         VIABOSSHOLD -> Hold messages for points are hold for their
+                        bosses.
+         VIABOSSDIRECT -> Direct  (and  crash, immediate,  etc) are
+                          route through their bosses.
+
+         Usually VIABOSSHOLD will  be  used  and VIABOSSDIRECT will
+         not.  (Note by Tobias:  This is Carlos'  opinion.   On  my
+         configuration, I do use VIABOSSDIRECT ...)
+
+    Before  the  routing,  there  are  a few things that need to be
+defined.  This is a list of the verbs that may be used.
+
+- LOG filename
+  The name of  the file for logging. CFR logging is very extensive.
+  It logs  the complete  message header, the system the  message is
+  sent of, the age (in days) of the  message and its body size.
+  Other information such as the path it followed before  getting to
+  our system or the via line are optional.
+  Example:
+  LOG P:\CFROUTE.LOG
+
+- NETMAIL netmail_directory
+  Where .MSGs (Fido Netmails in the Fido *.MSG (Opus) message  base
+  format)are  stored.   At  least  one  must be specified.  You may
+  specify as many as you want.  Long directory names are supported.
+  Example:
+  NETMAIL O:\NETMAIL\MAIN
+  NETMAIL O:\NETMAIL\Hauke_Hagenhoff
+
+- NETSQUISH squish_netmail_directory
+  Alternatively, or of course in addition to, NETMAIL, you may want
+  to  specify  a  Netmail  area in Squish file format.  Specify the
+  base name of the squish  area,  but  do  NOT use a "!" as prefix!
+  Example:  NETSQUISH O:\SQUISHBASE\NETMAIL
+
+- OUTBOUND outbound_main_outbound_directory.
+  Make sure it is the same as the mailer's. Required.
+  Example:
+  OUTBOUND Q:\FILES\MAIL\FIDO
+
+- MAIN address.
+  Your main (primary) address. It must be 4D or 5D.
+  Example:
+  MAIN 2:341/70@fidonet.org
+
+- AKA address [address...]
+  Additional system  addresses. If they are  not complete, CFR will
+  get the missing parts  from the  previous AKA  or from  the  main
+  address.
+  Example:
+  MAIN 2:341/70@fidonet.org
+  AKA 62 79 93:341/110@subnet.org 150 160
+  generates the following address list
+  2:341/70@fidonet.org
+  2:341/62@fidonet.org
+  2:341/79@fidonet.org
+  93:341/110@subnet.org
+  93:341/150@subnet.org
+  93:341/160@subnet.org
+
+- PACKET2 address [address..]
+  List of systems that will complain if a packet is type 2+ and not
+  2. I have  never heard  of a  program that  will  process type  2
+  packets but not type 2+, but just in case the verb is there.
+  Example:
+  PACKET2 2:341/70 62
+
+- PASSWORD password address [address..]
+  Defines the password to add  to the .PKTs generated by CFR. There
+  is a discussion on NET_DEV about packet passwords, being the most
+  general opinion that  they are useless. I share that  opinion but
+  in case you really want to do some extra work...
+  Wildcards are accepted.
+  Example:
+  PASSWORD EXAMPLE 2:341/70 62
+
+- INCLUDE filename
+  Processes a file  as part of the  configuration. Include's can be
+  nested, i.e. you  can call a  new file from a file  already being
+  included.
+  Example:
+  INCLUDE password.cfr
+
+- CHECKFILE filename
+  If the  file exists, CFR terminates  inmediately. Main use  is to
+  avoid running CFR and a tosser at the same time.
+  Example:
+  CHECKFILE H:\FESEM\FEBUSY.*
+  is used here to end CFR if FastEcho is running.
+  You can specify as many filenames as you wish (CFR will terminate
+  if any of them exists) and you can use wildcards.
+
+- FECONFIG <fastecho directory>
+  If no directory is specified, CFRoute will check in the directory
+  specified in the enviroment variable FE and the current dir.
+  Processing of  FastEcho's FASTECHO.CFG takes place  after reading
+  CFR's  config, regardless  of where  FEConfig is  found. CFR will
+  take the following data from FastEcho:
+        - The netmail directory, if none  is specified in CFR's own
+          config.
+        - The outbound directory, if none is specified in CFR's own
+          config.
+        - All system addresses not specified in CFR's own config.
+        - Packet passwords  for systems not  specified in CFR's own
+          config.
+
+- ASSUMEPOINTS and ASSUMEWAYPOINTS.
+  See routing.
+
+- EOLENDSCOMMAND
+  Explained above.
+
+- TOPDOWN
+  Explained above.
+
+- LOGPATH
+  If used,  CFRoute  will  parse via  lines and  log  the path  the
+  message followed. (explained with detail later).
+
+- DEFINE macro_name anything ENDDEFINE
+  Defines a macro, which can then be used anywhere. Example:
+  DEFINE GEORGE_PEACE 1:270/101 ENDDEFINE
+  DEFINE NORTH_AMERICA 1:* ENDDEFINE
+  DEFINE REST_FIDO 2:* 3:* 4:* 5:* 6:* ENDDEFINE
+  ROUTE-TO GEORGE_PEACE NORTH_AMERICA
+  Even...
+  DEFINE ROUTE_AMERICA ROUTE-TO G_PEACE NORTH_AMERICA ENDDEFINE
+  and them
+  ROUTE_AMERICA to do the actual work.
+
+- FASTECHOPACK [ALL]
+  If you run Fastecho as your Tosser and want the Netmail for  your
+  links  to  be archived together with the echomail arcmail bundles
+  (like Fastecho does when Fastecho  is  used for Routing), you can
+  use the FASTECHOPACK parameter to instruct CFRoute to create .QQQ
+  files in the Fastecho "temporary outbound" directory  instead  of
+  .?UT files in the Binkley outbound.  You can then call
+
+  "FASTECHO PACK -R<name of empty routing file>"
+
+  directly  after  running  CFroute, and Fastecho will compress the
+  .QQQ files into the arcmail bundles.
+
+  If FASTECHOPACK is specified  without any parameter, CFRoute will
+  only create QQQ files for  packets  that  are  addressed  to  any
+  system  which is either listed in the Fastecho configuration file
+  (see FECONFIG keyword)  or  has  a  packet  password defined (see
+  PASSWORD keyword), and the mail does not carry any of the  crash,
+  immediate, direct or hold falgs.
+
+  If  you  specify  FASTECHOPACK ALL, CFroute will always write QQQ
+  files.  I don't see why anybody would want to use this option, as
+  Fastecho will then create  arcmail  packets (packed with ARC) for
+  unknown systems, which is a bad idea, because most  node  systems
+  do not automatically uncompress arcmail packets from systems with
+  which  they  don't  have a session password.  Also, Fastecho will
+  disregard any  crash,  immediate,  direct  or  hold flavours hwen
+  packing .QQQ files.  I only included the ALL option in  order  to
+  be  able  to  simulate  the  behaviour of CFRoute 0.94a and older
+  versions, although this behaviour does  not  make any sense in my
+  opinion.
+
+- NODOMAINDIR
+  By default CFRoute uses domain to determine the  directory  where
+  outbound  queues are stored.  However some mailers such as Portal
+  of Power do  not  use  domain  information  for this.  Also, some
+  users of mailers like  Binkley  XE  do  not  configure  a  domain
+  outbound.   Use NODOMAINDIR if you do not have a domain outbound,
+  that means if you have directories like "outbound.015" instead of
+  "gernet.015".
+
+- KILLINTRANSIT
+  By default CFRoute only deletes message with the kill/sent  flag.
+  However  I've  got  some  request from Squish users to delete all
+  in-transit mail even if it doesn't have the kill/sent flag.  I do
+  not think that is correct so  I have added this keyword to change
+  the default behaviour.
+
+- IGNOREBSY
+  CFR honors .BSY flags.  If there is a message to  be  sent  to  a
+  node  that  is  now connected, CFR will not pack the message, but
+  leave it untouched until the  .BSY dissapears.  Also, at the time
+  CFRoute starts to pack a message, it  creates  a  .BSY  flag  and
+  deletes  it after it has finished.  If you want CFR to ignore the
+  .BSY files, use this keyword.  Be  aware that this may cause mail
+  losses.  Do not use it unless you know what you are doing.
+
+5. Routing
+----------
+    I think it will be  familiar to any one, at least to  users  of
+FrontDoor, MainDoor, FastEcho, etc.
+    Rule: CFR will not touch any  message if it doesn't  know where
+to send it. So you may safely add  route-to sentences and  try them
+without affecting messages without a route.
+    As said before, CFR uses the  last route sentence that  matches
+the data  of the  message being  processed. You may  use TOPDOWN to
+make it use the first match.
+    There are four   routing verbs, each  with three  flavours. You
+can  use dashes  or not,  whatever  you think  is  better  for  the
+readibility of your configuration.
+    Verbs suffixed with -TO affect to all  messages. Verbs suffixed
+with -MAIL affect  to messages without a  file attached, and  verbs
+suffixed with -FILES affect to messages with a file attached.
+
+ROUTE-TO, ROUTE-MAIL and ROUTE-FILES
+------------------------------------
+    Syntax:
+    VERB [flavour]   [day  of  the  week]   [encryption]   waypoint
+         to_addresses  <EXCEPT  to_addresses> <FROM  from_addresses
+         <EXCEPT from_address>>
+
+    Actually the  syntax is  very flexible  and the  only important
+thing to keep in mind is the order of the addresses. You can  write
+the flavour, day of the week, etc anywhere.
+    First address  is always the  waypoint, that  is the  node  the
+messages that  matches the route  sentence have to be  sent to. The
+waypoint must be 4D or 5D (if you specify a domain it will  be used
+for the directory name, if you don't CFR  will match your addresses
+to the  waypoint to  find the  correct  domain),  and may not  have
+wildcards.
+    The next addresses are the destination of the messages that are
+affected by this route sentence. These addresses may have wildcards
+and may be except'ed. The following wildcards are supported:
+
+    ? -> Zero or one character. 2:34? matches 2:34, 2:341, 2:342...
+    # -> One character. 2:34#  matches 2:341, 2:342... but does not
+         match 2:34.
+    * -> Zero or more characters, 2:34* matches 2:34, 2:341, 2:3412
+         etc.
+
+    An address or group of addresses may be except'ed, which  means
+that the  sentence will  not affect  the except'ed  addresses.  For
+example
+
+    2:34* EXCEPT 2:341/*
+
+    affects  the whole R34 (Spain)  except net  2:341 (Madrid). You
+may use several excepts, for example
+
+    2:34* EXCEPT 2:341/* 2:343/* EXCEPT 2:341/70
+
+    affects Spain except Madrid and Catalonia, plus me.
+
+    Addresses  found  after a FROM affect  to  the  sender  of  the
+message. EXCEPT may be used here as well. We will see some examples
+about this.
+    flavour is the priority of the message, and may be  NORMAL, DIR
+(for DIRECT),  CRASH or  HOLD. I  assume that  you know  what these
+mean for  mailers I so  will  not explain  futher. If there  is  no
+flavour, NORMAL is assumed.
+    Day of the week refers to the day the messages are  packed, not
+when they were written. This is useful if you have a  connection to
+someone only once or twice  a week, so those  days it is  faster to
+use that connection but the rest of the  week it is better to use a
+different  route.  M=Monday,  T=Tuesday,  W=Wednesday,  H=Thrusday,
+F=Friday, S=Saturday, U=Sunday.
+    ENC  and  NONENC are  used to  route messages  that are  either
+encrypted or  non-encrypted. For  example,  if  you  want  to  send
+non-encrypted  messsages to  George  Peace  but  not  non-encrypted
+because you  know his  tracker will  bounce them  (I invented  this
+situation; please don't ask George about this) you would use
+
+    ROUTE-TO NONENC 1:270/101 *
+
+    Currently CFRoute only knows that a message is encrypted if the
+own message  flies the  flag  ENC. I  thought of  writting a  small
+detection  route,  but  I decided  that people  using  FidoNet  for
+encrypted messages  should signal it, to  assist people  willing to
+route  such  messages. If one  prefers  not  to signal  the use  of
+encryption just to try if the messages gets through then...
+
+    By default, a waypoint is only a  waypoint and nothing  else is
+assumed. This means that CFRoute will not  assume that you want  to
+route message to the waypoint through it. So
+
+    ROUTE-TO 2:341/70 2:341/62
+
+    means route all mail to 2:341/62 via 2:341/70. Nothing else. If
+you want it to  mean 'route all mail  to 2:341/62 and 2: 341/70 via
+2:341/70' use the keyword ASSUMEWAYPOINTS. I do not recommend using
+it because sooner or later you will find a route map that cannot be
+defined using it. However it is up to you to decide.
+    Also, 2:341/62 means 2:341/62.0, not 2:341/62.*. If you want to
+route all  mail to  2:341/62.*, you  have  to  use .*. There  is  a
+keyword to change that, ASSUMEPOINTS. If used, addresses  without a
+point specification will be parsed as .*. Again, I do not recommend
+using it.
+    Macros: As  explained before,  you may  define your own macros,
+which you may use anywhere. There are a few predefined  macros that
+are usually helpful. Say these three addresses  are defined for the
+system: 2:341/70, 2:341/79, 93:341/110.1
+
+    MYZONES  -> Replaced with AKA_1_zone:* AKA_2_zone:*, etc
+                (2:*, 93:*)
+    MYNETS   -> Replaced with AKA_1_zone:AKA_1_net/*, etc.
+                (2:341/*, 93:341/*)
+    MYPOINTS -> Replaced  with  AKA_1_zone:AKA_1_net/AKA_1_node.*,
+                etc.
+                Note that MYPOINTS  only applies to node addresses,
+                not point addresses.
+                (2:341/70.*, 2:341/79.*)
+    LOCAL    -> Replaced by all local addresses.
+
+DIRECT-TO, DIRECT-MAIL and DIRECT-FILES
+---------------------------------------
+    Syntax  is the  same as  for route-*, except  that there  is no
+waypoint. Messages are  addressed directly to the  destination. The
+most common example is
+
+    DIRECT MYPOINTS
+
+    at the end of the configuration file.
+
+ROUTE-BOSS, ROUTE-BOSS-MAIL and ROUTE-BOSS-FILES
+------------------------------------------------
+    Also known as NO-ROUTE, NO-ROUTE-MAIL and NO-ROUTE-FILES (these
+are be supported  as well). Netmail is  packed for the  destination
+NODES, so a netmail for 2:341/14.23 is bundled along  with mail for
+2:341/14. I don't like calling this 'no-route' because some routing
+exists after all.
+    Note that DIRECT packs netmail for  the destination, even if it
+is others point.
+
+NOPACK, NOPACK-MAIL and NOPACK-FILES
+------------------------------------
+    Netmail is not touched and is left alone in the netmail folder.
+For example say you don't want to route netmail to FidoNet from any
+othernet.
+
+    NOPACK 1:* 2:* 3:* 4:* 5:* 6:* FROM * EXCEPT
+           1:* 2:* 3:* 4:* 5:* 6:*
+
+6. Easy routing examples
+------------------------
+   (don't try to find a use for all of them).
+
+         A. - ROUTE-TO 2:348/201 1:* 2:* 3:* 4:* 5:* 6:*
+            - ROUTE-TO 2:348/201 CRASH 2:34/0
+              Send   to   Manuel  Fuentes   the  netmail   for  his
+              administrative  address (RC)  crash. Netmail  for his
+              other AKAs and the rest of FidoNet is packed normal.
+              Remember  that  anything  before a  new command  is a
+              parameter. So you can put the attribute specification
+              anywhere before the next command.
+              So these two lines are the same
+              ROUTE-TO CRASH 2:348/201 2:34/0 and
+              ROUTE-TO 2:348/201 2:34/0 CRASH
+
+         B. - ROUTE-TO 2:348/201 CRASH 2:34/0 FROM 2:34*/0
+              Send netmail to RC34 *from* the  NCs crash. Any other
+              message will not  match this route-to and will follow
+              the default route, if any.
+
+         C. - ROUTE-TO 1:270/101 1:* FROM 2:341/*
+              Netmail to zone 1 from net 341 sent to George Peace's
+              place. Netmail from  other nets will  not be  sent to
+              George.
+
+         D. - ROUTE-TO 2:348/201 FROM 1:*
+              All netmail *from* zone 1  is sent to 2:348/201. Does
+              not make too much sense in the  real world, but I bet
+              someone will use this.
+
+         E. - ROUTE-TO 2:348/201 2:* EXCEPT 2:34*/* EXCEPT 2:348/*
+              All netmail to zone 2 except to R34 except to net 348
+              is sent to 2:348/201. Notice  that the second  except
+              applies  over the first  one and not over the 2:*. So
+              all netmail to zone 2 except  Spain + Galicia is sent
+              to 2:348/201.
+              If you don't understand it yet:
+              route-to 2:348/201 2* except (2:34*/* except 2:348/*)
+              may help. Of course don't use ( nor ) except for your
+              mental operation!
+
+         F. - ROUTE-TO 2:348/201 2:* FROM * EXCEPT 2:341/*
+              All netmail to zone 2 not written  by net 341 is sent
+              to 2:348/201.
+
+         G. - ROUTE-TO 2:2/0 HF 2:29*
+              Send  netmail  to  Belgium  via  ZC/2 (who  lives  in
+              Belgium, in  case you  have not  guessed it)  only on
+              Thrusdays and Fridays (to use  the call to pickup the
+              nodediff).
+
+         H. - ROUTE-TO 93:7000/0 NONENC 93:7000/0
+              Netmail to  Subnet->InterNet gateway  is sent  to the
+              gateway, as long as it is not encrypted.
+
+         I. - ROUTE-TO 181:30/10@othernet 181:*
+              Route mail for 181:* via 181:30/10 and use 'othernet'
+              as  base  for  the  outbound  directory.
+
+7. Other things to note about routing and CFRoute
+-------------------------------------------------
+    (not very well organized thoughts and facts)
+    CFRoute honors  ZON (zonegate) and  HUB (Hub/host  gate) flags.
+Say we get a message from zone  2 to zone 1 with the zonegate flag,
+and
+
+        ROUTE-TO 1:270/101 1:*
+        ROUTE-TO 2:348/202 2:* 3:* 4:* 5:* 6:* 7:*
+
+    a netmail to  zone 1 without  the flag,  would  go  to  George
+Peace. However, a netmail flying  the ZON flag is considered to be
+sent to 2:2/1 and thus is routed via 2:348/202.
+    The hub flag routes the  message using the destination network
+host address.
+    ASSUMEPOINTS  and  ASSUMEWAYPOINTS   only   apply   for  route
+sentences after  them. If  you want  them to affect the whole file
+write them before the first route sentence.
+    Sometimes the information in  the header of a message  and its
+body don't match, i.e. the header  says the message  goes to 30/10
+but there is an INTL line  that says it goes  to 2:341/70. In this
+case (which I have found several time), INTL wins.
+    CFRoute writes  via line in  the most common  format nowadays,
+i.e. ^Via node@domain date.time CFRoute version
+    CFRoute includes  a powerful  via line  analyzer  that  allows
+logging the path a message followed before reaching our system. An
+actual example:
+
+Path: 2:244/1453.0 -> 2:244/1500.0 -> 2:244/1120.0 -> 2:2480/62.0 ->
+Path: 2:24/99.0
+
+    as stated  before, the via  line analyzer is enabled  by using
+the keyword LOGPATH.
+    CFRoute also has  the ability of  detecting and logging loops.
+If a message  has been at our  system, left, and is now  back, CFR
+will log all the via lines starting from the last local one.
+
+8. A working config file
+------------------------
+    This is my route file. It is not very complex and  it does not
+use all the  features of CFR, but may  help to get an  idea of the
+complete picture.
+    (please don't mind about the comments in Spanish).
+
+; Config.
+outbound q:\files\mail\fido2
+log p:\cfroute.log
+netmail o:\netmail\main
+checkfile h:\fesem\febusy.*
+viabossdirect
+logpath
+
+; addresses
+main 2:341/70@fidonet
+aka 2:341/62@fidonet
+aka 2:341/79@fidonet
+aka 2:341/0@fidonet
+aka 93:93/0@subnet
+aka 93:34/0@subnet
+aka 93:341/0@subred
+aka 93:341/100@subnet
+aka 93:341/110@subnet
+aka 93:341/150@subnet
+aka 93:341/160@subnet
+aka 398:3410/10@uned-ct
+aka 398:3410/20@uned-ct
+aka 398:3410/21@uned-ct
+
+; passwords
+include password.cfr
+
+; ====================================================================
+;                                Routing
+; ====================================================================
+
+; --------------------------------------------------------------------
+;                              CORREO UNED
+; --------------------------------------------------------------------
+route-to 398:34/0      398:*
+route-to 398:3410/18   398:3410/18.*
+
+; --------------------------------------------------------------------
+;                                SURNET
+; --------------------------------------------------------------------
+route-to 11:100/102     11:*
+
+; --------------------------------------------------------------------
+;                           NODOS DE FIDONET
+; --------------------------------------------------------------------
+
+; George Peace
+route-to 1:270/101      1:*     3:*     5:*     6:*
+
+; Harald Harms
+route-to 2:281/910      2:281/910.*
+
+; Manuel Fuentes - Generic netmail for zones 2 and 4
+route-to 2:348/201      2:*     4:*
+
+; Juande Mart¡nez
+route-to 2:346/9        2:346/9.*
+
+; Pais Vasco: Gontzal Rojas
+route-to 2:344/14        2:344/*
+
+; Jos‚ Manuel Ruiz
+route-to 2:345/602      2:345/602.*
+
+; Net 341
+route-boss 2:341/*
+
+; Jos‚ Miguel Rodr¡guez
+route-to 2:341/8        2:341/8.*       2:341/7.*   2:341/40.*
+route-to 2:341/8        2:341/113.*     2:341/104.*
+
+; Rafa Suarez - downlinks
+route-to 2:341/14       2:341/2.*       2:341/14.*      2:341/60.*
+route-to 2:341/14       2:341/6.*       2:341/19.*      2:341/37.*
+route-to 2:341/14       2:341/32.*      2:341/47.*      2:341/59.*
+route-to 2:341/14       2:341/21.*      2:341/25.*      2:341/23.*
+route-to 2:341/14       2:341/26.*      2:341/28.*      2:341/35.*
+route-to 2:341/14       2:341/49.*      2:341/29.*      2:341/39.*
+route-to 2:341/14       2:341/58.*      2:341/114.*
+route-to 2:341/14       2:341/91.*      2:341/121.*
+route-to 2:341/14       2:341/1.*       2:341/123.*     2:341/124.*
+route-to 2:341/14       2:231/125.*
+
+; Enrique Lopez
+route-to 2:341/12       2:341/12.*      2:341/41.*
+
+; Francisco Sedano
+route-to 2:341/20       2:341/20.*
+
+; Juan Carlos Vigara
+route-to 2:341/33       2:341/33.*
+
+; Pedro S nchez
+route-to 2:341/44       2:341/44.*      2:341/61.*
+
+; Rafael Gutierrez
+route-to 2:341/45       2:341/45.*
+
+; Jose Mar¡a Tejada
+route-to 2:341/51       2:341/51.*      2:341/107.*     2:341/110.*
+
+; Pedro de Paz
+route-to 2:341/52       2:341/52.*
+
+; Paco Romero
+route-to 2:341/53       2:341/53.*      2:341/108.*     2:341/127.*
+
+; Ritchie Hernandez
+route-to 2:341/57       2:341/57.*      2:341/92.*      2:344/20.*
+route-to 2:341/57       2:341/27.*
+
+; Ferm¡n Conde
+route-to 2:341/64       2:341/64.*
+
+; Angel Ripoll
+route-to 2:341/66       2:341/66.*      2:341/5.*       2:341/102.*
+route-to 2:341/66       2:341/73.*      2:341/83.*
+route-to 2:341/66       2:341/63.*      2:341/76.*      2:341/78.*
+route-to 2:341/66       2:341/84.*      2:341/85.*      2:341/96.*
+route-to 2:341/66       2:341/97.*      2:341/112.*     2:341/103.*
+route-to 2:341/66       2:341/116.*     2:341/117.*     2:341/200.*
+route-to 2:341/66       2:341/16.*      2:341/75.*      2:341/90.*
+route-to 2:341/66       2:341/43.*      2:341/9.*       2:341/34.*
+route-to 2:341/66       2:341/38.*      2:341/65.*      2:341/81.*
+route-to 2:341/66       2:341/82.*      2:341/95.*      2:341/80.*
+route-to 2:341/66       2:341/54.*      2:341/17.*      2:341/99.*
+route-to 2:341/66       3:341/100.*     2:341/101.*     2:341/88.*
+route-to 2:341/66       2:341/42.*      2:341/72.*      2:341/128.*
+
+; Julian Garrido
+route-to 2:341/67       2:341/67.*
+
+; Juan Enrique Gomez
+route-to 2:341/68       2:341/68.*      2:341/1002.*
+
+; Gonzalo Garz¢n
+route-to 2:341/115      2:341/115.*
+
+; Pedro Pablo M.
+route-to 2:341/118      2:341/118.*
+
+; Juan Carri¢n
+route-to 2:341/122      2:341/122.*
+
+; Fernando L¢pez Sasal
+route-to 2:341/131      2:341/131.*
+
+; Jos‚ Luis Ben¡tez
+route-to 2:341/136      2:341/36.*     2:341/71.*       2:341/126.*
+route-to 2:341/136      2:341/136.*    2:341/120.*
+
+; Ole Braad-Sorensen
+route-to 2:345/210      2:345/210.*     2:345/215.*
+
+; Alejandro Estraviz
+route-to 2:348/105      2:348/105.*
+
+; Nodos valencianos
+route-to 2:346/207      2:346/207.*
+
+; Netmail hacia Alemania, Noruega, Finlandia y Rusia + Martin Pedersen +
+; JoHo y Mats Wallin (cuelgan de Tobias Burchhardt)
+route-to 2:24/99        2:24*   2:21*   2:22*   2:50*
+route-to 2:24/99        2:238/45 2:201/330.* 2:201/329.* 2:20/0
+
+; Tobias Burchhardt
+route-to CRASH 2:2448/402     2:2448/400      2:2448/401      2:2448/402
+                              2:2448/4000     FROM LOCAL
+
+; Harald Pollack
+route-to 2:310/14.59    2:310/14.59
+
+; B‚lgica y Hungr¡a
+route-to 1:270/101      2:29*   2:37*
+
+; Hauke Hagenhoff
+route-to 2:2453/970    2:2453/1030.* 2:2453/1031.* 2:2453/970.* 2:2453/971.*
+
+; Mensajes from Harald Harms, most probably Allfix keys
+route-boss CRASH 2:341/* from 2:281/415
+
+; --------------------------------------------------------------------
+;                              SUBNET
+; --------------------------------------------------------------------
+; Rutado del resto de la regi¢n
+; Eukadi: Gontzal Rojas
+route-to    93:344/0    93:344/*
+; Valencia: Francisco Moreno
+route-to    93:346/0    93:346/*
+; Noroeste: Ricardo Gonz lez
+route-to    93:348/0    93:348/*      98:*
+; Canarias: Miguel Fernandez
+route-to    93:3428/0   93:3428/*
+; San Sebasti n: Jon Elosegui
+route-to    93:3443/0   93:3443/*
+; Burgos: Jos‚ Mar¡a Tejada
+route-to    93:3447/0   93:3447/*
+; C diz: Jos‚ Manuel Ruiz
+route-to    93:3456/101 93:3456/*     11:*
+; Huelva
+route-to    93:3457/0   93:3457/*
+; Huelva: Victor Mendiluce
+route-to    93:3459/0   93:3459/*
+; Murcia: Antonio Almos
+route-to    93:3468/0   93:3468/*
+; 3471: Actualmente inactivo
+route-to    93:3471/0   93:3471/*
+; Gerona: Jordi Cornet
+route-to    93:3472/0   93:3472/*
+; Arag¢n: Fernando Beltr n
+route-to    93:3476/0   93:3476/*
+; La Coru¤a: Fernando Estraviz
+route-to    93:3481/0   93:3481/*
+; Valladolid: Carlos Alonso
+route-to   93:3483/0   93:3483/*
+
+; Rutado del resto de la 341
+route-to    93:341/200  93:341/2*
+route-to    93:341/300  93:341/3*
+route-to    93:341/400  93:341/4*       93:341/1
+route-to    93:341/501  93:341/5*
+route-to    93:341/600  93:341/6*
+route-to    93:341/700  93:341/7*
+route-to    93:341/801  93:341/8*
+route-to    93:341/900  93:341/9*
+route-to    93:341/1000 93:341/10*
+route-to    93:341/1100 93:341/11*
+route-to    93:341/1200 93:341/12*
+route-to    93:341/1205 93:341/1205.*
+
+; Rutado del segmento 93:341/100
+route-to    93:341/101  93:341/101.*
+route-to    93:341/102  93:341/102.*
+route-to    93:341/103  93:341/103.*
+route-to    93:341/104  93:341/104.*
+route-to    93:341/105  93:341/105.*
+route-to    93:341/106  93:341/106.*
+route-to    93:341/107  93:341/107.*
+route-to    93:341/108  93:341/108.*
+route-to    93:341/109  93:341/109.*
+route-to    93:341/111  93:341/111.*
+route-to    93:341/118  93:341/118.*
+
+; Nodos especiales
+route-to    93:34/1        93:34/1      93:341/1
+route-to    93:341/105     93:34/2
+route-to    93:341/110.17  93:34/3
+route-to    93:341/501     93:34/4      93:341/4
+route-to    93:341/110.104 93:34/5
+
+; --------------------------------------------------------------------
+;                 PUNTOS - TANTO DE SUBNET COMO DE FIDONET
+; --------------------------------------------------------------------
+; Puntos normales
+direct MYPOINTS
+
+; --------------------------------------------------------------------
+;                    SUBNET <-> INTERNET GATEWAY
+; --------------------------------------------------------------------
+route-to 93:7000/0      93:7000/0       93:5000/0       2:341/70.1000
+
+
+9. Credits
+----------
+    In no  special order  (most  of the time),  and not  necessary
+related to CFR directly:
+
+    Hauke   Hagenhoff, the   Binkley-XE  development  team, Harald
+Pollack, Dana Booth, Bob Juge,  Jos‚ Luis Ben¡tez,  Patrick Klein,
+Francisco Sedano, Tobias Burchhardt, Harald Harms.
+
+

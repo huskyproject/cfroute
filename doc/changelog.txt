@@ -1,0 +1,60 @@
+Changes done to CFRoute by Tobias Ernst
+=======================================
+
+This file is the changelog for the development version. It  will be merged 
+into whatsnew.eng in a condensed form everytime an official release of
+CFRoute is made.
+
+19981228
+--------
+Reworked the FASTECHOPACK interface:
+- QQQ files are no longer created in the OUTBOUND directory. You now must
+  specify a separate QQQOUTBOUND directory.
+- FASTECHOPACK will only write QQQ files if the netmail does NOT have special
+  attributes (like Crash, Immediate, Hold, Direct), and if the system that
+  the netmail is routed to is one of your "links", i.E. a system that is
+  either listed in the Fastecho configuration file or that has an explicit
+  packet password. In all other cases, CFRoute will put the netmail directly
+  and unpacked into the Binkley outbound.
+- If you want to revert to the behaviour of CFRoute 0.94, which always wrote
+  QQQ files, even for crash mail or for mail not adressed to any of your links
+  (which is IMO not a good idea because Fastecho will then create ARCed 
+  mail bundles for systems that you probably do not have a session password
+  with, and most systems do not automatically process unsedure arcmail),
+  you can specify FASTECHOPACK ALL in the CFRoute config file.
+
+19981219
+--------
+- If "IgnoreBSY" is NOT specified in the config file (i.E. if cfroute
+  is configured to check for BSY flags before doing anything in the
+  outbound), cfroute will now also *create* a BSY flag before it does
+  anything in the outbound.
+- Added UNIX (Linux and FreeBSD) version, along with the necessary changes
+  to the source code.
+
+19981204
+--------
+- enabled support for Squish netmail areas
+
+19981129
+--------
+- Cleaned up the source code tree.
+- Added some "#pragma pack(1)" statements that were required for the EMX
+  GCC compiler.
+- CFRoute did not recognize the "Direct" bit in .MSG style netmail
+  messages. Fixed. (I assume the "direct" bit to be bit #11 in the attrib
+  word. Carlos has marked this as "unused", but MsgEd and others use this
+  bit for the "direct" flag).
+- Changed the behaviour of "VIABOSSDIRECT". Normally, if VIABOSSDIRECT is
+  given in the config file, mails for points that are flagged crash, direct
+  or  immediate are routed to the boss of the point. I do not have changed
+  this for most cases. My modification is that if the boss of the point is
+  ourselves, the mail is not routed to ourselves, but direct, crash or
+  immediate to the respective point. (Routing mail to ourselves does not
+  make much sense, does it?)
+- Fix: The random number was not properly seeded if the "-I" command line
+  switch was given, which caused CFRoute to always create the same QQQ
+  file names on each run (and probably lead to mail losses because Fastecho
+  will happily pack a QQQ file into an archive where a file of the same
+  name already exists).
+- Year 2000 fix on GetJulianDate in datetime.cpp

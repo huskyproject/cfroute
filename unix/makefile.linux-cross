@@ -1,0 +1,30 @@
+### Make file for building a Linux exectuable of CFRoute using
+### the linux-devel package on FreeBSD. The executable will be
+### linked statically so that it will run on any Linux box no 
+### matter what clib they have installed.
+### Requires gmake or another make that can cope with VPATH !!!
+
+### Directory options
+SRCDIR=../src
+SMAPIDIR=../../smapi
+
+### Compiler flags
+CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR) 
+
+### Linker flag
+LFLAGS = -static -s -L$(SMAPIDIR)
+LIBS=-lsmapilnx
+
+### Platform specifics
+DEL      = rm
+CC       = /compat/linux/usr/bin/gcc
+OBJ      = .o
+EXE      = 
+
+### List of object files
+cfrobjs = cfroute$(OBJ) dirute$(OBJ)
+
+
+### include the build rules that are common for all unix systems
+include common.mak
+

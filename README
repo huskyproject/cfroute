@@ -1,0 +1,100 @@
+CFRoute 0.95a Source Code Distribution
+======================================
+
+Status
+------
+
+CFRoute is not Public Domain. CFRoute is copyrighted software. The Copyright
+is held by Carlos Fernandez Sanchez, Madrid, Spain.
+
+CFRoute has been written by Carlos Fernandez Sanchez. Carlos Fernandez
+Sanchez has granted rights on CFRoute to Hauke Hagenhoff, 2:2453/470. By 
+permission of Hauke Hagenhoff, CFRoute is being maintained by Tobias Ernst,
+tobi@bland.fido.de, 2:2476/418.
+
+Rules for Using the Source Code
+-------------------------------
+
+Until the topic is finally settled with Hauke Hagenhoff, the following rules
+apply to using this source code.
+
+- You may use the source code to build binaries of CFRoute for your personal
+  usage. This includes private and educational use as well as commercial use.
+
+- You may make modifications on the source code as long as
+  a) You do not remove or alter the credit and copyright statements that 
+     mention Carlos Fernandez Sanchez from the source code.
+  b) You submit all changes that you have made, as soon as they are
+     finished, back to the maintainer of the source code. You will receive
+     credits for the change in form of an entry mentioning your name in
+     the documentation.
+
+- You are not allowed to redistribute the source code or binaries created
+  from the source code without explicit permission from either Hauke
+  Hagenhoff, Carlos Fernandez Sanchez or Tobias Ernst. Redistribution means
+  public redistribution (file request, ftp, etc.) as well as private 
+  redistribution (giving the code away to friends etc.). (Explicit
+  permission is not too hard to gain, so just write a netmail and ask
+  for it).
+
+- The restrictions mentioned above perish if neither Tobias Ernst, nor Hauke
+  Hagenhoff, nor Carlos Fernandez Sanchez, nor any person that can prove to
+  have received rights on CFRoute from Carlos Fernandez Sanchez, can be
+  contacted for more than 6 months. In this case, the software will go
+  Open Source.
+
+- THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS `AS IS'' AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS 
+  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Hints on Compiling the Source Code
+----------------------------------
+
+a) Compilers to use
+
+I use the following compilers to build CFRoute, which means that these
+compilers are supported and should always work:
+
+- Linux:   gcc 2.7.2
+- FreeBSD: gcc 2.8.1
+- OS/2:    emx 0.9d (gcc 2.8.1)
+- DOS:     Borland C++ 3.1
+- Win32:   Borland C++ 4.0
+
+In the various subdirectories, you can find pre-made makefiles for these
+compilers. Note that the makefiles for the GNU compilers require GNU make
+(gmake) to work correctly. On Linux boxes, GNU make should be available
+under the name "gmake" (instead of "make"). For OS/2 and DOS, you can f'req
+GNUMAKE.ZIP at 2:2476/418. It is also available at most common OS/2 ftp
+sites.
+
+The code also contains defines for some other compilers, namedly Visual Age
+C++ and Watcom C. These compilers have been used by Carlos. However, I
+cannot support these compilers, which means that the defines are somewhat
+out of date and you will have to do some manual work to get CFRoute work
+with other compilers.
+
+b) External Libraries
+
+If you do not define SQUISHCFS, CFRoute will compile without need for any
+external libraries other than the standard C and C++ libraries. If you do
+define SQUISHCFS while compiling, CFRoute will require to be linked against
+the SMAPI library, a modified version of the Squish Message API. The latest
+version of the SMAPI can always be obtained from
+ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz
+
+c) Defines
+
+You should either define UNIX or OS2 or WIN or MSDOS. You can define
+SQUISHCFS if you want the feature to scan Squish style areas to be enabled.
+
+[EOF]

@@ -1,0 +1,286 @@
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+NOTE:  SUPPORT FOR THIS MANUAL IS DISCONTINUED BECAUSE TOBIAS ERNST, THE NEW
+MAINTAINER  OF  THIS  SOFTWARE,  IS  NOT  CAPABLE  OF  SPEAKING  THE SPANISH
+LANGUAGE.  YOU MUST REFER TO THE ENGLISH MANUAL (MANUAL.ENG) IF YOU WANT  TO
+READ THE MOST UP TO DATE DOCUMENTATION OF CFROUTE.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CFRoute 0.94 alpha - Empaquetador de netmail para DOS, OS/2 y Win32 ³
+³ Carlos Fern ndez Sanz, 2:341/70@fidonet.org, 93:341/110@subred.org  ³
+³ Software gratuito                                                   ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+Esta versi¢n es todav¡a una alpha. Por tanto doy por hecho que quien la
+use sabe manejar las cosas, por tanto no me extiendo.
+
+Brevemente, CFRoute es un empaquetador de netmail para sistemas compa-
+tibles con Binkley, como Xenia o la versi¢n 1.10 de MainDoor. El sis-
+tema Binkley es mucho m s r pido que el din mico de FrontDoor o Main-
+door (antes de la versi¢n 1.10), y tiene la ventaja adicional de que
+permite ver los nets ya empaquetados con programas con InspectA o
+YABOM, sin tener que descomprimir un archivo de correo y buscar el
+.PKT que contiene el netmail.
+La mayor¡a de los tossers incluyen una opci¢n de empaquetar para
+Binkley. Por ejemplo en FastEcho, el par metro es pack -p. Lamentable-
+mente no est  demasiado bien implementado y no permite por ejemplo
+rutar ficheros.
+
+Caracter¡sticas generales de CFRoute
+------------------------------------
+    - Permite definir el sistema al que se mandan los mensajes tanto
+      por el destino como el origen.
+    - Permite (bueno, permitir  - aun no est  terminado del todo)
+      definir destinos diferentes para netmails encriptados y no
+      encriptados.
+    - Permite definir diferentes atributos para los nets seg£n el
+      destino y el origen, y no s¢lo el sistema de rutado.
+    - Int‚rprete de configuraci¢n extremadamente flexible.
+    - Limitado s¢lo por la memoria libre. No hay ning£n l¡mite pre-
+      fijado ni en n£mero de rutas ni en n£mero de sistemas por
+      ruta, ni de direcciones, ni de ninguna otra cosa.
+    - Permite definir rutas diferentes para nets con attach y sin
+      attach.
+    - Genera paquetes tipo 2 (FTS-001) y 2+ (FSC-0039).
+    - Permitir  definir rutados alternativos seg£n el d¡a de la
+      semana.
+    - Comodines ?, # y *.
+    - Gratuito.
+    - Fuentes en C++ disponibles (cuando est‚ terminado).
+
+Llamando a CFRoute
+------------------
+CFRoute acepta pocos par metros. Los que no empiezan por / o
+- se consideran nombres de ficheros de configuraci¢n. Normalmente
+s¢lo se usa uno (por ejemplo el m¡o es ROUTE.CFR) y si se usan
+m s se llaman desde el principal, pero no es imprescindible. Puedes
+leer m s desde la l¡nea de comandos, por ejemplo CFROUTE 1.CFR 2.CFR
+es v lido.
+De momento s¢lo hay dos par metros:
+       -?  Saca una peque¤a pantalla de ayuda.
+       -I  Ignora la fecha de los mensajes. Por defecto, CFRoute
+           se acuerda de la £ltima vez que se us¢ y no procesa los
+           .MSG anteriores, con lo que se gana mucha velocidad.
+           Sin embargo algunos programas crean .MSG con una fecha
+           incorrecta (no la de creaci¢n del .MSG sino otra anterior,
+           por ejemplo NetMgr al hacer copia de mensajes con Action
+           FORWARD) y CFRroute no los procesar¡a si no se usase
+           este par metro.
+
+Configuraci¢n
+-------------
+El nombre del fichero de configuraci¢n es libre. CFRoute se carga
+con el nombre del fichero como £nico param‚tro. Por ejemplo, yo
+uso CFR-OS2 ROUTE.CFR para ejecutarlo.
+Lo primero que hay que decir es que para CFROUTE todo lo que no
+sea una orden es un par metro de la orden anterior, independien-
+temente de la l¡nea en que se encuentre. Por tanto los saltos
+de l¡nea no determinan en absoluto el funcionamiento. Es posible
+poner toda la configuraci¢n en una l¡nea, o poner el par metro
+de una orden en la l¡nea siguiente. Se admiten espacios entre
+¢rdenes/par metros y tambi‚n tabuladores, sin excepciones.
+Como en casi todos los programas, una l¡nea que empieza por
+punto y coma se entiende como comentario y se ignora. Excepci¢n:
+L¡neas que empiezan por ;CFR. Estas l¡neas ser n procesadas por
+CFRoute, pero no por los dem s programas que interpretan el
+; como comentario. De esta forma, se puede compartir el fichero
+de configuraci¢n con otros programas simplemente precediendo las
+l¡neas espec¡ficas de CFRoute con ;CFR.
+Las ¢rdenes que soporta son las siguientes:
+
+- LOG nombre_del_log
+  El log es bastante extenso. Graba toda la cabecera el mensaje,
+  adem s del sistema a que se manda, naturalmente. Tambi‚n se
+  graba la antigedad en d¡as del mensaje, y su tama¤o en bytes.
+  Esta orden es obligatoria.
+- NETMAIL directorio_de_netmail
+  Tambi‚n obligatoria.
+- OUTBOUND directorio_principal_de_salida.
+  Es el directorio principal de outbound, y logicamente tiene
+  que ser el mismo que en el mailer.
+- MAIN direcci¢n
+  La direcci¢n principal del sistema. Debe ser una direcci¢n 5D
+  completa. Se usa como direcci¢n por defecto, y para completar
+  las direcciones en que sea necesario. El dominio s¢lo se uti-
+  za para el nombre de los directorios de outbound. Ejemplo:
+  2:341/70@fidonet.
+- AKA direcci¢n [direcci¢n...]
+  Direcci¢n o direcciones adicionales del sistema. No necesa-
+  riamente tienen que ser 5D, us ndose la direcci¢n principal
+  si fuera necesario. Por ejemplo, AKA 62 79 a¤ade como direc-
+  ciones 2:341/62@fidonet y 2:341/79@fidonet en caso de haber
+  defido como principal la del ejemplo anterior.
+- PACKET2 direcciones
+  Define una lista de sistemas (las direcciones aceptan como-
+  dines y excepciones, de la forma indicada m s abajo) para
+  los que no se generan paquetes 2+ sino 2 (es decir, FTS-
+  001). Los paquetes 2+ simplemente usan una zona reserva-
+  da de los tipo 2 (son 20 bytes que en este tipo est n a 0)
+  y no creo que haya ning£n software que soporte 2 y no 2+,
+  pero por si acaso, la opci¢n est  disponible.
+- PASSWORD clave direcci¢n <direcci¢n...>
+  Define la clave que se va a utilizar en los PKT para los
+  sistemas indicados a continuaci¢n. Por ejemplo:
+      PASSWORD EJEMPLO 2:348/201 2:348/202 2:34/0
+- INCLUDE fichero
+  Lee un fichero como parte de la configuraci¢n. Se pueden
+  anidar las llamadas.
+
+Rutado
+------
+Despu‚s de las anteriores ¢rdenes, se define el rutado. El
+sistema es casi id‚ntico al utilizado en el route.fe de
+fastecho, por lo que los que lo useis podeis copiar y pegar.
+Por defecto, los netmails *NO SE TOCAN*. Si CFRoute no sabe
+a donde mandar un net, porque no cumple ninguna de las con-
+diciones indicadas en el rutado, se queda en el directorio
+de netmail.
+Por defecto, CFRoute da m s importancia a la ULTIMA l¡nea
+route-to que cumple las condiciones del netmail que se
+est  procesando (o sea, igual que FE).
+Hay tres ¢rdenes de rutado, cada una con tres variantes. Todas
+se pueden escribir con o sin guiones.
+
+    ROUTE-TO, ROUTE-MAIL, y ROUTE-FILES
+    -----------------------------------
+    Funcionan igual que el route-to de fastecho, con la excep-
+    ci¢n de que route-to afecta a todos los netmails, route-
+    mail afecta a los netmails sin attach y route-files afec-
+    ta a los netmails con attach.
+    Los par metros pueden ser:
+            - Direcciones. La primera es siempre el sistema
+              a donde se dirigen los nets, y las siguientes
+              los sistemas *de destino* para los que el v -
+              lido la orden. Exceptuando la primera direc-
+              ci¢n, las dem s admiten comodines. Estos pue-
+              den ser
+                    ? -> Un car cter o ninguno. Por ejemplo
+                         2:34? significa 2:34 y tambi‚n
+                         2:340,2:341, etc.
+                    # -> Un car cter pero no ninguno. Es
+                         decir 2:34# significa 2:340,
+                         2:341, etc, pero no 2:34.
+                    * -> Ning£n car cter o m s. Ejemplo:
+                         2:34* = 2:34, 2:341, 2:3411...
+            - Un atributo, que puede ser NORMAL, CRASH,
+              HOLD o DIR (por direct), que indica la
+              prioridad del PKT resultante. Si no se indica
+              ninguno, se usa NORMAL.
+            - FROM, para indicar que las siguientes direc-
+              ciones son de origen y no de destino.
+            - EXCEPT, para indicar excepciones.
+            - Una lista de d¡as de la semana para los que la
+              orden tiene validez. Pueden ser M (lunes),
+              T (martes), W (mi‚rcoles), H (jueves), F (viernes),
+              S (s bado) y U (domingo).
+            - ENC o NONENC, para indicar que el rutado se
+              refiere exclusivamente a netmails encriptados
+              o no encriptados.
+    Ejemplos:
+        1.
+            - ROUTE-TO 2:348/201 CRASH 2:34/0
+            - ROUTE-TO 2:348/201 1:* 2:* 3:* 4:* 5:* 6:*
+              Esto le manda crash a Manuel Fuentes los nets
+              dirigidos a su direcci¢n de RC, mientras que
+              los dem s se los pone normales.
+              Fijaos que el atributo puede ir en cualquier
+              lugar dentro de la orden. Es decir,
+              ROUTE-TO CRASH 2:348/201 2:34/0 y
+              ROUTE-TO 2:348/201 2:34/0 CRASH
+              ser¡an iguales.
+         2. - ROUTE-TO 2:348/201 CRASH 2:34/0 FROM 2:34*/0
+              Le manda a Manolo crash todos los nets diri-
+              gidos a su direcci¢n administrativa, y man-
+              dados por NCs exclusivamente.
+         3. - ROUTE-TO 1:270/101 1:* FROM 2:341/*
+              Manda todos los nets para la zona 1 escritos
+              por gente de la 341 a trav‚s de George Peace,
+              mientras que los provinientes de otras
+              nets seguir¡an el rutado por defecto, de
+              haberlo.
+         4. - ROUTE-TO 2:348/201 FROM 1:*
+              (No es que el ejemplo tenga sentido real). Le
+              manda a Manolo todos los nets que vengan de
+              la zona 1, independientemente de su destino.
+         5. - ROUTE-TO 2:348/201 2:* EXCEPT 2:34/* EXCEPT 2:348/*
+              Le manda a Manolo todos los nets para la zona
+              2, excepto los dirigidos a la regi¢n R34 ex-
+              cepto los dirigidos a Galicia. Como se ve,
+              un EXCEPT act£a sobre el anterior y el resul-
+              tado es que se mandan todos los nets para
+              Europa excepto Espa¤a, m s los de Galicia, al
+              sistema de Manolo.
+         6. - ROUTE-TO 2:348/201 2:* EXCEPT FROM 2:341/*
+              Le manda a Manolo todos los nets para la zona
+              2, excepto los escritos por la 341.
+         7. - ROUTE-TO 2:2/0 HF 2:29*
+              Le manda al ZC/2 el correo para su regi¢n los
+              jueves y los viernes (para aprovechar la lla-
+              mada para recoger la nodediff). Los dem s
+              d¡as se usa el rutado por defecto, si lo hay.
+         8. - ROUTE-TO 93:7000/0 NONENC 93:7000/0
+              Manda al gateway de SubNet->InterNet todos los
+              nets para InterNet, siempre que no vayan
+              encriptados (no est  en uso :-)).
+
+    Creo que cogeis la idea :-) En lugar de route-to se puede
+    usar route-mail o route-files para discriminar por el
+    atributo de attach. Por lo dem s la sintaxis es la misma.
+    Tened en cuenta que los atributos del .MSG mandan sobre
+    lo indicado aqu¡. Por ejemplo, un mensaje con el atribu-
+    to crash se pondr  crash para el destino directamente,
+    independientemente del rutado.
+    Hay dos atributos que cambian la direcci¢n de rutado.
+    ZON hace que el netmail deba ir hacia el zonagate. Por
+    ejemplo
+        ROUTE-TO 1:270/101 1:*
+        ROUTE-TO 2:348/202 2:* 3:* 4:* 5:* 6:* 7:*
+    Un netmail hacia la zona 1 que NO lleve el flag de
+    zonegate se manda a 1:270/101. Sin embargo un net
+    dirigido a la zona 1 con el flag ZON se manda a
+    Manolo, puesto que debe rutarse v¡a 2:1/0 que es
+    el zonegate.
+    HUB hace que el net se dirija al /0, lo que general-
+    mente no afecta para nada salvo que sea para la mis-
+    ma net en que nos encontramos, en cuyo caso se ig-
+    nora el flag y se ruta normalmente.
+
+    DIRECT (o DIRECT-TO), DIRECT-MAIL y DIRECT-FILES
+    ------------------------------------------------
+    Igual que ROUTE-*, s¢lo que no hay direcci¢n de rutado
+    puesto que todos los nets se empaquetan directamente
+    a su destino. Tambi‚n se pueden indicar direcciones de
+    origen, excepciones y atributos.
+
+    ROUTE-BOSS, ROUTE-BOSS-MAIL y ROUTE-BOSS-FILES
+    ----------------------------------------------
+    Tambi‚n NO-ROUTE, NO-ROUTE-MAIL y NO-ROUTE-FILES. Sig-
+    nifica que los nets se dejan directos para los NODOS
+    de destino, por tanto un net para 2:341/14.23 se deja
+    directo para 2:341/14.0, es decir, el boss. FastEcho
+    llama a esta orden NO-ROUTE, aunque me parece un poco
+    confuso ya que parece que el netmail no se ruta, y
+    realmente algo de rutado hay siempre que no va a su
+    destino, aunque este sea un punto.
+
+    TOPDOWN
+    -------
+    Hace que la l¡nea m s importante sea la primera que
+    cumpla la condici¢n del net, en lugar de la £ltima.
+
+    Macros
+    ------
+    MYZONES, MYNETS y MYPOINTS. Se expanden respectiva-
+    mente a todas nuestras zonas (al contrario que en
+    fastecho que es MYZONE y equivale s¢lo a la zona
+    principal), todas nuestras nets, y todos nuestros
+    puntos. Pueden utilizarse en lugar de cualquier
+    direcci¢n que admita comodines.
+
+Como comentario final, me gustar¡a que evitaseis distri-
+buir esta versi¢n. No est  terminada, y aunque la he
+probado bastante, podr¡a tener bugs, aparte de que le
+faltan algunas cosas que quiero a¤adir antes de hacer
+p£blico el programa.
+

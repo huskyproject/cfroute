@@ -1,0 +1,30 @@
+### Make file for CFRoute for FreeBSD
+### Compiler: gcc 2.8 (from the gcc28 ports package)
+### Requires gmake or another make that can cope with VPATH !!!
+
+### Directory options
+SRCDIR=../src
+SMAPIDIR=../../smapi
+
+### Compiler flags
+# replace -g with -O2 for release build
+CFLAGS = -g -DUNIX -DSQUISHCFS -I$(SMAPIDIR) 
+
+### Linker flag
+# add -s to LFLAGS and remove -g for release build
+LFLAGS = -g -L$(SMAPIDIR)
+LIBS=-lsmapibsd
+
+### Platform specifics
+DEL      = rm
+CC       = gcc28
+OBJ      = .o
+EXE      = 
+
+### List of object files
+cfrobjs = cfroute$(OBJ) dirute$(OBJ)
+
+
+### include the build rules that are common for all unix systems
+include common.mak
+

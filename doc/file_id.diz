@@ -1,0 +1,22 @@
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³          CFROUTE 0.95 alpha         ³
+³     Binkley-style netmail packer    ³
+³     for OS/2, DOS, Linux, Win-32    ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ - Alternate routing based upon
+   Destination system, origin system,
+   day of the week, file attach and
+   encryption.
+ - Extremely flexible parser.
+ - Very powerful wildcard processor.
+ - Generates type 2 and 2+ packets.
+ - Unlimited number of AKAs, passwords,
+   routes, etc. No hardcoded limits!
+ - Multiple netmail directories.
+ - May import FastEcho's configuration.
+ - Freeware.
+ - C++ source code available.
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ This is an alpha release. Try it at ³
+³ your own risk!                      ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
