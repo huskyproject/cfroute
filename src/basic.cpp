@@ -127,6 +127,8 @@ int IsCommand (int TokenType)
 		case TT_MAIN:
 		case TT_AKA:
 		case TT_NETMAILDIR:
+                case TT_NETSQUISH:
+                case TT_NETJAM:
 		case TT_OUTBOUND:
                 case TT_QQQOUTBOUND:
 		case TT_LOGFILENAME:
