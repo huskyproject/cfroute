@@ -122,7 +122,7 @@ static void fc_convert_route(FILE *f, s_route *route, int what)
 #define CVT_PASSWORDS 2
 #define CVT_SETTINGS 4
 
-int generateCfrouteConfig(s_fidoconfig *config, char *fileName, int what)
+int generateCfrouteConfig(s_fidoconfig *config, const char *fileName, int what)
 {
     FILE *f;
     int  i;
