@@ -36,6 +36,15 @@ A: Besides from some arguments why not packing netmail has strong advantages
 Q: Ok. Will CFR ever pack netmail?
 A: Only if I figure out how to solve the uniqueness-of-name problem.
 
+Q: Does cfroute support the "fidoconfig" file standard of the Husky project?
+A: Cfroute itself does not support fidoconfig, but you can use the fc2cfr
+   converter program, which comes bundled with cfroute, to generate a
+   cfroute config file. As long as you do not manually modify this config
+   file, cfroute behaves exactly has "hpt pack" does - but of course if you
+   want to exploit the special features of cfroute, you have to manually edit
+   this file.
+
+
 Interested Developer's Questions
 --------------------------------
 

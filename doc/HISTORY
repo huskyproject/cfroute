@@ -12,10 +12,16 @@ each feature.
 
 CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
 ----------------------------------------------------------
-    - Migrated from current: If the new keyword "NOLOOPROUTE" is set in the
-      config file, we will not pack a mail if we have detected a possible
-      mail loop. [TE]
-    - Mail with Immediate flag is now packed as IUT instead of OUT, and
+    - Fix: LASTRUN.CFR did not work properly on Unix - cfroute was always
+      rescanning the complete netmail folder, instead of only new netmails.
+      This is fixed now (if you want the old behaviour, use the -I command
+      line flag). [TE]
+    - New: Preliminary FIDOCONFIG support. You can use the FC2CFR program,
+      which is now part of cfroute, to generate a working CFROUTE
+      configuration file from your fidoconfig configuration file. [TE]
+    - If the new keyword "NOLOOPROUTE" is set in the config file, we will not
+      pack a mail if we have detected a possible  mail loop. [TE]
+    - New: Mail with Immediate flag is now packed as IUT instead of OUT, and
       you can specify "Immediate" as a routing flag in the ROUTE statement
       in the config file. Attention: Some mailers (e.g. BTXE) don't support
       the IUT flavour. So don't use the Immediate flag nor a "Immediate"
@@ -23,11 +29,11 @@ CFRoute 1.0 stable (forked off for release at 08 Oct 2000)
     - New: Support for JAM Message base (NETJAM keyword). This requires
       SMAPI 1.6.4b or newer! [TE, with help of the JAM part of smapi, written
       by Fedor Lizunkov's and Pavel Gulchouck]
-    - Removed all fread/fwrite calls that read directly into structures.
+    - Fix: Removed all fread/fwrite calls that read directly into structures.
       Cfroute now works without structure packing, independently of
       endianness or other architecture details. You can now use cfroute
       on any Unix machine, RISC or Intel. [TE]
-    - Another bugfix for the handling of EXCEPT statements [TE].
+    - Fix: Another bugfix for the handling of EXCEPT statements [TE].
     - Fixed some crashes on bad syntax in the configuration file. [TE]
     - Fix: Month field was set one too high (0 = January, but CFRoute
       wrote 1 for January, and so forth) [TE]
