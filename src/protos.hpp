@@ -106,6 +106,7 @@ int ProcParNetSquish (char *Token, struct S_FQAddress Main);
 int ProcParOutboundDir (char *Token, struct S_FQAddress Main);
 int ProcParQQQOutboundDir (char *Token, struct S_FQAddress Main);
 int ProcParLogFilename (char *Token, struct S_FQAddress Main);
+int ProcParRecode (char *Token, struct S_FQAddress Main);
 int ProcParPassword (char *Token, struct S_FQAddress Main);
 int ProcParInclude (char *Token, struct S_FQAddress Main);
 int ProcParRoute (char *Token, struct S_FQAddress Main);

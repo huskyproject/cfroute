@@ -153,6 +153,7 @@ CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT
                             {"NETSQUISH",TT_NETSQUISH,NULL,ProcParNetSquish,1,PT_COMMAND},
 #endif
                             {"LOG",TT_LOGFILENAME,NULL,ProcParLogFilename,1,PT_COMMAND},
+			    {"RECODE",TT_RECODEFILENAME,NULL,ProcParRecode,1,PT_COMMAND},
                             {"PASSWORD",TT_PASSWORD,InitComPassword,ProcParPassword,1,PT_COMMAND},
                             {"LOGPATH",TT_LOGPATH,InitComLogpath,NULL,0,PT_COMMAND},
                             {"INCLUDE",TT_INCLUDE,NULL,ProcParInclude,1,PT_COMMAND},
@@ -843,7 +844,7 @@ FILE *makedirandfopen (char *filename,const char *mode)
 		{
 			*pos=0;
 #if defined(EMX) || defined(UNIX)
-                        mkdir (mkdirwork,0);
+                        mkdir (mkdirwork,S_IRWXU|S_IRWXG);
 #else
                         mkdir (mkdirwork);
 #endif
@@ -852,7 +853,7 @@ FILE *makedirandfopen (char *filename,const char *mode)
 		}
 	}
 #if defined(EMX) || defined(UNIX)
-		mkdir (mkdirwork,0);
+		mkdir (mkdirwork,S_IRWXU|S_IRWXG);
 #else
 		mkdir (mkdirwork);
 #endif

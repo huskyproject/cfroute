@@ -11,6 +11,15 @@ each feature.
 
 Current Beta (not yet released)
 -------------------------------
+    - New keyword "RECODE". Simply do not use it. It is a TEMPORARY
+      WORKAROUND for people in the Russian language area that do not yet
+      support CHRS kludges according to FTSC. It takes as argument a
+      recoding map similar to the one that hpt uses, and will recode all
+      incoming messages from the transport to the local charset, and all
+      outgoing charset from the local to the transport charset. [ED]
+    - Fix: Fixed permissions of newly created directories on Unix. [ED]
+    - Fix: Message hour, minute and second information in Squish folders 
+      contained nonsensible values (message *read* only, so non-fatal). [ED]
     - Fix: The "EXCEPT" statement did not work as stated in the doc,
       (where it says that it applies to all node numbers following the
       EXCEPT keyword, and you have to specify another EXCEPT to undo the
@@ -395,4 +404,4 @@ List of contributors in alphabetical order with most recent known contact
 
 [CFS] Carlos Fernandez Sanchez, cfs@nova.es
 [TE]  Tobias Ernst, 2:2476/418.0, tobi@bland.fido.de
-
+[ED]  Eduard Dulich, 2:464/98.0

@@ -106,6 +106,7 @@
 #define TT_IGNOREUNKNOWNATTRIBS 109
 #define TT_QQQOUTBOUND     110
 #define TT_QQQALL          111
+#define	TT_RECODEFILENAME  112
 
 // Main() errors
 #define ENOMAIN             95 // Main address not specified

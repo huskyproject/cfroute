@@ -255,6 +255,11 @@ int ProcParLogFilename (char *Token, S_FQAddress Main)
 	return SUCCESS;
 }
 
+int ProcParRecode (char *Token, S_FQAddress Main)
+{
+	return getctab (outtab, Token);
+}
+
 int ProcParInclude (char *Token, S_FQAddress Main)
 {
 	return (ReadRouteFile (Token));

@@ -11,8 +11,9 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 	unsigned char *p;
 	char *p2;
 	size_t length;
-	printf ("Squish message: %lu\n",MsgNumber);
 	MsgH=MsgOpenMsg (BaseH,MOPEN_READ,MsgNumber);
+	storage->MsgNumber=MsgNumber;
+	storage->formattype=formatSQUISH;
 	storage->MSGIDZone=0;
 	storage->ProcessedHere=0;
 	if (MsgH==NULL)
@@ -27,7 +28,7 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 		ControlText=(unsigned char *)realloc (ControlText,(size_t) MsgGetCtrlLen (MsgH));
 		if (ControlText==NULL)
 		{
-			printf ("Not enough memory to read control lines.\n");
+			printf ("Not enough memory to read control lines from message %lu.\n",MsgNumber);
 			return NOMEMORY;
 		}
 		CONTROLBYTES=MsgGetCtrlLen (MsgH);
@@ -49,6 +50,9 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 	storage->date.day=SqHeader.date_written.date.da;
 	storage->date.month=SqHeader.date_written.date.mo;
 	storage->date.year=SqHeader.date_written.date.yr+1980;
+	storage->time.hour=SqHeader.date_written.time.hh;
+	storage->time.minute=SqHeader.date_written.time.mm;
+	storage->time.second=SqHeader.date_written.time.ss;
 
 	storage->attrib.number=SqHeader.attr;
 	storage->attrib2.number=0;
@@ -250,6 +254,14 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
                 fwrite (&headerPKT,1,sizeof (S_PKT),out);
 	}
 	MsgReadMsg (in,&headerin,0L,0L,NULL,MsgGetCtrlLen (in),ControlText);
+	
+	if (DoRecode) {
+		recodeToTransportCharset (headerin.from, 36);
+		recodeToTransportCharset (headerin.to, 36);
+		recodeToTransportCharset (headerin.subj, 72);
+		recodeToTransportCharset (headerin.__ftsc_date, 20);
+	}
+	
 	/* We truncate the last 2 bytes of the .PKT if they are both zero.
 	   Otherwise it is likely that the .PKT is damaged and it is better
 	   not to destroy anything on it */
@@ -283,6 +295,8 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 #else
 	Kludges=(char *) MsgCvtCtrlToKludge (ControlText);
 #endif
+	if (DoRecode)
+		recodeToTransportCharset (Kludges, strlen(Kludges));
 	fwrite (Kludges,1,strlen (Kludges),out);
 #if !defined(OS_2) && !defined(SMAPI_VERSION)
         MsgFreeCtrlBuf (Kludges);
@@ -316,6 +330,8 @@ int SquishToPKT (HAREA BaseH,unsigned long MsgNumber,char
 				read=strlen (buffer);
 				ToCopy=read;
 			}
+			if (DoRecode)
+				recodeToTransportCharset (buffer, read);
 			fwrite (buffer,1,(size_t) read,out);
 			ToCopy-=read;
 			CurrentPos+=read;

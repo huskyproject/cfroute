@@ -199,6 +199,8 @@ typedef struct
 	unsigned ForcePickup: 1;
 } S_Attrib2;
 
+typedef	enum {formatMSG, formatSQUISH} format;
+
 typedef struct
 {
 	char FromUserName[36];
@@ -233,6 +235,8 @@ typedef struct
 	byte Encrypted;
 	short ProcessedHere;
 	unsigned MSGIDZone;
+	unsigned long MsgNumber;
+	format formattype;
 } S_Visu;
 
 typedef struct
@@ -451,6 +455,13 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 		fclose (out);
 		return ECONV_SHORTIN;
 	}
+	
+	if (DoRecode) {
+		recodeToTransportCharset (headerin.FromUserName, 36);
+		recodeToTransportCharset (headerin.ToUserName, 36);
+		recodeToTransportCharset (headerin.Subject, 72);
+		recodeToTransportCharset (headerin.DateTime, 20);
+	}
 
 	/* We truncate the last 2 bytes of the .PKT if they are both zero.
 	   Otherwise it is likely that the .PKT is damaged and it is better
@@ -517,6 +528,8 @@ int MSGToPKT (char *MSGPath,char *PKTPath,char *ext,S_FQAddress via,S_FQAddress
 				read=strlen (buffer);
 				ToCopy=read;
 			}
+			if (DoRecode)
+				recodeToTransportCharset (buffer, read);
 			fwrite (buffer,1,read,out);
 			ToCopy-=read;
 		}
@@ -795,9 +808,28 @@ int GetVisibleInfo (char *path,S_Visu *storage,C_StringList *SL_Via, C_StringLis
 	char newpath[26];
 	char Parsing[21];
 	int count;
+	char *ptr;
+	size_t path_len;
 	storage->ProcessedHere=0;
 	storage->MSGIDZone=0;
 
+	// try to get MsgNumber from path
+	path_len = strlen (path);
+	if (path_len >= 5 &&
+			isdigit (path[path_len-5]) &&
+			path[path_len-4] == '.' &&
+			(path[path_len-3] == 'M' || path[path_len-3] == 'm') &&
+			(path[path_len-2] == 'S' || path[path_len-2] == 's') &&
+			(path[path_len-1] == 'G' || path[path_len-1] == 'g')) {
+		ptr = path + path_len - 5;
+		while (isdigit (*ptr))
+			ptr--;
+		ptr++;
+		storage->MsgNumber = strtol (ptr, NULL, 10);
+	} else
+		storage->MsgNumber = 0;
+	storage->formattype = formatMSG;
+		
 	// Get as much info as possible from the header
 	if (FHandler.OpenFile (path)!=SUCCESS)
 		return ENH_OPENFAIL;
@@ -1462,6 +1494,16 @@ int PostAnalysis (S_Visu *extra,struct S_Control *x)
 	// we have the header and route-to information. We log
 	// them.
 	Log.WriteOnLog ("------------------------------------------------------------------------------\n");
+
+        printf ("Message: %lu, format: ",extra->MsgNumber);
+        switch (extra->formattype) {
+                case formatMSG:         printf ("MSG.\n");
+                                        break;
+                case formatSQUISH:      printf ("SQUISH.\n");
+                                        break;
+                default:                printf ("unknown.\n");
+        }
+
 	for (count=0;count<x->SL_Header.GetStringCount();count++)
 		Log.WriteOnLog ("%s",x->SL_Header.GetString (count));
 	CreatePathLines (&x->SL_Path,&x->SL_ToWrite);

@@ -34,6 +34,7 @@ unsigned short CONTROLBYTES = 8192;
 #endif
 #include "protos.hpp"
 #include "errors.hpp"
+#include "recode.cpp"
 #include "basic.cpp"
 #include "datetime.cpp"
 #include "log.cpp"
