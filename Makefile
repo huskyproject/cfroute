@@ -49,7 +49,7 @@ clean:
 	-$(RM) $(RMOPT) buffer$(OBJ)
 	-$(RM) $(RMOPT) structs$(OBJ)
 	-$(RM) $(RMOPT) fc2cfr$(OBJ)
-	-$(RM) $(RMOPT) inbound$(OBJ)
+	-$(RM) $(RMOPT) inbounds$(OBJ)
 
 
 distclean: clean
