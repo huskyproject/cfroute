@@ -1,3 +1,15 @@
+/* Map Husky defines to cfroute defines */
+#if defined(OS2) && !defined(OS_2)
+#define OS_2
+#endif
+#if (defined(WINNT) || defined(__WINNT__) || defined(__NT__) || defined(NT)) \
+    &&(!defined(WIN))
+#define WIN
+#endif
+#if defined(DOS) && !defined(MSDOS)
+#define MSDOS
+#endif
+
 #if defined(OS_2)
         char *IDENTProgramName="CFR-OS/2";
 #elif defined(WIN)
