@@ -283,6 +283,7 @@ int adaptcase(char *pathname)
 {
         int i,j, found=1;
         char buf[FILENAME_MAX + 1];
+        char buf2[FILENAME_MAX + 1];
         char *cp;
         struct ffblk ffblk;
 
@@ -295,18 +296,20 @@ int adaptcase(char *pathname)
         {
                 if (pathname[i] == '/')
                 {
-                        buf[i] = pathname[i]; i++;
+                        buf[i] = tolower(((int)(pathname[i]))); i++;
                 }
                 j = i;
                 for (; pathname[i] && pathname[i]!='/'; i++)
-                        buf[i] = pathname[i];
+                        buf[i] = tolower(((int)(pathname[i])));
                 buf[i] = '\0';
-                
-                if (!findfirst(buf, &ffblk, FA_DIREC | FA_RDONLY |
-                               FA_ARCH | FA_HIDDEN))
-                {
-                        /* file exists, take over it's name */
 
+                if (!fexist(buf))
+                {
+                    if (!findfirst(buf, &ffblk, FA_DIREC | FA_RDONLY |
+                                   FA_ARCH | FA_HIDDEN))
+                    {
+                        /* file exists, take over it's name */
+                        
                         if (ffblk.fullname[0] == '.' &&
                             ffblk.fullname[1] == '/' && 
                             buf[0] != '.' && buf[1] != '/')
@@ -315,20 +318,21 @@ int adaptcase(char *pathname)
                                 cp = ffblk.fullname;
                         assert(strlen(buf) == strlen(cp));
                         strcpy(buf , cp);
-                }
-                else
-                {
+                    }
+                    else
+                    {
                         /* file does not exist - so the rest is brand new and
                            should be converted to lower case */
                         
                         for (i = j; pathname[i]; i++)
-                                buf[i] = tolower(pathname[i]);
+                            buf[i] = tolower(pathname[i]);
                         buf[i] = '\0';
                         findclose(&ffblk);
                         found = 0;
                         break;
+                    }
+                    findclose(&ffblk);
                 }
-                findclose(&ffblk);
         }
         assert(strlen(pathname) == strlen(buf));
         strcpy(pathname, buf);
