@@ -57,6 +57,7 @@ int GetVisibleInfoSquish (HAREA BaseH,unsigned long MsgNumber,S_Visu *storage,C_
 	storage->attrib=SqHeader.attr;
 	storage->attrib2=0;
         Set_Direct(storage->attrib2, S_Unused(storage->attrib));
+        Set_Immediate(storage->attrib2,(SqHeader.attr & MSGIMM) ? 1 : 0);
 	storage->Origin.Zone=SqHeader.orig.zone;
 	storage->Origin.Net=SqHeader.orig.net;
 	storage->Origin.Node=SqHeader.orig.node;

@@ -1109,6 +1109,9 @@ int DetermineRouteToSystem (S_Visu *header,int SendType,
 		else
 		if (S_Direct(header->attrib2)==1)
 			*AttribPack=TT_DIR;
+                else
+                if (S_Immediate(header->attrib2)==1)
+                        *AttribPack=TT_IMMEDIATE
 		switch (*AttribPack)
 		{
 			case TT_NORMAL:
@@ -1131,6 +1134,11 @@ int DetermineRouteToSystem (S_Visu *header,int SendType,
 				strcpy (ext,"DUT");
 				strcpy (extattach,"DLO");
 				break;
+                        case TT_IMMEDIATE:
+                                strcat (buffer,"IMMEDIATE (IUT)");
+                                strcpy (ext,"IUT");
+                                strcpy (extattach,"ILO");
+                                break;
 			default:
 				strcat (buffer,"*** corrupted attribute ***");
 				break;

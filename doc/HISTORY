@@ -12,6 +12,10 @@ each feature.
 Current Beta (not yet released)
 -------------------------------
 
+    - Mail with Immediate flag is now packed as IUT instead of OUT.
+      Attention: Some mailers (e.g. BTXE) don't support the IUT flavour
+      in the outbound. So don't use the Immediate flag if you have such
+      a mailer.
     - New: Support for JAM Message base (NETJAM keyword). This requires
       SMAPI 1.6.4b or newer!
     - Removed all fread/fwrite calls that read directly into structures.

@@ -3,7 +3,7 @@
 
 ### Directory options
 SRCDIR=..\src
-SMAPIDIR=x:\smapi
+SMAPIDIR=..\..\smapi
 
 ### Compiler flags
 CFLAGS = -DSQUISHCFS -I$(SMAPIDIR) -DMSDOS -O2 -w -ml
@@ -44,10 +44,10 @@ fecfg145$(OBJ): $(SRCDIR)\fecfg145.c
 	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
 
 buffer$(OBJ): $(SRCDIR)\buffer.cpp
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
 
 structs$(OBJ): $(SRCDIR)\structs.cpp
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.c
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
 
 cfroute$(EXE): $(cfrobjs)
 	$(CC) $(LFLAGS) -ecfroute$(EXE) $(cfrobjs) $(LIBS)

@@ -8,10 +8,10 @@
  * The default recoding table supplied in this source code is CP866 (transport)
  * <-> KOI8-R (local), but the user can also load his own recoding table.
  * This file has been taken from HPT tosser.
- * Modifications: header fcommon.h removed as unnecessary, type of getctab() 
- * function changed from VOID to INT and now returns the result of processing 
- * recoding-table file: SUCCESS, WARNING or ERROR. Becouse of adding new 
- * variable of type bool which is supported by C++ and not by C, the extension 
+ * Modifications: header fcommon.h removed as unnecessary, type of getctab()
+ * function changed from VOID to INT and now returns the result of processing
+ * recoding-table file: SUCCESS, WARNING or ERROR. Becouse of adding new
+ * variable of type bool which is supported by C++ and not by C, the extension
  * of file has been renamed to "cpp". Recoding functions have got additional
  * parameter "max" - maximum number of bytes to process. Hope, it's clear? :)
  *
@@ -75,7 +75,7 @@ void recodeToInternalCharset(char *string, size_t max)
 {
     int c;
     size_t bytes_processed;
-    
+
     if (string != NULL)
     {
         for(bytes_processed = 0;
@@ -92,7 +92,7 @@ void recodeToTransportCharset(char *string, size_t max)
 {
     int c;
     size_t bytes_processed;
-    
+
     if (string != NULL)
     {
 	for(bytes_processed = 0;
@@ -121,50 +121,50 @@ int getctab (char *dest, char *charMapFileName)
     char buf[512],*p,*q;
     int in,on,count;
     int line;
-    bool have_warnings = false;
-    
+    int have_warnings = 0;
+
     if ((fp=fopen(charMapFileName,"r")) == NULL)
     {
         fprintf(stderr,"getctab: cannot open mapchan file \"%s\"\n",
                 charMapFileName);
         return FATAL;
     }
-    
-    count=0;	 
+
+    count=0;
     line = 0;
-    
+
     while (fgets((char*)buf,sizeof(buf),fp))
     {
         line++;
         p=strtok(buf," \t\n#");
         q=strtok(NULL," \t\n#");
-        
+
         if (p && q)
         {
             in = ctoi(p);
             if (in > 255) {
                 fprintf(stderr, "getctab: %s: line %d: char val too big\n",
                         charMapFileName, line);
-                have_warnings = true;
+                have_warnings = 1;
                 break;
             }
-            
+
             on=ctoi(q);
             if (in && on)
             {
-                if (count++ < 256) dest[in]=on; 
-                else 
-                { 
+                if (count++ < 256) dest[in]=on;
+                else
+                {
                     fprintf(stderr,"getctab: char map table \"%s\" is big\n",
-                            charMapFileName); 
-                    have_warnings = true;
+                            charMapFileName);
+                    have_warnings = 1;
                     break;
                 }
             }
         }
     }
     fclose(fp);
-    
+
     DoRecode = 1;
     return have_warnings ? WARNING : SUCCESS;
 }
