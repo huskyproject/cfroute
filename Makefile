@@ -1,4 +1,9 @@
+# include Husky-Makefile-Config
+ifeq ($(DEBIAN), 1)
+include debian/huskymak.cfg
+else
 include ../huskymak.cfg
+endif
 
 .PHONY: default
 
@@ -44,6 +49,7 @@ clean:
 	-$(RM) $(RMOPT) buffer$(OBJ)
 	-$(RM) $(RMOPT) structs$(OBJ)
 	-$(RM) $(RMOPT) fc2cfr$(OBJ)
+	-$(RM) $(RMOPT) inbound$(OBJ)
 
 
 distclean: clean
