@@ -29,10 +29,10 @@ cfrobjs = cfroute$(OBJ) dirute$(OBJ)
 
 VPATH=$(SRCDIR)
 .cpp$(OBJ):
-	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $<
-VPATH=../src
+	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
+VPATH=$(SRCDIR)
 .c$(OBJ):
-	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $<
+	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
 
 all: cfroute$(EXE)
 

@@ -9,7 +9,7 @@ SRCDIR=../src
 SMAPIDIR=../../smapi
 
 ### Compiler flags
-CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR) 
+CFLAGS = -O2 -DUNIX -DSQUISHCFS -I$(SMAPIDIR)
 
 ### Linker flag
 LFLAGS = -static -s -L$(SMAPIDIR)

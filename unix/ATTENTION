@@ -1,0 +1,10 @@
+ATTENTION!
+
+Cfroute presently only works on little-endian 32-bit hardware with gcc as
+compiler. In particular, it has only been tested on Linux/i386 and
+FreeBSD/i386, and in particular it will not run on Linux/alpha, OSF/alpha,
+and AIX/rs6000. 
+
+I intend to remove platform-dependent code in the future, i.E. the next
+release will probably also run on any other platform, but the current one
+doesn't.

@@ -35,7 +35,7 @@ cfroute$(OBJ):  $(SRCDIR)\cfroute.cpp $(SRCDIR)\akas.cpp $(SRCDIR)\basic.cpp \
                 $(SRCDIR)\protos.hpp $(SRCDIR)\routing.cpp \
                 $(SRCDIR)\scontrol.cpp $(SRCDIR)\errors.hpp \
                 $(SRCDIR)\fecfg145.h $(SRCDIR)\protos.hpp $(SRCDIR)\squish.cpp
-	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(SRCDIR)\$*.cpp
+	$(CC) -c -o$*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $(SRCDIR)\$*.cpp
 
 cfroute$(EXE): $(cfrobjs)
 	$(CC) $(LFLAGS) -ecfroute$(EXE) $(cfrobjs) $(LIBS)

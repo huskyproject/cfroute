@@ -6,9 +6,9 @@
 
 VPATH=$(SRCDIR)
 .cpp$(OBJ):
-	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $<
+	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
 .c$(OBJ):
-	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $<
+	$(CC) -c -o $*$(OBJ) -I$(SRCDIR) $(CFLAGS) $(REL) $<
 
 all: cfroute$(EXE)
 
