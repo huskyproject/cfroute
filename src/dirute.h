@@ -19,13 +19,6 @@
 #define FA_CASE 0
 #include <dir.h>
 #endif
-#ifdef __cplusplus
-extern "C" {
-#endif
-int file_exists(char *);
-#ifdef __cplusplus
-}
-#endif
 #define adaptcase file_exists
 #else
 
@@ -78,6 +71,16 @@ int adaptcase (char *);
 #endif
 
 #endif /* UNIX     */
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+int file_exists(char *);
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* dirute.h */
 
 

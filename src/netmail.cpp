@@ -73,6 +73,60 @@ int FlagAsSent (char *path)
     return SUCCESS;
 }
 
+void FindAttachedFile(char *buffer, int maxlen)
+{
+    char *buf2;
+
+    int i;
+                                // first, see if this is an absolute filename
+                                // at all
+    if (strchr(buffer, '/') == NULL && strchr(buffer, '\\') == NULL &&
+        strchr(buffer, ':') == NULL)
+    {
+
+        buf2 = (char *)malloc(maxlen + 1 + InboundHandler.GetLongestString());
+        if (buf2 == NULL)
+        {                       // can't help ...
+            adaptcase(buffer); return;
+        }
+
+                                // we have a relative path name. ouch.
+        for (i = 0; i < InboundHandler.GetInboundCount(); i++)
+        {
+            sprintf(buf2, "%s/%s", InboundHandler.GetInbound(i), buffer);
+            fprintf (stderr, "trying %s\n", buf2);
+
+            if (file_exists((char *)buf2))
+            {
+                buf2[maxlen - 1] = '\0';
+                strcpy(buffer, buf2);
+                return;
+            }
+        }
+
+#ifdef UNIX
+                                // next try, this time using the slow adaptcase
+                                // code
+        for (i = 0; i < InboundHandler.GetInboundCount(); i++)
+        {
+            sprintf(buf2, "%s/%s", InboundHandler.GetInbound(i), buffer);
+            adaptcase(buf2);
+            fprintf (stderr, "trying %s\n", buf2);
+
+            if (file_exists((char *)buf2))
+            {
+                buf2[maxlen - 1] = '\0';
+                strcpy(buffer, buf2);
+                return;
+            }
+        }
+#endif
+
+        adaptcase(buf2);
+    }
+    adaptcase(buffer);
+}
+
 int SubjectToFile (char *Subject,char *savepath,char *extattach,int Truncate,int Delete)
 {
 	FILE *out;
@@ -90,7 +144,8 @@ int SubjectToFile (char *Subject,char *savepath,char *extattach,int Truncate,int
 	fseek (out,0,SEEK_END);
 	while (Subject[0])
 	{
-		GetAndStripToken (Subject,complete+1);
+                GetAndStripToken (Subject,complete+1);
+                FindAttachedFile(complete + 1, (int)(sizeof(complete) - 1));
 		if (Delete)
 			complete[0]='^';
 		else
@@ -1393,7 +1448,8 @@ int AnalyzeNet (char *path)
 	{
 		if (SubjectToFile(extra.Subject,x.savepathattach,x.extattach,
                                   S_Truncate(extra.attrib2),
-                                  S_KillFileSent(extra.attrib2))!=SUCCESS)
+                                  S_KillFileSent(extra.attrib2) ||
+                                    KillInTransitFiles)!=SUCCESS)
 			Log.WriteOnLog ("Warning: Failed to update "
                                         "fileattach queue.\n");
 	}

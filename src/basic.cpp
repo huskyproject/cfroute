@@ -120,6 +120,7 @@ int GetAndStripToken (char *string, char *token)
 	return SUCCESS;
 }
 
+#if 0
 int IsCommand (int TokenType)
 {
 	switch (TokenType)
@@ -146,12 +147,14 @@ int IsCommand (int TokenType)
 		case TT_PACKET2:
 		case TT_PASSWORD:
 		case TT_INCLUDE:
+                case TT_INBOUND:
 			return 1;
 		default:
 			return 0;
 	}
 }
 
+#endif
 
 struct S_Codes
 CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT_COMMAND},
@@ -164,6 +167,7 @@ CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT
                             {"LOG",TT_LOGFILENAME,NULL,ProcParLogFilename,1,PT_COMMAND},
 			    {"RECODE",TT_RECODEFILENAME,NULL,ProcParRecode,1,PT_COMMAND},
                             {"PASSWORD",TT_PASSWORD,InitComPassword,ProcParPassword,1,PT_COMMAND},
+                            {"INBOUND",TT_INBOUND,NULL,ProcParInbound,1,PT_COMMAND},
                             {"LOGPATH",TT_LOGPATH,InitComLogpath,NULL,0,PT_COMMAND},
                             {"INCLUDE",TT_INCLUDE,NULL,ProcParInclude,1,PT_COMMAND},
                             {"DEFINE",TT_DEFINE,NULL,ProcParDefine,1,PT_COMMAND},
@@ -198,6 +202,7 @@ CodeTable[]={               {"OUTBOUND",TT_OUTBOUND,NULL,ProcParOutboundDir,1,PT
                             {"IGNOREBSY",TT_IGNOREBSY,InitComIgnoreBSY,NULL,0,PT_COMMAND},
                             {"NODOMAINDIR",TT_NODOMAINDIR,InitComNoDomainDir,NULL,0,PT_COMMAND},
                             {"KILLINTRANSIT",TT_KILLINTRANSIT,InitComKillInTransit,NULL,0,PT_COMMAND},
+                            {"KILLTRANSITFILES",TT_KILLTRANSITFILES,InitComKillInTransitFiles,NULL,0,PT_COMMAND},
                             {"FASTECHOPACK",TT_FASTECHOPACK,InitComFastechoPack,ProcParFastechoPack,0,PT_COMMAND},
                             {"NOLOOPROUTE",TT_NOLOOPROUTE,InitComNoLoopRoute,NULL,0,PT_COMMAND},
                             {"ALL",TT_QQQALL,NULL,NULL,0,PT_QQQMODE},

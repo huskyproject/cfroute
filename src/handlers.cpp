@@ -22,6 +22,17 @@ int ProcParPassword (char *Token, S_FQAddress Main)
 	return SUCCESS;
 }
 
+int ProcParInbound (char *Token, S_FQAddress Main)
+{
+        if (InboundHandler.AddItem(Token) != SUCCESS)
+        {
+                printf ("Fatal: Out of memory.\n");
+                return FATAL;
+        }
+        return SUCCESS;
+}
+                
+
 int ProcParNetmail (char *Token, S_FQAddress Main)
 {
 	int Result=SUCCESS;
@@ -420,6 +431,12 @@ int InitComIgnoreBSY (S_FQAddress Main)
 int InitComKillInTransit (S_FQAddress Main)
 {
 	KillInTransit=1;
+	return SUCCESS;
+}
+
+int InitComKillInTransitFiles (S_FQAddress Main)
+{
+	KillInTransitFiles=1;
 	return SUCCESS;
 }
 

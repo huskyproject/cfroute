@@ -110,6 +110,8 @@
 #define TT_NETJAM          113
 #define TT_IMMEDIATE       114
 #define TT_NOLOOPROUTE     115
+#define TT_INBOUND         116
+#define TT_KILLTRANSITFILES 117
 
 // Main() errors
 #define ENOMAIN             95 // Main address not specified
